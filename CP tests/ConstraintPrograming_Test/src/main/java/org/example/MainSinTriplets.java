@@ -2,19 +2,19 @@ package org.example;
 
 import org.chocosolver.solver.Model;
 import org.chocosolver.solver.Solution;
-import org.chocosolver.solver.variables.IntVar;
 import org.chocosolver.solver.constraints.extension.Tuples;
 import org.chocosolver.solver.variables.BoolVar;
+import org.chocosolver.solver.variables.IntVar;
 import org.example.Data.ExampleData;
 
-
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.example.Data.ExampleData.buildExampleData;
 
-public class Main {
-
+public class MainSinTriplets {
     public static void main(String[] args) {
+        System.out.println("Aquest codi no utilitza taules de tuples per a les restriccions.");
         ExampleData data = buildExampleData();
 
         Model model = new Model("Adjudicació tribunals TFG");
@@ -31,7 +31,7 @@ public class Main {
         for (int t = 0; t < T; t++) {
             profA[t] = model.intVar("profA_" + t, 1, P, true);
             profB[t] = model.intVar("profB_" + t, 1, P, true);
-            slot[t]  = model.intVar("slot_" + t, 1, S, true);
+            slot[t] = model.intVar("slot_" + t, 1, S, true);
 
             // 1️⃣ El tutor no pot ser membre del tribunal
             int tutorId = data.tutorOfTFG[t];
@@ -57,25 +57,25 @@ public class Main {
         // 4️⃣ Un professor no pot estar en més de 2 tribunals
         IntVar[] allProfs = new IntVar[2 * T];
         for (int i = 0; i < T; i++) {
-            allProfs[2*i] = profA[i];
-            allProfs[2*i + 1] = profB[i];
+            allProfs[2 * i] = profA[i];
+            allProfs[2 * i + 1] = profB[i];
         }
 
         IntVar[] counts = new IntVar[P];
         for (int p = 0; p < P; p++) {
-            counts[p] = model.intVar("count_prof_" + (p+1), 0, data.maxTribunalsPerProfessor, true);
+            counts[p] = model.intVar("count_prof_" + (p + 1), 0, data.maxTribunalsPerProfessor, true);
         }
         int[] values = new int[P];
-        for (int i = 0; i < P; i++) values[i] = i+1;
+        for (int i = 0; i < P; i++) values[i] = i + 1;
         model.globalCardinality(allProfs, values, counts, false).post();
 
         // 5️⃣ Màxim 2 defenses al mateix slot
         IntVar[] countsSlot = new IntVar[S];
         for (int s = 0; s < S; s++) {
-            countsSlot[s] = model.intVar("count_slot_" + (s+1), 0, data.maxDefensesPerSlot, true);
+            countsSlot[s] = model.intVar("count_slot_" + (s + 1), 0, data.maxDefensesPerSlot, true);
         }
         int[] slotValues = new int[S];
-        for (int s = 0; s < S; s++) slotValues[s] = s+1;
+        for (int s = 0; s < S; s++) slotValues[s] = s + 1;
         model.globalCardinality(slot, slotValues, countsSlot, false).post();
 
         //per un slot/horari una persona no pot estar dos slots
@@ -111,35 +111,6 @@ public class Main {
             }
         }
 
-        // 7️⃣ Penalitzacions per manca de reciprocitat (soft constraint)
-        List<IntVar> penalties = new ArrayList<>();
-
-        for (int a = 1; a <= P; a++) {
-            for (int b = a + 1; b <= P; b++) {
-
-                BoolVar ab = judgesTutor[a][b];
-                BoolVar ba = judgesTutor[b][a];
-
-                // Penalitza si a jutja b però b no jutja a
-                BoolVar penalty = model.boolVar("penalty_" + a + "_" + b);
-
-                model.and(
-                        model.arithm(ab, "=", 1),
-                        model.arithm(ba, "=", 0)
-                ).reifyWith(penalty);
-
-                penalties.add(penalty);
-            }
-        }
-
-        IntVar totalPenalty = model.intVar("totalPenalty", 0, 100);
-        model.sum(penalties.toArray(new IntVar[0]), "=", totalPenalty).post();
-
-        // Minimitzem la manca de reciprocitat
-        model.setObjective(Model.MINIMIZE, totalPenalty);
-
-
-
         // 🔍 Buscar solució
         Solution solution = model.getSolver().findSolution();
         if (solution == null) {
@@ -163,18 +134,15 @@ public class Main {
 
         System.out.println("\n📊 Càrrega per professor:");
         for (int p = 1; p <= P; p++) {
-            int cnt = solution.getIntVal(counts[p-1]);
-            System.out.printf("%-15s -> %d tribunals%n", data.professorNames.get(p-1), cnt);
+            int cnt = solution.getIntVal(counts[p - 1]);
+            System.out.printf("%-15s -> %d tribunals%n", data.professorNames.get(p - 1), cnt);
         }
 
         System.out.println("\n🕒 Defenses per franja horària:");
         for (int s = 1; s <= S; s++) {
-            int cnt = solution.getIntVal(countsSlot[s-1]);
+            int cnt = solution.getIntVal(countsSlot[s - 1]);
             System.out.printf("Slot %d -> %d defenses%n", s, cnt);
         }
-
-        System.out.println("\n🔁 Penalització per manca de reciprocitat: "
-                + solution.getIntVal(totalPenalty));
 
     }
 
