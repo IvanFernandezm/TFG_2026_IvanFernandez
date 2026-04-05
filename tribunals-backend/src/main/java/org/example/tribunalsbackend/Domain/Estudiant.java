@@ -4,6 +4,7 @@ import jakarta.persistence.Entity;
 import lombok.NoArgsConstructor;
 import org.example.tribunalsbackend.Domain.Abstracts.AppUser;
 
+//USUARI ESTUDIANT
 @Entity
 public class Estudiant extends AppUser {
 

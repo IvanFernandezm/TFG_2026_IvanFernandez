@@ -4,6 +4,7 @@ import jakarta.persistence.Entity;
 import lombok.NoArgsConstructor;
 import org.example.tribunalsbackend.Domain.Abstracts.AppUser;
 
+//USUARI ADMINISTRADOR
 @Entity
 public class Admin extends AppUser {
     public Admin() {

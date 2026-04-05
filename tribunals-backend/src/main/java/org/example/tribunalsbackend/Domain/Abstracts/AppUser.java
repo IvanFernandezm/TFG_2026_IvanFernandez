@@ -6,6 +6,7 @@ import jakarta.persistence.Column;
 import lombok.Getter;
 import lombok.Setter;
 
+//ENTITAT ABSTRACTA QUE RECULL LES PROPIETATS COMUNS QUE ES GUARDEN D'UN USUARI
 @MappedSuperclass
 @Getter
 @Setter

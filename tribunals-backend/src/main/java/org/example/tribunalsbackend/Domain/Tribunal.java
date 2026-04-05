@@ -4,9 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.ArrayList;
-import java.util.List;
-
+//ENTITAT QUE REPRESENTA EL TRIBUNAL QUE JUTJARÀ UN TREBALL DE FI DE GRAU
 @Getter
 @Setter
 @Entity
@@ -24,28 +22,23 @@ public class Tribunal {
     @JoinColumn(name = "vocal_mail", referencedColumnName = "mail")
     private Docent vocal;
 
-    @OneToMany(mappedBy = "tribunal", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Adjudicacio> adjudicacions = new ArrayList<>();
+    @ManyToOne
+    @JoinColumn(name = "adjudicacio_id", referencedColumnName = "id")
+    private Adjudicacio adjudicacio;
+
+    @OneToOne
+    @JoinColumn(name = "treball_id", referencedColumnName = "id")
+    private Treball treball;
 
     public Tribunal() {
     }
 
-    public Tribunal(String id, String room, Docent presidency, Docent vocal) {
+    public Tribunal(String id, String room, Docent presidency, Docent vocal, Treball treball) {
         this.id = id;
         this.room = room;
         this.presidencia = presidency;
         this.vocal = vocal;
+        this.treball = treball;
     }
 
-    public void addAdjudicacio(Adjudicacio a) {
-        if (a == null) return;
-        adjudicacions.add(a);
-        a.setTribunal(this);
-    }
-
-    public void removeAdjudicacio(Adjudicacio a) {
-        if (a == null) return;
-        adjudicacions.remove(a);
-        a.setTribunal(null);
-    }
 }

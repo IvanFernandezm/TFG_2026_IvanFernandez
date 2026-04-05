@@ -9,6 +9,7 @@ import lombok.Setter;
 
 import java.util.List;
 
+//ENTITAT QUE REPRESENTA L'EXPERTESA QUE PODEN TENIR ELS TREBALLS I ELS DOCENTS
 @Entity
 @Getter
 @Setter
@@ -16,12 +17,6 @@ public class Expertesa {
     @Id
     private String id;
     private String description;
-
-    @ManyToMany(mappedBy = "experteses")
-    private List<Docent> docents;
-
-    @ManyToMany(mappedBy = "experteses")
-    private List<Treball> treballs;
 
     public Expertesa() {
     }

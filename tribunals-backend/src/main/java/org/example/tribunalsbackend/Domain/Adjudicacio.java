@@ -4,8 +4,11 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
+//REPRESENTA LA DATA EN LA QUE ES CELEBREN UNES DEFENSES
 @Entity
 @Getter
 @Setter
@@ -15,22 +18,31 @@ public class Adjudicacio {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private LocalDate dataAdj;
+    private LocalDateTime dataAdj;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "tribunal_id", referencedColumnName = "id")
-    private Tribunal tribunal;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "estudiant_mail", referencedColumnName = "mail")
-    private Estudiant estudiant;
+    @OneToMany(mappedBy = "adjudicacio", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Tribunal> adjudicats; //TRIBUNALS ADJUDICATS A AQUESTA DATA
 
     public Adjudicacio() {
+        this.adjudicats = new ArrayList<>();
     }
 
-    public Adjudicacio(LocalDate dataAdj, Tribunal tribunal, Estudiant estudiant) {
+    public Adjudicacio(LocalDateTime dataAdj) {
+        this.adjudicats = new ArrayList<>();
         this.dataAdj = dataAdj;
-        this.tribunal = tribunal;
-        this.estudiant = estudiant;
+    }
+
+    public void addTribunal(Tribunal tribunal) {
+        if (!this.adjudicats.contains(tribunal)) {
+            this.adjudicats.add(tribunal);
+            tribunal.setAdjudicacio(this);
+        }
+    }
+    public void removeTribunal(Tribunal tribunal) {
+        if (this.adjudicats.contains(tribunal)) {
+            this.adjudicats.remove(tribunal);
+            tribunal.setAdjudicacio(null);
+        }
+        //llençarà excepció si el tribunal no està associat a aquesta adjudicació
     }
 }

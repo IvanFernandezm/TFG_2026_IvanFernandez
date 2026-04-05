@@ -5,7 +5,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
+
+//ENTITAT QUE REPRESENTA EL TREBALL DE FI DE GRAU, ON ES GUARDARAN LES SEVES CARACTERÍSTIQUES I LES RELACIONS AMB ELS ESTUDIANTS, DOCENTS I EXPERTESES
 @Entity
 @Getter
 @Setter
@@ -17,11 +20,11 @@ public class Treball {
     private String description;
 
     @ManyToOne
-    @JoinColumn(name = "estudiant_id")
+    @JoinColumn(name = "estudiant_mail")
     private Estudiant student;
 
     @ManyToOne
-    @JoinColumn(name = "tutor_id")
+    @JoinColumn(name = "tutor_mail")
     private Docent tutor;
 
     @ManyToMany
@@ -33,6 +36,7 @@ public class Treball {
     private List<Expertesa> experteses;
 
     public Treball() {
+        this.experteses = new ArrayList<>();
     }
 
     public Treball(String id, String title, String description, Estudiant student, Docent tutor, List<Expertesa> expertness) {
@@ -45,5 +49,8 @@ public class Treball {
     }
     public void addExpertesa(Expertesa expertesa) {
         this.experteses.add(expertesa);
+    }
+    public void removeExpertesa(Expertesa expertesa) {
+        this.experteses.remove(expertesa);
     }
 }

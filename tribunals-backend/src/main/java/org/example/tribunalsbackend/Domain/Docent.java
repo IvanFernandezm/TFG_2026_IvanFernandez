@@ -12,6 +12,7 @@ import org.example.tribunalsbackend.Domain.Abstracts.AppUser;
 import java.util.ArrayList;
 import java.util.List;
 
+//USUARI DOCENT
 @Entity
 @Getter
 @Setter
@@ -20,31 +21,44 @@ public class Docent extends AppUser {
 
     @ManyToMany
     @JoinTable(
-        name = "docent_disponibilitat",
-        joinColumns = @JoinColumn(name = "docent_mail", referencedColumnName = "mail"),
-        inverseJoinColumns = @JoinColumn(name = "disponibilitat_id", referencedColumnName = "id")
+            name = "disponibilitat_docent",
+            joinColumns = @JoinColumn(name = "docent_mail", referencedColumnName = "mail"),
+            inverseJoinColumns = @JoinColumn(name = "disponibilitat_id", referencedColumnName = "id")
     )
-    private List<Disponibilitat> availability = new ArrayList<>();
+    private List<Disponibilitat> availability; //DISPONIBILITATS DEL DOCENT
 
-    public Docent() {}
+    @ManyToMany
+    @JoinTable(
+            name = "docent_expertesa",
+            joinColumns = @JoinColumn(name = "docent_mail", referencedColumnName = "mail"),
+            inverseJoinColumns = @JoinColumn(name = "expertesa_id", referencedColumnName = "id")
+    )
+    private List<Expertesa> experteses; //EXPERTESES DEL DOCENT, NOMÉS POT SER TUTOR I JUTGE DE TREBALLS DELS QUE TINGUI EXPERTESES
 
-        public Docent(String email, String name, boolean veteran) {
-            super(email, name);
-            this.veteran = veteran;
-        }
+    public Docent() {
+    }
+
+    public Docent(String email, String name, boolean veteran) {
+        super(email, name);
+        this.veteran = veteran;
+        this.experteses = new ArrayList<>();
+    }
 
     public void addDisponibilitat(Disponibilitat disponibilitat) {
-            if (this.availability == null) this.availability = new ArrayList<>();
-            if (!this.availability.contains(disponibilitat)) {
-                this.availability.add(disponibilitat);
-                disponibilitat.getDocents().add(this);
-            }
-        }
+        this.availability.add(disponibilitat);
+    }
 
     public void removeDisponibilitat(Disponibilitat disponibilitat) {
-        if (this.availability != null && this.availability.contains(disponibilitat)) {
-            this.availability.remove(disponibilitat);
-            disponibilitat.getDocents().remove(this);
-        }
+        this.availability.remove(disponibilitat);
+    }
+
+    public void addExpertesa(Expertesa expertesa) {
+        this.experteses.add(expertesa);
+    }
+
+    public void removeExpertesa(Expertesa expertesa) {
+
+        this.experteses.remove(expertesa);
+
     }
 }
