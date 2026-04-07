@@ -4,6 +4,7 @@ import org.example.Main;
 
 import java.util.*;
 
+//DADES D'EXEMPLE PRIMITIVES PER A LES PRIMERES PROVES
 public class ExampleData {
     public int numProfessors;
     public int tfgCount;

@@ -43,23 +43,33 @@
   "keyToString": {
     "Application.Main.executor": "Run",
     "Application.MainSinTriplets.executor": "Run",
+    "Application.NewDataLauncher.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "git-widget-placeholder": "main",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/Ivan/GitHub/TFG_2026_IvanFernandez/CP tests/ConstraintPrograming_Test",
+    "last_opened_file_path": "C:/Users/Ivan/GitHub/TFG_2026_IvanFernandez/CP tests/ConstraintPrograming_Test/src/main/java/org/example/Data",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Project",
+    "project.structure.last.edited": "Modules",
     "project.structure.proportion": "0.0",
     "project.structure.side.proportion": "0.0",
     "settings.editor.selected.configurable": "project.propVCSSupport.DirectoryMappings",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
-  <component name="RunManager" selected="Application.MainSinTriplets">
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Ivan\GitHub\TFG_2026_IvanFernandez\CP tests\ConstraintPrograming_Test\src\main\java\org\example\Data" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="org.example" />
+      <recent name="org.example.Data" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Application.NewDataLauncher">
     <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="org.example.Main" />
       <module name="ConstraintPrograming_Test" />
@@ -86,8 +96,22 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="NewDataLauncher" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="org.example.NewDataLauncher" />
+      <module name="ConstraintPrograming_Test" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.example.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.NewDataLauncher" />
         <item itemvalue="Application.MainSinTriplets" />
         <item itemvalue="Application.Main" />
       </list>
@@ -118,6 +142,7 @@
       <workItem from="1768381112094" duration="2242000" />
       <workItem from="1768475285274" duration="2176000" />
       <workItem from="1770318887817" duration="3767000" />
+      <workItem from="1775480085394" duration="10954000" />
     </task>
     <servers />
   </component>
