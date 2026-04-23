@@ -4,7 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="36b10d7e-a652-48bd-868a-a6f85e7fe34b" name="Changes" comment="" />
+    <list default="true" id="36b10d7e-a652-48bd-868a-a6f85e7fe34b" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/../../tribunals-backend/src/main/java/org/example/tribunalsbackend/Domain/Adjudicacio.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../tribunals-backend/src/main/java/org/example/tribunalsbackend/Domain/Disponibilitat.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../tribunals-backend/src/main/java/org/example/tribunalsbackend/Domain/Disponibilitat.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../tribunals-backend/src/main/java/org/example/tribunalsbackend/Domain/Docent.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../tribunals-backend/src/main/java/org/example/tribunalsbackend/Domain/Docent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../tribunals-backend/src/main/java/org/example/tribunalsbackend/Domain/Expertesa.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../tribunals-backend/src/main/java/org/example/tribunalsbackend/Domain/Expertesa.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../tribunals-backend/src/main/java/org/example/tribunalsbackend/Domain/Treball.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../tribunals-backend/src/main/java/org/example/tribunalsbackend/Domain/Treball.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../tribunals-backend/src/main/java/org/example/tribunalsbackend/Domain/Tribunal.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../tribunals-backend/src/main/java/org/example/tribunalsbackend/Domain/Tribunal.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../tribunals-backend/src/main/java/org/example/tribunalsbackend/Persistence/TreballRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../tribunals-backend/src/main/java/org/example/tribunalsbackend/Persistence/TreballRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../tribunals-backend/src/main/java/org/example/tribunalsbackend/Persistence/TribunalRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../tribunals-backend/src/main/java/org/example/tribunalsbackend/Persistence/TribunalRepository.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -14,6 +23,9 @@
     <persistenceIdMap>
       <entry key="_C:/Users/Ivan/GitHub/TFG_2026_IvanFernandez/CP tests/ConstraintPrograming_Test" value="35LHkxCX3TOR9Ed563KxUheUS54" />
     </persistenceIdMap>
+  </component>
+  <component name="CopilotUserSelectedChatMode">
+    <option name="chatModeId" value="Agent" />
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
@@ -39,27 +51,27 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Application.Main.executor": "Run",
-    "Application.MainSinTriplets.executor": "Run",
-    "Application.NewDataLauncher.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "main",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/Ivan/GitHub/TFG_2026_IvanFernandez/CP tests/ConstraintPrograming_Test/src/main/java/org/example/Data",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.0",
-    "settings.editor.selected.configurable": "project.propVCSSupport.DirectoryMappings",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.Main.executor&quot;: &quot;Run&quot;,
+    &quot;Application.MainSinTriplets.executor&quot;: &quot;Run&quot;,
+    &quot;Application.NewDataLauncher.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Ivan/GitHub/TFG_2026_IvanFernandez/CP tests/ConstraintPrograming_Test/src/main/java/org/example/Data&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;project.propVCSSupport.DirectoryMappings&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\Ivan\GitHub\TFG_2026_IvanFernandez\CP tests\ConstraintPrograming_Test\src\main\java\org\example\Data" />
@@ -142,7 +154,10 @@
       <workItem from="1768381112094" duration="2242000" />
       <workItem from="1768475285274" duration="2176000" />
       <workItem from="1770318887817" duration="3767000" />
-      <workItem from="1775480085394" duration="10954000" />
+      <workItem from="1775480085394" duration="18137000" />
+      <workItem from="1776093150586" duration="1551000" />
+      <workItem from="1776248397772" duration="25605000" />
+      <workItem from="1776972436233" duration="3510000" />
     </task>
     <servers />
   </component>

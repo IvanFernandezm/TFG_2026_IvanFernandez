@@ -1,11 +1,6 @@
 package org.example.Data;
 
-import org.example.Data.Domain.Adjudicacio;
-import org.example.Data.Domain.Disponibilitat;
-import org.example.Data.Domain.Docent;
-import org.example.Data.Domain.Estudiant;
-import org.example.Data.Domain.Treball;
-import org.example.Data.Domain.Tribunal;
+import org.example.Data.Domain.*;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -15,7 +10,8 @@ public class NewExampleData {
     public List<Estudiant> estudiants = new ArrayList<>();
     public List<Treball> treballs = new ArrayList<>();
     public List<Disponibilitat> slots = new ArrayList<>();
-    public List<Adjudicacio> adjudicacions = new ArrayList<>();
+    public List<Tribunal> tribunals = new ArrayList<>();
+    public List<Expertesa> experteses = new ArrayList<>();
     public int maxTribunalsPerProfessor = 2;
     public int maxDefensesPerSlot = 2;
 
@@ -63,20 +59,10 @@ public class NewExampleData {
         return availability.contains(slot);
     }
 
-    public Adjudicacio guardarAdjudicacio(LocalDateTime dataAdj, List<Tribunal> tribunals) {
-        Adjudicacio adjudicacio = new Adjudicacio(dataAdj);
-        for (Tribunal tribunal : tribunals) {
-            adjudicacio.addTribunal(tribunal);
-        }
-        adjudicacions.add(adjudicacio);
-        return adjudicacio;
-    }
-
-    public Adjudicacio guardarSolucioEnAdjudicacions(
+    public List<Tribunal> guardarSolucioEnTribunals(
             int[] presidenciesPerTFG,
             int[] vocalsPerTFG,
-            int[] slotsPerTFG,
-            LocalDateTime dataAdj
+            int[] slotsPerTFG
     ) {
         if (presidenciesPerTFG.length != treballs.size()
                 || vocalsPerTFG.length != treballs.size()
@@ -89,41 +75,55 @@ public class NewExampleData {
             Docent presidencia = getDocentBySolverId(presidenciesPerTFG[t]);
             Docent vocal = getDocentBySolverId(vocalsPerTFG[t]);
             Treball treball = treballs.get(t);
+            int slotSolverId = slotsPerTFG[t];
+
+            if (slotSolverId < 1 || slotSolverId > slots.size()) {
+                throw new IllegalArgumentException("Slot invalid per al TFG index " + t + ": " + slotSolverId);
+            }
 
             Tribunal tribunal = new Tribunal(
-                    "TRB-" + (t + 1),
-                    "SLOT-" + slotsPerTFG[t],
+                    "SLOT-" + slotSolverId,
                     presidencia,
                     vocal,
                     treball
             );
+            tribunal.setAdjudicacio(slots.get(slotSolverId - 1).getDataDis());
             tribunals.add(tribunal);
         }
 
-        return guardarAdjudicacio(dataAdj, tribunals);
+        this.tribunals.addAll(tribunals);
+        return tribunals;
     }
 
     public static NewExampleData buildExampleData() {
         NewExampleData d = new NewExampleData();
 
         d.docents = List.of(
-                new Docent("anna@uni.cat", "Anna Serra", true),
-                new Docent("marc@uni.cat", "Marc Vidal", true),
-                new Docent("jordi@uni.cat", "Jordi Puig", true),
-                new Docent("laura@uni.cat", "Laura Soler", false),
-                new Docent("pere@uni.cat", "Pere Costa", true),
-                new Docent("marta@uni.cat", "Marta Roca", false),
-                new Docent("joan@uni.cat", "Joan Ferrer", false)
+                new Docent("jboix@tecnocampus.cat", "Jordi Boix"),
+                new Docent("rherrero@tecnocampus.cat", "Rosa Herrero"),
+                new Docent("sesa@tecnocampus.cat", "Enric Sesa"),
+                new Docent("barberan@tecnocampus.cat", "Pere Barberán"),
+                new Docent("ptuset@tecnocampus.cat", "Pere Tuset"),
+                new Docent("imorenoa@tecnocampus.cat", "Immaculada Moreno"),
+                new Docent("cbonet@tecnocampus.cat", "Carles Bonet")
         );
 
         d.estudiants = List.of(
-                new Estudiant("alumne1@uni.cat", "Nora Camps"),
-                new Estudiant("alumne2@uni.cat", "Pol Vives"),
-                new Estudiant("alumne3@uni.cat", "Ivet Grau"),
-                new Estudiant("alumne4@uni.cat", "Eric Mas"),
-                new Estudiant("alumne5@uni.cat", "Jana Ferrer"),
-                new Estudiant("alumne6@uni.cat", "Nil Serra"),
-                new Estudiant("alumne7@uni.cat", "Aina Pons")
+                new Estudiant("ifernandezm@edu.tecnocampus.cat", "Fernández Muñoz, Iván"),
+                new Estudiant("amarting@edu.tecnocampus.cat", "Martín Giol, Arnau"),
+                new Estudiant("mpuiga@edu.tecnocampus.cat", "Puig Alcaide, Marc"),
+                new Estudiant("ftorrus@edu.tecnocampus.cat", "Torrus Mora, Francesc"),
+                new Estudiant("xxiangc@edu.tecnocampus.cat", "Xiang Chen, Xinyang"),
+                new Estudiant("jrodriguezmi@edu.tecnocampus.cat", "Pujol Rodríguez, David"),
+                new Estudiant("cguinovarti@edu.tecnocampus.cat", "Guinovart i Galofre, Carlos")
+        );
+        d.experteses = List.of(
+                new Expertesa("Seguretat i comunicacions"),
+                new Expertesa("Internet of Things"),
+                new Expertesa("Signal Processing"),
+                new Expertesa("Big data i machine Learning"),
+                new Expertesa("Solucions Web / Móbil"),
+                new Expertesa("Human Computer Interaction")
         );
 
         d.slots = List.of(
@@ -151,14 +151,33 @@ public class NewExampleData {
             }
         }
 
+        // Cada docent rep almenys una expertesa, amb solapaments pensats per fer viable
+        // la constraint del tribunal: presidència o vocal han de compartir expertesa amb el TFG.
+        int[][] expertesesByDocent = {
+                {1, 2},      // Jordi Boix
+                {6, 1, 3},   // Rosa Herrero
+                {2, 4, 6},   // Enric Sesa
+                {5, 2, 4},   // Pere Barberán
+                {4, 5, 6},   // Pere Tuset
+                {1, 5},      // Immaculada Moreno
+                {6}          // Carles Bonet
+        };
+        for (int i = 0; i < d.docents.size(); i++) {
+            Docent docent = d.docents.get(i);
+            for (int expertesaId : expertesesByDocent[i]) {
+                docent.addExpertesa(d.experteses.get(expertesaId - 1));
+            }
+        }
+
         int[] tutorByTreball = {1, 2, 3, 4, 5, 6, 7};
         for (int t = 0; t < tutorByTreball.length; t++) {
             Treball treball = new Treball();
-            treball.setId("TFG-" + (t + 1));
             treball.setTitle("TFG " + (t + 1));
             treball.setDescription("Treball de prova " + (t + 1));
             treball.setStudent(d.estudiants.get(t));
-            treball.setTutor(d.docents.get(tutorByTreball[t] - 1));
+            Docent tutor = d.docents.get(tutorByTreball[t] - 1);
+            treball.setTutor(tutor);
+            treball.setExpertesa(tutor.getExperteses().get(0));
             d.treballs.add(treball);
         }
 
