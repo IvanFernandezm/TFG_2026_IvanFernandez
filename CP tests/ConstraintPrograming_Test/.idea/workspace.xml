@@ -4,16 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="36b10d7e-a652-48bd-868a-a6f85e7fe34b" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/../../tribunals-backend/src/main/java/org/example/tribunalsbackend/Domain/Adjudicacio.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../tribunals-backend/src/main/java/org/example/tribunalsbackend/Domain/Disponibilitat.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../tribunals-backend/src/main/java/org/example/tribunalsbackend/Domain/Disponibilitat.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../tribunals-backend/src/main/java/org/example/tribunalsbackend/Domain/Docent.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../tribunals-backend/src/main/java/org/example/tribunalsbackend/Domain/Docent.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../tribunals-backend/src/main/java/org/example/tribunalsbackend/Domain/Expertesa.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../tribunals-backend/src/main/java/org/example/tribunalsbackend/Domain/Expertesa.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../tribunals-backend/src/main/java/org/example/tribunalsbackend/Domain/Treball.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../tribunals-backend/src/main/java/org/example/tribunalsbackend/Domain/Treball.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../tribunals-backend/src/main/java/org/example/tribunalsbackend/Domain/Tribunal.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../tribunals-backend/src/main/java/org/example/tribunalsbackend/Domain/Tribunal.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../tribunals-backend/src/main/java/org/example/tribunalsbackend/Persistence/TreballRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../tribunals-backend/src/main/java/org/example/tribunalsbackend/Persistence/TreballRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../tribunals-backend/src/main/java/org/example/tribunalsbackend/Persistence/TribunalRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../tribunals-backend/src/main/java/org/example/tribunalsbackend/Persistence/TribunalRepository.java" afterDir="false" />
-    </list>
+    <list default="true" id="36b10d7e-a652-48bd-868a-a6f85e7fe34b" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -157,7 +148,7 @@
       <workItem from="1775480085394" duration="18137000" />
       <workItem from="1776093150586" duration="1551000" />
       <workItem from="1776248397772" duration="25605000" />
-      <workItem from="1776972436233" duration="3510000" />
+      <workItem from="1776972436233" duration="6985000" />
     </task>
     <servers />
   </component>

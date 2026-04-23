@@ -253,9 +253,10 @@ public class NewDataLauncher {
             var presidencia = data.getDocentBySolverId(solution.getIntVal(profA[t]));
             var vocal = data.getDocentBySolverId(solution.getIntVal(profB[t]));
             String tribunalInfo = String.format(
-                    "TFG %d (%s) -> (%s , %s)",
-                    t,
+                    "TFG %d (%s) - %s -> (%s , %s)",
+                    t + 1,
                     data.getTreballByIndex(t).getStudent().getName(),
+                    data.getTreballByIndex(t).getTitle(),
                     presidencia.getName(),
                     vocal.getName()
 
