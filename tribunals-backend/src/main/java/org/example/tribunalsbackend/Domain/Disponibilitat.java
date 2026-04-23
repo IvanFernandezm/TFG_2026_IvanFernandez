@@ -12,7 +12,7 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
-public class Disponibilitat {
+public class Disponibilitat { //L'ADMINISTRADOR POT ACOTAR QUINS DIES I HORES SÓN VALIDES
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,20 +20,12 @@ public class Disponibilitat {
 
     private LocalDateTime dataDis;
 
-    @ManyToMany
-    @JoinTable(
-            name = "disponibilitat_docent",
-            joinColumns = @JoinColumn(name = "disponibilitat_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "docent_mail", referencedColumnName = "mail")
-    )
-    private List<Docent> docents; //DOCENTS DISPONIBLES EN AQUESTA DATA I HORA
+    @ManyToMany(mappedBy = "availability")
+    private List<Docent> docents = new ArrayList<>(); //DOCENTS DISPONIBLES EN AQUESTA DATA I HORA
 
-    public Disponibilitat() {
-        this.docents = new ArrayList<>();
-    }
+    public Disponibilitat() {}
 
     public Disponibilitat(LocalDateTime dataDis) {
-        this.docents = new ArrayList<>();
         this.dataDis = dataDis;
     }
 

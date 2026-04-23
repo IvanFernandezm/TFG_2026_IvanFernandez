@@ -21,6 +21,10 @@ public class Expertesa {
     public Expertesa() {
     }
 
+    public Expertesa(String id) {
+        this.id = id;
+    }
+
     public Expertesa(String id, String description) {
         this.id = id;
         this.description = description;
