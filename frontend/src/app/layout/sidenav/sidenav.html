@@ -1,0 +1,43 @@
+<mat-toolbar color="primary">
+  TFG Tribunals
+</mat-toolbar>
+
+<mat-nav-list>
+
+  @for (item of menu(); track item.label) {
+
+    @if (!item.children) {
+      <a mat-list-item [routerLink]="item.route" (click)="navigate.emit()">
+        <mat-icon>{{ item.icon }}</mat-icon>
+        <span>{{ item.label }}</span>
+      </a>
+    }
+
+    @if (item.children) {
+      <mat-expansion-panel class="submenu">
+
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <mat-icon>{{ item.icon }}</mat-icon>
+            <span class="submenu-title">{{ item.label }}</span>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+
+        @for (child of item.children; track child.label) {
+          <a
+            mat-list-item
+            class="submenu-item"
+            [routerLink]="child.route"
+            (click)="navigate.emit()"
+          >
+            <mat-icon>{{ child.icon }}</mat-icon>
+            <span>{{ child.label }}</span>
+          </a>
+        }
+
+      </mat-expansion-panel>
+    }
+
+  }
+
+</mat-nav-list>

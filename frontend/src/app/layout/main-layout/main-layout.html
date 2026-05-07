@@ -1,0 +1,42 @@
+<mat-sidenav-container class="sidenav-container">
+
+  <mat-sidenav
+    #drawer
+    [mode]="isHandset() ? 'over' : 'side'"
+    [opened]="!isHandset()"
+    class="sidenav"
+  >
+    <app-sidenav
+      [attr.role]="role()"
+      (navigate)="isHandset() ? drawer.toggle() : null"
+    ></app-sidenav>
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+
+    <mat-toolbar color="primary">
+
+      @if (isHandset()) {
+        <button mat-icon-button (click)="drawer.toggle()">
+          <mat-icon>menu</mat-icon>
+        </button>
+      }
+
+      <span class="title">Gestió TFG</span>
+
+      <span class="spacer"></span>
+
+      <button mat-button (click)="logout()">
+        <mat-icon>logout</mat-icon>
+        Salir
+      </button>
+
+    </mat-toolbar>
+
+    <div class="content">
+      <router-outlet></router-outlet>
+    </div>
+
+  </mat-sidenav-content>
+
+</mat-sidenav-container>
