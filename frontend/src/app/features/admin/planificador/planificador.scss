@@ -1,0 +1,30 @@
+.controls {
+  margin-bottom: 16px;
+  display: flex;
+  gap: 10px;
+}
+
+.schedule {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+th, td {
+  border: 1px solid #ccc;
+  text-align: center;
+  padding: 8px;
+}
+
+.hour {
+  font-weight: bold;
+}
+
+td {
+  cursor: pointer;
+  height: 40px;
+}
+
+td.selected {
+  background-color: #4caf50;
+  color: rgb(255, 255, 255);
+}

@@ -1,1 +1,38 @@
-<p>planificador works!</p>
+<div class="controls">
+  <input type="date" (change)="startDate.set($any($event.target).valueAsDate)" />
+  <input type="date" (change)="endDate.set($any($event.target).valueAsDate)" />
+  <button (click)="generate()" [disabled]="!startDate() || !endDate()">Generar</button>
+  <button [disabled]="!(days().length > 0)" (click)="sendDisponibilitats()">Enviar</button>
+</div>
+
+@if (days().length > 0) {
+
+  <table class="schedule">
+
+    <thead>
+      <tr>
+        <th>Hora</th>
+        @for (day of days(); track day) {
+          <th>{{ day }}</th>
+        }
+      </tr>
+    </thead>
+
+    <tbody>
+      @for (hour of hours(); track hour) {
+        <tr>
+          <td class="hour">{{ hour }}</td>
+
+          @for (day of days(); track day) {
+            <td
+              (click)="toggleSlot(day, hour)"
+              [class.selected]="isSelected(day, hour)"
+            ></td>
+          }
+
+        </tr>
+      }
+    </tbody>
+
+  </table>
+}
