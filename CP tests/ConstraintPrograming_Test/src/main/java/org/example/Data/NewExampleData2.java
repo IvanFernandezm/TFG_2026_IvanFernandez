@@ -3,18 +3,10 @@ package org.example.Data;
 import org.example.Data.Domain.*;
 
 import java.time.LocalDateTime;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-
-public class NewExampleData {
+public class NewExampleData2 {
     public List<Docent> docents = new ArrayList<>();
     public List<Estudiant> estudiants = new ArrayList<>();
     public List<Treball> treballs = new ArrayList<>();
@@ -104,129 +96,9 @@ public class NewExampleData {
         return tribunals;
     }
 
-    public static NewExampleData buildExampleData() {
-        NewExampleData d = new NewExampleData();
-        // Intentar leer el Excel con los datos (primero intento desde classpath, si falla uso path relativo)
-        InputStream is = null;
-        Workbook workbook = null;
-        try {
-            is = NewExampleData.class.getResourceAsStream("Tutors_TFG_20242025.xlsx");
-            if (is == null) {
-                File f = new File("src/main/java/org/example/Data/Tutors_TFG_20242025.xlsx");
-                if (f.exists()) {
-                    is = new FileInputStream(f);
-                }
-            }
+    public static NewExampleData2 buildExampleData() {
+        NewExampleData2 d = new NewExampleData2();
 
-            if (is == null) {
-                throw new IllegalStateException("No s'ha trobat l'arxiu Excel Tutors_TFG_20242025.xlsx");
-            }
-
-            workbook = new XSSFWorkbook(is);
-            Sheet sheet = workbook.getSheetAt(0);
-
-            Map<String, Docent> docentByEmail = new LinkedHashMap<>();
-            Map<String, Estudiant> estudiantByEmail = new LinkedHashMap<>();
-            Map<String, Expertesa> expertesaById = new LinkedHashMap<>();
-
-            boolean firstRow = true;
-            for (Row row : sheet) {
-                // Saltar header si existe
-                if (firstRow) { firstRow = false; continue; }
-
-                Cell c0 = row.getCell(0); // student name
-                Cell c1 = row.getCell(1); // student email (id)
-                Cell c2 = row.getCell(2); // tutor name
-                Cell c3 = row.getCell(3); // tutor email
-                Cell c4 = row.getCell(4); // descripcion
-                Cell c5 = row.getCell(5); // titulo
-                Cell c6 = row.getCell(6); // expertesa id
-
-                String studentName = getCellString(c0);
-                String studentEmail = getCellString(c1);
-                String tutorName = getCellString(c2);
-                String tutorEmail = getCellString(c3);
-                String description = getCellString(c4);
-                String title = getCellString(c5);
-                String expertesaId = getCellString(c6);
-
-                // Requerir mínimo email e titulo
-                if (studentEmail == null || studentEmail.isBlank() || title == null || title.isBlank()) {
-                    continue;
-                }
-
-                // crear/obtener estudiant
-                Estudiant estudiant = estudiantByEmail.computeIfAbsent(studentEmail.trim(), em -> new Estudiant(em, studentName == null ? em : studentName));
-
-                // crear/obtener docent
-                Docent docent = null;
-                if (tutorEmail != null && !tutorEmail.isBlank()) {
-                    docent = docentByEmail.computeIfAbsent(tutorEmail.trim(), em -> new Docent(em, tutorName == null ? em : tutorName));
-                }
-
-                // crear/obtener expertesa
-                Expertesa exp = null;
-                if (expertesaId != null && !expertesaId.isBlank()) {
-                    String id = expertesaId.trim();
-                    exp = expertesaById.computeIfAbsent(id, k -> new Expertesa(k, k));
-                }
-
-                // crear treball
-                Treball t = new Treball();
-                t.setTitle(title.trim());
-                t.setDescription(description == null ? "" : description.trim());
-                t.setStudent(estudiant);
-                if (docent != null) t.setTutor(docent);
-                if (exp != null) t.setExpertesa(exp);
-
-                d.treballs.add(t);
-            }
-
-            // rellenar listas a partir de maps
-            d.docents = new ArrayList<>(docentByEmail.values());
-            d.estudiants = new ArrayList<>(estudiantByEmail.values());
-            d.experteses = new ArrayList<>(expertesaById.values());
-
-            // crear horarios por defecto
-            d.slots = List.of(
-                    new Disponibilitat(LocalDateTime.of(2026, 6, 10, 9, 0)),
-                    new Disponibilitat(LocalDateTime.of(2026, 6, 10, 11, 0)),
-                    new Disponibilitat(LocalDateTime.of(2026, 6, 10, 15, 0)),
-                    new Disponibilitat(LocalDateTime.of(2026, 6, 10, 17, 0)),
-                    new Disponibilitat(LocalDateTime.of(2026, 6, 11, 9, 0))
-            );
-
-            // por defecto, todos los docentes tienen todas las disponibilidades
-            for (Docent docent : d.docents) {
-                for (Disponibilitat slotItem : d.slots) {
-                    docent.addDisponibilitat(slotItem);
-                }
-            }
-
-            // si hay experteses en los treballs, asignarlas también a sus tutores (si existen)
-            for (Treball treball : d.treballs) {
-                Expertesa e = treball.getExpertesa();
-                Docent tutor = treball.getTutor();
-                if (e != null && tutor != null) {
-                    tutor.addExpertesa(e);
-                    if (!d.experteses.contains(e)) d.experteses.add(e);
-                }
-            }
-
-            d.maxTribunalsPerProfessor = 2;
-            d.maxDefensesPerSlot = 2;
-
-            return d;
-
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            // Si falla la lectura del Excel, caer al dataset de ejemplo previo (hardcoded)
-        } finally {
-            try { if (workbook != null) workbook.close(); } catch (Exception ignored) {}
-            try { if (is != null) is.close(); } catch (Exception ignored) {}
-        }
-
-        // FALLBACK: dataset hardcoded (antiguo)
         d.docents = List.of(
                 new Docent("jboix@tecnocampus.cat", "Jordi Boix"),
                 new Docent("rherrero@tecnocampus.cat", "Rosa Herrero"),
@@ -259,8 +131,7 @@ public class NewExampleData {
                 new Expertesa("Signal Processing"),
                 new Expertesa("Big data i machine Learning"),
                 new Expertesa("Solucions Web / Mòbil"),
-                new Expertesa("Human Computer Interaction"),
-                new Expertesa("Analítica de dades")
+                new Expertesa("Human Computer Interaction")
         );
 
         d.slots = List.of(
@@ -272,9 +143,7 @@ public class NewExampleData {
         );
 
         for (Docent docent : d.docents) {
-            for (Disponibilitat slotItem : d.slots) {
-                docent.addDisponibilitat(slotItem);
-            }
+            docent.setAvailability(new ArrayList<>(d.slots));
         }
 
         int[][] expertesesByDocent = {
@@ -331,29 +200,5 @@ public class NewExampleData {
         d.maxDefensesPerSlot = 2;
 
         return d;
-    }
-
-    private static String getCellString(Cell c) {
-        if (c == null) return null;
-        switch (c.getCellType()) {
-            case STRING:
-                return c.getStringCellValue();
-            case NUMERIC:
-                double v = c.getNumericCellValue();
-                if (v == (long) v) return String.valueOf((long) v);
-                return String.valueOf(v);
-            case BOOLEAN:
-                return String.valueOf(c.getBooleanCellValue());
-            case FORMULA:
-                try {
-                    return c.getStringCellValue();
-                } catch (Exception e) {
-                    double dv = c.getNumericCellValue();
-                    if (dv == (long) dv) return String.valueOf((long) dv);
-                    return String.valueOf(dv);
-                }
-            default:
-                return null;
-        }
     }
 }

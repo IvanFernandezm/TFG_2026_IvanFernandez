@@ -30,12 +30,6 @@
             <version>4.10.8</version>
         </dependency>
 
-        <!-- ✅ Llibreria de logs (opcional, per evitar avisos de SLF4J) -->
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-simple</artifactId>
-            <version>2.0.12</version>
-        </dependency>
 
         <!-- ✅ JUnit per fer proves (opcional però recomanat per validar constraints) -->
         <dependency>
@@ -78,6 +72,18 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi</artifactId>
+            <version>5.2.5</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+            <version>5.2.5</version>
         </dependency>
     </dependencies>
 

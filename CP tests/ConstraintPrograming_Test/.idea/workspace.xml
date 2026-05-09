@@ -4,7 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="36b10d7e-a652-48bd-868a-a6f85e7fe34b" name="Changes" comment="" />
+    <list default="true" id="36b10d7e-a652-48bd-868a-a6f85e7fe34b" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/../../frontend/src/app/layout/sidenav/sidenav.html" beforeDir="false" afterPath="$PROJECT_DIR$/../../frontend/src/app/layout/sidenav/sidenav.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../frontend/src/app/layout/sidenav/sidenav.scss" beforeDir="false" afterPath="$PROJECT_DIR$/../../frontend/src/app/layout/sidenav/sidenav.scss" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -68,8 +71,8 @@
       <recent name="C:\Users\Ivan\GitHub\TFG_2026_IvanFernandez\CP tests\ConstraintPrograming_Test\src\main\java\org\example\Data" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
-      <recent name="org.example" />
       <recent name="org.example.Data" />
+      <recent name="org.example" />
     </key>
   </component>
   <component name="RunManager" selected="Application.NewDataLauncher">
@@ -148,7 +151,10 @@
       <workItem from="1775480085394" duration="18137000" />
       <workItem from="1776093150586" duration="1551000" />
       <workItem from="1776248397772" duration="25605000" />
-      <workItem from="1776972436233" duration="6985000" />
+      <workItem from="1776972436233" duration="7580000" />
+      <workItem from="1777021577778" duration="1201000" />
+      <workItem from="1778193757472" duration="4189000" />
+      <workItem from="1778225719308" duration="2728000" />
     </task>
     <servers />
   </component>
