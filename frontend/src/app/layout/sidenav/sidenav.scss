@@ -10,3 +10,11 @@
 .submenu-item {
   padding-left: 40px;
 }
+
+mat-toolbar img {
+  display: block;
+  width: 100%;
+  max-width: 220px;
+  height: auto;
+  object-fit: contain;
+}
