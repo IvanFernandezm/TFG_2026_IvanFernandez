@@ -7,7 +7,7 @@
   @for (item of menu(); track item.label) {
 
     @if (!item.children) {
-      <a mat-list-item [routerLink]="item.route" (click)="navigate.emit()">
+      <a mat-list-item (click)="onItemClick(item.route)">
         <mat-icon>{{ item.icon }}</mat-icon>
         <span>{{ item.label }}</span>
       </a>
@@ -27,8 +27,7 @@
           <a
             mat-list-item
             class="submenu-item"
-            [routerLink]="child.route"
-            (click)="navigate.emit()"
+            (click)="onItemClick(child.route)"
           >
             <mat-icon>{{ child.icon }}</mat-icon>
             <span>{{ child.label }}</span>

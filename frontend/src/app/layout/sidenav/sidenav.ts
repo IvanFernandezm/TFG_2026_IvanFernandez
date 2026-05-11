@@ -3,13 +3,14 @@ import {
   Input,
   Output,
   EventEmitter,
+  inject,
   computed,
   signal,
   OnChanges,
   SimpleChanges
 } from '@angular/core';
 
-import { RouterModule } from '@angular/router';
+import { Router } from '@angular/router';
 
 import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
@@ -26,7 +27,6 @@ interface MenuItem {
 @Component({
   selector: 'app-sidenav',
   imports: [
-    RouterModule,
     MatListModule,
     MatIconModule,
     MatExpansionModule,
@@ -38,6 +38,8 @@ interface MenuItem {
 export class Sidenav implements OnChanges {
   @Input() role!: 'ADMIN' | 'DOCENT' | 'ESTUDIANT';
   @Output() navigate = new EventEmitter<void>();
+
+  private readonly router = inject(Router);
 
   private roleSignal = signal<'ADMIN' | 'DOCENT' | 'ESTUDIANT'>('ADMIN');
 
@@ -102,6 +104,14 @@ export class Sidenav implements OnChanges {
     if (changes['role']) {
       this.roleSignal.set(this.role);
     }
+  }
+
+  onItemClick(route?: string): void {
+    if (route) {
+      void this.router.navigateByUrl(route);
+    }
+
+    this.navigate.emit();
   }
 
 }

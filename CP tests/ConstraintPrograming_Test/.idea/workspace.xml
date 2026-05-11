@@ -5,17 +5,35 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="36b10d7e-a652-48bd-868a-a6f85e7fe34b" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/../../frontend/src/app/layout/sidenav/sidenav.html" beforeDir="false" afterPath="$PROJECT_DIR$/../../frontend/src/app/layout/sidenav/sidenav.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../frontend/src/app/layout/sidenav/sidenav.scss" beforeDir="false" afterPath="$PROJECT_DIR$/../../frontend/src/app/layout/sidenav/sidenav.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../frontend/src/app/features/admin/admin-routing-module.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../frontend/src/app/features/admin/admin-routing-module.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="CopilotChats">
+    <option name="panelChat">
+      <chat>
+        <option name="activeSessionId" value="cc4434db-cd8e-48ce-b431-99c417582907" />
+        <option name="sessions">
+          <session>
+            <option name="chatType" value="PANEL" />
+            <option name="id" value="cc4434db-cd8e-48ce-b431-99c417582907" />
+            <option name="modeId" value="Agent" />
+            <option name="modelType" value="builtin_family" />
+            <option name="modelValue" value="auto" />
+            <option name="targetType" value="LOCAL" />
+          </session>
+        </option>
+        <option name="type" value="PANEL" />
+      </chat>
+    </option>
+  </component>
   <component name="CopilotPersistence">
     <persistenceIdMap>
       <entry key="_C:/Users/Ivan/GitHub/TFG_2026_IvanFernandez/CP tests/ConstraintPrograming_Test" value="35LHkxCX3TOR9Ed563KxUheUS54" />
+      <entry key="_D:/GitHub/TFG_2026_IvanFernandez/CP tests/ConstraintPrograming_Test" value="3Db2IBmCS2PYGy4Eo5ayYybhMSg" />
     </persistenceIdMap>
   </component>
   <component name="CopilotUserSelectedChatMode">
@@ -36,36 +54,45 @@
     &quot;accountId&quot;: &quot;0843f194-e90c-46e8-ba9c-0633380d7e0a&quot;
   }
 }</component>
+  <component name="McpProjectServerCommands">
+    <commands />
+    <urls />
+  </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 2
 }</component>
   <component name="ProjectId" id="35LHkxCX3TOR9Ed563KxUheUS54" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Application.Main.executor&quot;: &quot;Run&quot;,
-    &quot;Application.MainSinTriplets.executor&quot;: &quot;Run&quot;,
-    &quot;Application.NewDataLauncher.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/Ivan/GitHub/TFG_2026_IvanFernandez/CP tests/ConstraintPrograming_Test/src/main/java/org/example/Data&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;project.propVCSSupport.DirectoryMappings&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.Main.executor": "Run",
+    "Application.MainSinTriplets.executor": "Run",
+    "Application.NewDataLauncher.executor": "Run",
+    "RunOnceActivity.MCP Project settings loaded": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
+    "git-widget-placeholder": "main",
+    "junie.onboarding.icon.badge.shown": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "D:/GitHub/TFG_2026_IvanFernandez/CP tests/ConstraintPrograming_Test",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0",
+    "settings.editor.selected.configurable": "project.propVCSSupport.DirectoryMappings",
+    "to.speed.mode.migration.done": "true",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\Ivan\GitHub\TFG_2026_IvanFernandez\CP tests\ConstraintPrograming_Test\src\main\java\org\example\Data" />
@@ -126,8 +153,8 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-9823dce3aa75-28b599e66164-intellij.indexing.shared.core-IU-242.23339.11" />
-        <option value="bundled-js-predefined-d6986cc7102b-5c90d61e3bab-JavaScript-IU-242.23339.11" />
+        <option value="bundled-jdk-30f59d01ecdd-2fc7cc6b9a17-intellij.indexing.shared.core-IU-253.33514.17" />
+        <option value="bundled-js-predefined-d6986cc7102b-9b0f141eb926-JavaScript-IU-253.33514.17" />
       </set>
     </attachedChunks>
   </component>
@@ -155,6 +182,7 @@
       <workItem from="1777021577778" duration="1201000" />
       <workItem from="1778193757472" duration="4189000" />
       <workItem from="1778225719308" duration="2728000" />
+      <workItem from="1778536367993" duration="7000" />
     </task>
     <servers />
   </component>

@@ -1,1 +1,20 @@
 <p>admin-students works!</p>
+<div class="main-divisor">
+    <div class="student-info">
+        <h2>Informació de l'alumne</h2>
+        <p>Email: {{ currentStudent()?.email }}</p>
+        <p>Nom: {{ currentStudent()?.name }}</p>
+        <p>TFG: {{ currentStudent()?.tfg }}</p>
+        <p>Especialitat: {{ currentStudent()?.spec }}</p>
+    </div>
+    <div class="students-list">
+        <h2>Llista d'alumnes</h2>
+        <ul>
+            @for (student of students(); track student.email) {
+            <li (click)="selectStudent(student)" [class.selected]="currentStudent() === student">
+                {{ student.email }},
+                {{ student.name }}
+            </li>
+            }
+        </ul>
+    </div>
