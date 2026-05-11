@@ -38,6 +38,6 @@ export class MainLayout {
   constructor() {}
 
   logout() {
-    //Més endavant
+    //TODO: Implementar la lògica de tancament de sessió real
   }
 }

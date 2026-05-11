@@ -6,6 +6,11 @@ const routes: Routes = [
     path: 'planificador',
     loadComponent: () =>
       import('./planificador/planificador').then(m => m.Planificador)
+  },
+  {
+    path: 'admin-students',
+    loadComponent: () =>
+      import('./admin-students/admin-students').then(m => m.AdminStudents)
   }
 ];
 

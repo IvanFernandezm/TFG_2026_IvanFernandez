@@ -46,27 +46,28 @@ export class Sidenav implements OnChanges {
 
       case 'ADMIN':
         return [
-          { label: 'Importar dades', icon: 'file_upload',
-              children: [
-                {label: 'Des de Excel', icon: 'table_chart', route: '/admin/import'},
-              ]
-          },
           {
             label: 'Gestió d\'usuaris',
             icon: 'people',
             children: [
-              { label: 'Alumnes', icon: 'person', route: '/admin/alumnes' },
-              { label: 'Docents', icon: 'badge', route: '/admin/docents' }
+              { label: 'Alumnes', icon: 'person', route: '/admin/admin-students' },
+              { label: 'Docents', icon: 'badge', route: '/admin/admin-docents' }
             ]
           },
           {
             label: 'Tribunals',
             icon: 'gavel',
             children: [
-              { label: 'Veure organització', icon: 'visibility', route: '/admin/adjudicacio' },
-              { label: 'Planificador', icon: 'calendar_month', route: '/admin/planificador' }
+              { label: 'Planificador', icon: 'calendar_month', route: '/admin/planificador' },
+              { label: 'Veure organització', icon: 'visibility', route: '/admin/adjudicacio' }
             ]
-          }        
+          },
+          {
+            label: 'Importar dades', icon: 'file_upload',
+            children: [
+              { label: 'Des de Excel', icon: 'table_chart', route: '/admin/import' },
+            ]
+          }
         ];
 
       case 'DOCENT':

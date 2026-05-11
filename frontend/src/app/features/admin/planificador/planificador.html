@@ -2,7 +2,7 @@
   <input type="date" (change)="startDate.set($any($event.target).valueAsDate)" />
   <input type="date" (change)="endDate.set($any($event.target).valueAsDate)" />
   <button (click)="generate()" [disabled]="!startDate() || !endDate()">Generar</button>
-  <button [disabled]="!(days().length > 0)" (click)="sendDisponibilitats()">Enviar</button>
+  <button [disabled]="!(days().length > 0)" (click)="sendDisponibilitats()">Desar</button>
 </div>
 
 @if (days().length > 0) {
