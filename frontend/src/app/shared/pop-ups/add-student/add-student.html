@@ -1,0 +1,20 @@
+<div class="form-student">
+    <h2>Afegir alumne</h2>
+    <form (submit)="submit()">
+        <label for="email">Email:</label>
+        <input id="email" type="email" name="email" required [attr.value]="newStudent()?.email">
+
+        <label for="name">Nom:</label>
+        <input id="name" type="text" name="name" required [attr.value]="newStudent()?.name">
+
+        <label for="tfg">TFG:</label>
+        <input id="tfg" type="text" name="tfg" required [attr.value]="newStudent()?.tfg">
+
+        <label for="spec">Especialitat:</label>
+        <input id="spec" type="text" name="spec" required [attr.value]="newStudent()?.spec">
+
+        <div class="actions">
+            <button type="submit">Afegir</button>
+            <button type="button" (click)="close()">Cancelar</button>
+        </div>
+    </form>
