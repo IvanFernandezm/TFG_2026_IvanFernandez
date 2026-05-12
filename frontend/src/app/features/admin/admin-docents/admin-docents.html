@@ -1,1 +1,23 @@
-<p>admin-docents works!</p>
+<div class="main-divisor">
+    <div class="docent-info">
+        <h2>Informació del docent</h2>
+        <p>Email: {{ currentDocent()?.email }}</p>
+        <p>Nom: {{ currentDocent()?.name }}</p>
+    </div>
+    <div class="docents-list">
+        <h2>Llista de docents</h2>
+        <ul>
+            @for (docent of docents(); track docent.email) {
+            <li (click)="selectDocent(docent)" [class.selected]="currentDocent() === docent">
+                {{ docent.email }},
+                {{ docent.name }},
+                {{ docent.spec}}
+            </li>
+            }
+        </ul>
+        <div class="actions">
+            <button (click)="addDocent()">Afegir</button>
+            <button (click)="deleteDocent()">Eliminar</button>
+        </div>
+    </div>
+</div>

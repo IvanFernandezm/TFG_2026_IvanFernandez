@@ -23,7 +23,7 @@ export class AdminStudents implements OnInit {
   private dialog = inject(Dialog);
 
   protected openModal() {
-    this.dialog.open(AddStudent);
+    this.dialog.open(AddStudent,{disableClose: true});
   }
 
   ngOnInit(): void {
