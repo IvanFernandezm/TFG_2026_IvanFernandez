@@ -1,0 +1,17 @@
+<div class="form-docent">
+    <h2>Registrar docent</h2>
+    <form (submit)="submit()">
+        <label for="email">Email:</label>
+        <input id="email" type="email" name="email" required [attr.value]="newDocent()?.email">
+
+        <label for="name">Nom:</label>
+        <input id="name" type="text" name="name" required [attr.value]="newDocent()?.name">
+
+        <label for="spec">Especialitats:</label>
+        <input id="spec" type="text" name="spec" required [attr.value]="newDocent()?.spec">
+
+        <div class="actions">
+            <button type="submit">Afegir</button>
+            <button type="button" (click)="close()">Cancelar</button>
+        </div>
+    </form>
