@@ -5,7 +5,7 @@ import { AddDocent } from '../../../shared/pop-ups/add-docent/add-docent';
 interface Docent {
   email: string;
   name: string;
-  spec: string;
+  specs: string[];
 }
 @Component({
   selector: 'app-admin-docents',
@@ -39,12 +39,12 @@ export class AdminDocents implements OnInit {
   }
   loadDocents() {
     //Crida API per obtenir docents
-    const mockDocents: Docent[] = [
-      { email: 'imorenoa@tecnocampus.cat', name: 'Immaculada Moreno', spec: 'Desenvolupament d’aplicacions informàtiques' },
-      { email: 'jteodoro@tecnocampus.cat', name: 'Jaume Teodoro', spec: 'Desenvolupament d’aplicacions informàtiques' },
-      { email: 'lina@tecnocampus.cat', name: 'Lina Juan Nadal', spec: 'Desenvolupament d’aplicacions informàtiques' },
-      { email: 'sesa@tecnocampus.cat', name: 'Enric Sesa', spec: 'Desenvolupament d’aplicacions informàtiques' },
-      { email: 'rherrero@tecnocampus.cat', name: 'Rosa Herrero', spec: 'Desenvolupament d’aplicacions informàtiques' }];
+      const mockDocents: Docent[] = [
+      { email: 'imorenoa@tecnocampus.cat', name: 'Immaculada Moreno', specs: ['Desenvolupament d’aplicacions informàtiques'] },
+      { email: 'jteodoro@tecnocampus.cat', name: 'Jaume Teodoro', specs: ['Desenvolupament d’aplicacions informàtiques'] },
+      { email: 'lina@tecnocampus.cat', name: 'Lina Juan Nadal', specs: ['Desenvolupament d’aplicacions informàtiques', 'Big data'] },
+      { email: 'sesa@tecnocampus.cat', name: 'Enric Sesa', specs: ['Desenvolupament d’aplicacions informàtiques', 'Big data'] },
+      { email: 'rherrero@tecnocampus.cat', name: 'Rosa Herrero', specs: ['Desenvolupament d’aplicacions informàtiques', 'Big data'] }];
     this.docents.set(mockDocents);
   }
 }

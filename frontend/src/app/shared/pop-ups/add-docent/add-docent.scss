@@ -49,6 +49,35 @@
     box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
 }
 
+.spec-options-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    max-height: 250px;
+    overflow-y: auto;
+    border: 1px solid #cbd5e1;
+    border-radius: 10px;
+    padding: 0.75rem;
+    background: #f8fafc;
+}
+
+.spec-options-container::-webkit-scrollbar {
+    width: 8px;
+}
+
+.spec-options-container::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.spec-options-container::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 4px;
+}
+
+.spec-options-container::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
+
 .actions {
     display: flex;
     justify-content: space-between;

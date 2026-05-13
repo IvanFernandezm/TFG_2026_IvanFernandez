@@ -7,8 +7,16 @@
         <label for="name">Nom:</label>
         <input id="name" type="text" name="name" required [attr.value]="newDocent()?.name">
 
-        <label for="spec">Especialitats:</label>
-        <input id="spec" type="text" name="spec" required [attr.value]="newDocent()?.spec">
+        <label>Especialitats:</label>
+        <div class="spec-options-container">
+            @for (option of specOptions; track option) {
+            <mat-checkbox 
+                [checked]="isSpecSelected(option)"
+                (change)="toggleSpec(option)">
+                {{ option }}
+            </mat-checkbox>
+            }
+        </div>
 
         <div class="actions">
             <button type="submit">Afegir</button>
