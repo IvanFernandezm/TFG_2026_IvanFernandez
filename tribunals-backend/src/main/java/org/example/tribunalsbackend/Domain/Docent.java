@@ -71,7 +71,4 @@ public class Docent extends AppUser {
         this.veteran = !this.veteran;
     }
 
-    public boolean isVeteran() {
-        return veteran;
-    }
 }
