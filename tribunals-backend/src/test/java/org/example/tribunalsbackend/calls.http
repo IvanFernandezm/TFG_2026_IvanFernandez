@@ -1,0 +1,14 @@
+### crides per a testing ràpid d'endpoints
+POST http://localhost:8080/api/users/register?userType=Estudiant
+Content-Type: application/json
+
+{
+  "mail": "ivan.fernandez@example.com",
+  "name": "Ivan Fernandez"
+}
+
+###
+
+### 
+GET http://localhost:8080/api/users/signIn?mail=ivan.fernandez@example.com
+
