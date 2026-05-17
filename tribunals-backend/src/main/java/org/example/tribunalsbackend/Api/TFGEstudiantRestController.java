@@ -1,7 +1,7 @@
 package org.example.tribunalsbackend.Api;
 
 import org.example.tribunalsbackend.Api.DTO.EstudiantDTO;
-import org.example.tribunalsbackend.Api.DTO.TFGEstudiantDTO;
+import org.example.tribunalsbackend.Api.DTO.EstudiantDetailsDTO;
 import org.example.tribunalsbackend.Controller.TFGEstudiantsController;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,8 +23,8 @@ public class TFGEstudiantRestController {
     }
 
     @GetMapping("/tfg")
-    public ResponseEntity<TFGEstudiantDTO> getTFGEstudiant(@RequestParam String mail) throws Exception {
-        TFGEstudiantDTO tfgEstudiant = estudiantsService.getTFGEstudiant(mail);
+    public ResponseEntity<EstudiantDetailsDTO> getTFGEstudiant(@RequestParam String mail) throws Exception {
+        EstudiantDetailsDTO tfgEstudiant = estudiantsService.getTFGEstudiant(mail);
         return ResponseEntity.ok(tfgEstudiant);
     }
 

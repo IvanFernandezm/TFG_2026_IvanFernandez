@@ -1,7 +1,7 @@
 package org.example.tribunalsbackend.Controller;
 
 import org.example.tribunalsbackend.Api.DTO.EstudiantDTO;
-import org.example.tribunalsbackend.Api.DTO.TFGEstudiantDTO;
+import org.example.tribunalsbackend.Api.DTO.EstudiantDetailsDTO;
 import org.example.tribunalsbackend.Domain.Docent;
 import org.example.tribunalsbackend.Domain.Estudiant;
 import org.example.tribunalsbackend.Domain.Expertesa;
@@ -22,15 +22,15 @@ public class TFGEstudiantsController {
         this.treballRepository = treballRepository;
     }
 
-    public TFGEstudiantDTO getTFGEstudiant(String mail) {
+    public EstudiantDetailsDTO getTFGEstudiant(String mail) {
         Estudiant student = estudiantRepository.findById(mail).orElseThrow(() -> new RuntimeException("Estudiant amb mail: " + mail + " no registrat!"));
         Treball treb = treballRepository.findTreballByStudent(student).orElseThrow(() -> new RuntimeException("L'estudiant amb mail: " + mail + " no té un treball associat!"));
         Docent tutor = treb.getTutor();
         Expertesa exp = treb.getExpertesa();
         if (tutor == null)
-            return new TFGEstudiantDTO(student.getMail(), student.getName(), "SENSE TUTOR ASSIGNAT!", "-", treb.getTitle(), exp.getId());
+            return new EstudiantDetailsDTO(student.getMail(), student.getName(), "SENSE TUTOR ASSIGNAT!", "-", treb.getTitle(), exp.getId());
         else
-            return new TFGEstudiantDTO(student.getMail(), student.getName(), tutor.getName(), tutor.getMail(), treb.getTitle(), exp.getId());
+            return new EstudiantDetailsDTO(student.getMail(), student.getName(), tutor.getName(), tutor.getMail(), treb.getTitle(), exp.getId());
 
     }
 
