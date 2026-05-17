@@ -4,7 +4,10 @@ import org.example.tribunalsbackend.Domain.Estudiant;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface EstudiantRepository extends JpaRepository<Estudiant, String> {
-    Estudiant findEstudiantByMail(String mail);
+    @Override
+    Optional<Estudiant> findById(String mail);
 }

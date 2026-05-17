@@ -9,6 +9,6 @@ Content-Type: application/json
 
 ###
 
-### 
+###
 GET http://localhost:8080/api/users/signIn?mail=ivan.fernandez@example.com
 

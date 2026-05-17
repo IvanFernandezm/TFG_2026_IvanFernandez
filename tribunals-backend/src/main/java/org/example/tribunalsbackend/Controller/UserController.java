@@ -1,7 +1,6 @@
 package org.example.tribunalsbackend.Controller;
 
 import org.example.tribunalsbackend.Config.Exceptions.EntityNotFoundException;
-import org.example.tribunalsbackend.Domain.Abstracts.AppUser;
 import org.example.tribunalsbackend.Domain.Admin;
 import org.example.tribunalsbackend.Domain.Docent;
 import org.example.tribunalsbackend.Domain.Estudiant;
@@ -23,13 +22,13 @@ public class UserController {
     }
 
     public String signIn(String mail) throws Exception {
-        if (adminRepository.findAdminByMail(mail) != null) {
+        if (adminRepository.findById(mail).isPresent()) {
             return "admin";
         }
-        if (docentRepository.findDocentByMail(mail) != null) {
+        else if (docentRepository.findById(mail).isPresent()) {
             return "docent";
         }
-        if (estudiantRepository.findEstudiantByMail(mail) != null) {
+        else if (estudiantRepository.findById(mail).isPresent()) {
             return "estudiant";
         }
         throw new EntityNotFoundException("Usuari amb mail: " + mail + " no registrat!");
@@ -50,5 +49,22 @@ public class UserController {
                     throw new IllegalArgumentException("Tipus d'usuari no vàlid: " + userType);
 
         }
+    }
+
+    public void deleteUser(String mail, String userType) {
+        switch (userType.toLowerCase()) {
+            case "admin":
+                adminRepository.delete(adminRepository.findById(mail).orElseThrow(() -> new EntityNotFoundException("Admin amb mail: " + mail + " no registrat com a admin!")));
+                break;
+            case "docent":
+                docentRepository.delete(docentRepository.findById(mail).orElseThrow(() -> new EntityNotFoundException("Docent amb mail: " + mail + " no registrat coma a docent!")));
+                break;
+            case "estudiant":
+                estudiantRepository.delete(estudiantRepository.findById(mail).orElseThrow(() -> new EntityNotFoundException("Estudiant amb mail: " + mail + " no registrat com a estudiant!")));
+                break;
+            default:
+                throw new IllegalArgumentException("Tipus d'usuari no vàlid: " + userType);
+        }
+
     }
 }

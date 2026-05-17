@@ -4,9 +4,6 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.ArrayList;
-import java.util.List;
-
 //ENTITAT QUE REPRESENTA EL TREBALL DE FI DE GRAU, ON ES GUARDARAN LES SEVES CARACTERÍSTIQUES I LES RELACIONS AMB ELS ESTUDIANTS, DOCENTS I EXPERTESES
 @Entity
 @Getter
@@ -20,7 +17,7 @@ public class Treball {
     private String title;
     private String description;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "estudiant_mail")
     private Estudiant student;
 
