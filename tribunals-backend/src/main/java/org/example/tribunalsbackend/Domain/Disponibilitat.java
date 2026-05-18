@@ -10,6 +10,9 @@ import java.util.List;
 
 //REPRESENTA UNA FRANJA HORARIA EN LA QUE UN USUARI POT ESTAR DISPONIBLE
 @Entity
+@Table(
+        uniqueConstraints = @UniqueConstraint(columnNames = "dataDis")
+)
 @Getter
 @Setter
 public class Disponibilitat { //L'ADMINISTRADOR POT ACOTAR QUINS DIES I HORES SÓN VALIDES

@@ -1,5 +1,6 @@
 package org.example.tribunalsbackend.Controller;
 
+import org.example.tribunalsbackend.Api.DTO.DisponibilitatDTO;
 import org.example.tribunalsbackend.Api.DTO.DocentDTO;
 import org.example.tribunalsbackend.Api.DTO.DocentDetailsDTO;
 import org.example.tribunalsbackend.Domain.Disponibilitat;
@@ -12,6 +13,8 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 
@@ -39,12 +42,40 @@ public class TFGDocentController {
         List<Disponibilitat> disponibilitats = d.getAvailability();
         List<String> exNames = new ArrayList<>();
         List<LocalDateTime> dispoDates = new ArrayList<>();
-        for(Expertesa ex : d.getExperteses()){
+        for (Expertesa ex : d.getExperteses()) {
             exNames.add(ex.getDescription());
         }
-        for(Disponibilitat dispo : disponibilitats){
+        for (Disponibilitat dispo : disponibilitats) {
             dispoDates.add(dispo.getDataDis());
         }
-        return new DocentDetailsDTO(d.getName(), d.getMail(),d.isVeteran(), exNames, dispoDates);
+        return new DocentDetailsDTO(d.getName(), d.getMail(), d.isVeteran(), exNames, dispoDates);
+    }
+
+    public void updateDisponibilitat(List<DisponibilitatDTO> dto) {
+        List<Docent> docents = docentRepository.findAll();
+
+        List<LocalDateTime> newDates = dto.stream().map(DisponibilitatDTO::timestamp).toList();
+
+        List<Disponibilitat> existents = disponibilitatRepository.findAllByDataDisIn(newDates);
+        Set<LocalDateTime> existentesSet = existents.stream()
+                .map(Disponibilitat::getDataDis)
+                .collect(Collectors.toSet());
+
+        List<Disponibilitat>novesDisp = newDates.stream()
+                .filter(date -> !existentesSet.contains(date))
+                .map(Disponibilitat::new)
+                .toList();
+
+        disponibilitatRepository.saveAll(novesDisp);
+
+        List<Disponibilitat> totes = new ArrayList<>();
+        totes.addAll(existents);
+        totes.addAll(novesDisp);
+        for (Docent docent : docents) {
+            docent.getAvailability().clear();
+            docent.getAvailability().addAll(totes);
+        }
+        
+        docentRepository.saveAll(docents);
     }
 }
