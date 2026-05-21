@@ -75,7 +75,7 @@ public class TFGDocentController {
             docent.getAvailability().clear();
             docent.getAvailability().addAll(totes);
         }
-        
+
         docentRepository.saveAll(docents);
     }
 }

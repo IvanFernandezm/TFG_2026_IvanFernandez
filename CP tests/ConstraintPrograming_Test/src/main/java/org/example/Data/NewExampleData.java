@@ -180,6 +180,7 @@ public class NewExampleData {
                 if (exp != null) t.setExpertesa(exp);
 
                 d.treballs.add(t);
+                //TODO System.out.println("[Excel] TFG creat: " + describeTreball(t));
             }
 
             // rellenar listas a partir de maps
@@ -187,14 +188,8 @@ public class NewExampleData {
             d.estudiants = new ArrayList<>(estudiantByEmail.values());
             d.experteses = new ArrayList<>(expertesaById.values());
 
-            // crear horarios por defecto
-            d.slots = List.of(
-                    new Disponibilitat(LocalDateTime.of(2026, 6, 10, 9, 0)),
-                    new Disponibilitat(LocalDateTime.of(2026, 6, 10, 11, 0)),
-                    new Disponibilitat(LocalDateTime.of(2026, 6, 10, 15, 0)),
-                    new Disponibilitat(LocalDateTime.of(2026, 6, 10, 17, 0)),
-                    new Disponibilitat(LocalDateTime.of(2026, 6, 11, 9, 0))
-            );
+            // slots: del 2 al 13 de juny, de 9:00 a 13:00 i de 15:00 a 18:00
+            d.slots = buildJuneSlots();
 
             // por defecto, todos los docentes tienen todas las disponibilidades
             for (Docent docent : d.docents) {
@@ -216,10 +211,12 @@ public class NewExampleData {
             d.maxTribunalsPerProfessor = 2;
             d.maxDefensesPerSlot = 2;
 
+            //TODO printExcelDatasetSummary(d);
+
             return d;
 
         } catch (Exception ex) {
-            ex.printStackTrace();
+            System.err.println("[Excel] Error al leer el Excel: " + ex.getMessage());
             // Si falla la lectura del Excel, caer al dataset de ejemplo previo (hardcoded)
         } finally {
             try { if (workbook != null) workbook.close(); } catch (Exception ignored) {}
@@ -263,13 +260,7 @@ public class NewExampleData {
                 new Expertesa("Analítica de dades")
         );
 
-        d.slots = List.of(
-                new Disponibilitat(LocalDateTime.of(2026, 6, 10, 9, 0)),
-                new Disponibilitat(LocalDateTime.of(2026, 6, 10, 11, 0)),
-                new Disponibilitat(LocalDateTime.of(2026, 6, 10, 15, 0)),
-                new Disponibilitat(LocalDateTime.of(2026, 6, 10, 17, 0)),
-                new Disponibilitat(LocalDateTime.of(2026, 6, 11, 9, 0))
-        );
+        d.slots = buildJuneSlots();
 
         for (Docent docent : d.docents) {
             for (Disponibilitat slotItem : d.slots) {
@@ -333,6 +324,68 @@ public class NewExampleData {
         return d;
     }
 
+    private static void printExcelDatasetSummary(NewExampleData d) {
+        System.out.println("========== DADES LLEGIDES DEL EXCEL ==========");
+
+        System.out.println("-- Docents (" + d.docents.size() + ") --");
+        for (Docent docent : d.docents) {
+            System.out.println(describeDocent(docent));
+        }
+
+        System.out.println("-- Estudiants (" + d.estudiants.size() + ") --");
+        for (Estudiant estudiant : d.estudiants) {
+            System.out.println(describeEstudiant(estudiant));
+        }
+
+        System.out.println("-- Experteses (" + d.experteses.size() + ") --");
+        for (Expertesa expertesa : d.experteses) {
+            System.out.println(describeExpertesa(expertesa));
+        }
+
+        System.out.println("-- Slots (" + d.slots.size() + ") --");
+        for (Disponibilitat slot : d.slots) {
+            System.out.println(describeDisponibilitat(slot));
+        }
+
+        System.out.println("-- Treballs (" + d.treballs.size() + ") --");
+        for (Treball treball : d.treballs) {
+            System.out.println(describeTreball(treball));
+        }
+
+        System.out.println("=============================================");
+    }
+
+    private static String describeDocent(Docent docent) {
+        return "Docent{mail='" + docent.getMail() + "', name='" + docent.getName() + "', veteran=" + docent.isVeteran()
+                + ", availability=" + docent.getAvailability().size()
+                + ", experteses=" + docent.getExperteses().size() + "}";
+    }
+
+    private static String describeEstudiant(Estudiant estudiant) {
+        return "Estudiant{mail='" + estudiant.getMail() + "', name='" + estudiant.getName() + "'}";
+    }
+
+    private static String describeExpertesa(Expertesa expertesa) {
+        return "Expertesa{id='" + expertesa.getId() + "', description='" + expertesa.getDescription() + "'}";
+    }
+
+    private static String describeDisponibilitat(Disponibilitat disponibilitat) {
+        return "Disponibilitat{id=" + disponibilitat.getId() + ", dataDis=" + disponibilitat.getDataDis()
+                + ", docents=" + disponibilitat.getDocents().size() + "}";
+    }
+
+    private static String describeTreball(Treball treball) {
+        String student = treball.getStudent() == null ? "null" : treball.getStudent().getMail();
+        String tutor = treball.getTutor() == null ? "null" : treball.getTutor().getMail();
+        String expertesa = treball.getExpertesa() == null ? "null" : treball.getExpertesa().getId();
+        return "Treball{id=" + treball.getId()
+                + ", title='" + treball.getTitle() + "'"
+                + ", description='" + treball.getDescription() + "'"
+                + ", student='" + student + "'"
+                + ", tutor='" + tutor + "'"
+                + ", expertesa='" + expertesa + "'}";
+    }
+
     private static String getCellString(Cell c) {
         if (c == null) return null;
         switch (c.getCellType()) {
@@ -355,5 +408,23 @@ public class NewExampleData {
             default:
                 return null;
         }
+    }
+
+    private static List<Disponibilitat> buildJuneSlots() {
+        List<Disponibilitat> generatedSlots = new ArrayList<>();
+
+        for (int day = 2; day <= 13; day++) {
+            // Franja matí: 9:00h a 13:00h
+            for (int hour = 9; hour <= 13; hour++) {
+                generatedSlots.add(new Disponibilitat(LocalDateTime.of(2026, 6, day, hour, 0)));
+            }
+
+            // Franja tarda: 15:00h a 18:00h
+            for (int hour = 15; hour <= 18; hour++) {
+                generatedSlots.add(new Disponibilitat(LocalDateTime.of(2026, 6, day, hour, 0)));
+            }
+        }
+
+        return generatedSlots;
     }
 }
