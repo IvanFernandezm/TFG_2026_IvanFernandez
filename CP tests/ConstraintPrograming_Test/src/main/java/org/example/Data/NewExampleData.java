@@ -21,8 +21,7 @@ public class NewExampleData {
     public List<Disponibilitat> slots = new ArrayList<>();
     public List<Tribunal> tribunals = new ArrayList<>();
     public List<Expertesa> experteses = new ArrayList<>();
-    public int maxTribunalsPerProfessor = 2;
-    public int maxDefensesPerSlot = 2;
+    public int maxDefensesPerSlot = 1;
 
     public int getNumProfessors() {
         return docents.size();
@@ -208,8 +207,7 @@ public class NewExampleData {
                 }
             }
 
-            d.maxTribunalsPerProfessor = 2;
-            d.maxDefensesPerSlot = 2;
+            d.maxDefensesPerSlot = 1;
 
             //TODO printExcelDatasetSummary(d);
 
@@ -318,8 +316,7 @@ public class NewExampleData {
             d.treballs.add(t);
         }
 
-        d.maxTribunalsPerProfessor = 2;
-        d.maxDefensesPerSlot = 2;
+        d.maxDefensesPerSlot = 1;
 
         return d;
     }

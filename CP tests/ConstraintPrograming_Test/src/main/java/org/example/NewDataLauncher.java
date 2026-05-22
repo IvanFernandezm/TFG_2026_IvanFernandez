@@ -22,7 +22,7 @@ public class NewDataLauncher {
         NewExampleData data = NewExampleData.buildExampleData();
 
         System.out.printf(
-                "[DEBUG] Datos cargados: %d profes, %d TFGs, %d slots, %d experteses.%n",
+                "[DEBUG] Dades carregades: %d profes, %d TFGs, %d slots, %d experteses.%n",
                 data.getNumProfessors(),
                 data.getTfgCount(),
                 data.getSlotsCount(),
@@ -400,8 +400,6 @@ public class NewDataLauncher {
             System.out.println("[DEBUG] No s'ha pogut establir l'estratègia minDomLBSearch: " + ex.getMessage());
         }
 
-        // Sense límit de temps explícit
-
         // ─────────────────────────────
         // 9. RESOLUCIÓ (ÓPTIMA dins del límit)
         // ─────────────────────────────
@@ -410,8 +408,22 @@ public class NewDataLauncher {
 
         long start = System.currentTimeMillis();
 
-        //Solution solution = model.getSolver().findOptimalSolution(expertCount, true);
-        Solution solution = model.getSolver().findSolution();
+        //Solution solution = model.getSolver().findOptimalSolution(expertCount, true); -> no arriba a donar una solució
+        //Solution solution = model.getSolver().findSolution(); -> no assegura que l'opció donada sigui la més optima
+        model.getSolver().limitTime("5s");
+
+        Solution solution = null;
+
+        while(model.getSolver().solve()){
+
+            solution = new Solution(model);
+            solution.record();
+
+            System.out.println(
+                    "Tribunals amb 2 experts count: "
+                            + expertCount.getValue()
+            );
+        }
 
         long end = System.currentTimeMillis();
 
