@@ -12,3 +12,30 @@ Content-Type: application/json
 ###
 GET http://localhost:8080/api/users/signIn?mail=ivan.fernandez@example.com
 
+###
+PUT http://localhost:8080/api/docent/disponibilitat
+Content-Type: application/json
+
+[
+  { "timestamp": "2026-05-24T09:00:00" },
+  { "timestamp": "2026-05-24T09:30:00" },
+  { "timestamp": "2026-05-24T10:00:00" },
+  { "timestamp": "2026-05-24T10:30:00" },
+  { "timestamp": "2026-05-24T11:00:00" },
+  { "timestamp": "2026-05-24T11:30:00" },
+  { "timestamp": "2026-05-24T12:00:00" },
+  { "timestamp": "2026-05-24T12:30:00" },
+  { "timestamp": "2026-05-24T13:00:00" },
+  { "timestamp": "2026-05-24T13:30:00" }
+]
+
+### Importació de l'excel de prova
+POST http://localhost:8080/api/tribunal/import
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary
+
+------WebKitFormBoundary
+Content-Disposition: form-data; name="file"; filename="Tutors_TFG_20242025.xlsx"
+Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
+
+< D:\GitHub\TFG_2026_IvanFernandez\tribunals-backend\src\test\java\org\example\tribunalsbackend\Tutors_TFG_20242025.xlsx
+------WebKitFormBoundary--
