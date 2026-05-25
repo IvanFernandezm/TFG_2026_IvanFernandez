@@ -5,12 +5,14 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.example.tribunalsbackend.Api.DTO.TribunalDTO;
 import org.example.tribunalsbackend.Domain.*;
 import org.example.tribunalsbackend.Persistence.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -20,14 +22,17 @@ public class DataImportController {
     TreballRepository treballRepository;
     ExpertesaRepository expertesaRepository;
     DisponibilitatRepository  disponibilitatRepository;
+    TribunalRepository tribunalRepository;
 
     public DataImportController(DocentRepository docentRepository, EstudiantRepository estudiantRepository,
-                                TreballRepository treballRepository, ExpertesaRepository expertesaRepository,  DisponibilitatRepository disponibilitatRepository) {
+                                TreballRepository treballRepository, ExpertesaRepository expertesaRepository,
+                                DisponibilitatRepository disponibilitatRepository, TribunalRepository tribunalRepository) {
         this.docentRepository = docentRepository;
         this.estudiantRepository = estudiantRepository;
         this.treballRepository = treballRepository;
         this.expertesaRepository = expertesaRepository;
         this.disponibilitatRepository = disponibilitatRepository;
+        this.tribunalRepository = tribunalRepository;
     }
 
     public void importExcel(MultipartFile excelFile) throws Exception {
@@ -75,8 +80,12 @@ public class DataImportController {
 
             treballRepository.save(tfg);
         }
-
-
+    }
+    public List<TribunalDTO> organitzarTribunals() {
+        List<Tribunal> tribunals = new ArrayList<>();
+        List<TribunalDTO> tribunalDTOs = new ArrayList<>();
+        this.tribunalRepository.saveAll(tribunals);
+        return tribunalDTOs;
     }
     private static String getCellString(Cell c) {
         if (c == null) return null;
@@ -100,5 +109,15 @@ public class DataImportController {
             default:
                 return null;
         }
+    }
+    private TribunalDTO TribunalToDTO (Tribunal tribunal) {
+        Docent presidencia = tribunal.getPresidencia();
+        Docent vocal = tribunal.getVocal();
+        Treball treball = tribunal.getTreball();
+        Estudiant estudiant = treball.getStudent();
+        Docent tutor = treball.getTutor();
+        Expertesa exp = treball.getExpertesa();
+        return new TribunalDTO(tribunal.getRoom(),presidencia.getName(), vocal.getName(),
+                tribunal.getAdjudicacio(), treball.getTitle(), estudiant.getName(), tutor.getName(), exp.getId());
     }
 }
