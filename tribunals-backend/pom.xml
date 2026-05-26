@@ -80,6 +80,11 @@
 			<artifactId>poi-ooxml</artifactId>
 			<version>5.2.5</version>
 		</dependency>
+		<dependency>
+			<groupId>org.choco-solver</groupId>
+			<artifactId>choco-solver</artifactId>
+			<version>4.10.8</version>
+		</dependency>
     </dependencies>
 
 	<build>

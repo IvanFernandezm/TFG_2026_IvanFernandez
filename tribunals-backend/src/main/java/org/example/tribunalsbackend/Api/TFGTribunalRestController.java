@@ -27,8 +27,8 @@ public class TFGTribunalRestController {
     }
 
     @GetMapping("/Organitzar")
-    public ResponseEntity<List<TribunalDTO>> organitzarTribunals() {
-        List<TribunalDTO> tribunals = this.dataImportController.organitzarTribunals();
+    public ResponseEntity<List<TribunalDTO>> organitzarTribunals(@RequestBody int maxClassrooms) {
+        List<TribunalDTO> tribunals = this.dataImportController.organitzarTribunals(maxClassrooms);
         return ResponseEntity.ok(tribunals);
     }
 
