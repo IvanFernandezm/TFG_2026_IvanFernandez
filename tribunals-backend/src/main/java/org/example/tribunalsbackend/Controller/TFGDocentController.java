@@ -51,6 +51,7 @@ public class TFGDocentController {
         return new DocentDetailsDTO(d.getName(), d.getMail(), d.isVeteran(), exNames, dispoDates);
     }
 
+    //A l'actualitzar l'horari per als tribunals es reseteja la disponibilitat dels docents
     public void updateDisponibilitat(List<DisponibilitatDTO> dto) {
         List<Docent> docents = docentRepository.findAll();
 

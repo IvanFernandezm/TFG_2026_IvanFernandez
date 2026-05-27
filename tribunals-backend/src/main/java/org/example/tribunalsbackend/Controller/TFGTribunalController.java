@@ -1,6 +1,7 @@
 package org.example.tribunalsbackend.Controller;
 
 import org.example.tribunalsbackend.Api.DTO.TribunalDTO;
+import org.example.tribunalsbackend.Config.Exceptions.EntityNotFoundException;
 import org.example.tribunalsbackend.Domain.*;
 import org.example.tribunalsbackend.Persistence.TribunalRepository;
 import org.springframework.stereotype.Service;

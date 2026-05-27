@@ -11,20 +11,20 @@ import org.chocosolver.solver.constraints.extension.Tuples;
 import org.chocosolver.solver.variables.BoolVar;
 import org.chocosolver.solver.variables.IntVar;
 import org.example.tribunalsbackend.Api.DTO.TribunalDTO;
+import org.example.tribunalsbackend.Config.Exceptions.EntityNotFoundException;
 import org.example.tribunalsbackend.Config.Exceptions.TribunalsAutomatedSolutionException;
 import org.example.tribunalsbackend.Domain.*;
 import org.example.tribunalsbackend.Persistence.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @Service
-public class DataImportController {
+public class DataTreatmentController {
     DocentRepository docentRepository;
     EstudiantRepository estudiantRepository;
     TreballRepository treballRepository;
@@ -32,9 +32,9 @@ public class DataImportController {
     DisponibilitatRepository  disponibilitatRepository;
     TribunalRepository tribunalRepository;
 
-    public DataImportController(DocentRepository docentRepository, EstudiantRepository estudiantRepository,
-                                TreballRepository treballRepository, ExpertesaRepository expertesaRepository,
-                                DisponibilitatRepository disponibilitatRepository, TribunalRepository tribunalRepository) {
+    public DataTreatmentController(DocentRepository docentRepository, EstudiantRepository estudiantRepository,
+                                   TreballRepository treballRepository, ExpertesaRepository expertesaRepository,
+                                   DisponibilitatRepository disponibilitatRepository, TribunalRepository tribunalRepository) {
         this.docentRepository = docentRepository;
         this.estudiantRepository = estudiantRepository;
         this.treballRepository = treballRepository;
@@ -106,6 +106,11 @@ public class DataImportController {
                 experteses.size()
         );
 
+        Map<String, Integer> docentIndexByMail = new HashMap<>();
+        for (int i = 0; i < docents.size(); i++) {
+            docentIndexByMail.put(docents.get(i).getMail(), i + 1);
+        }
+
         Model model = new Model("Adjudicació TFG OPTIMITZADA");
 
         int P = docents.size();
@@ -132,7 +137,7 @@ public class DataImportController {
                 .toArray();
 
         if (veteranIds.length == 0) {
-            System.out.println("❌ No hi ha veterans.");
+            System.out.println("No hi ha veterans.");
         }
 
         System.out.printf(
@@ -193,15 +198,20 @@ public class DataImportController {
 
         for (int t = 0; t < T; t++) {
             Docent doc = treballs.get(t).getTutor();
-            int tutor =docents.indexOf(doc);
-            tutorCount[tutor]++;
+            if (doc == null) {
+                throw new IllegalStateException("Treball " + t + " sense tutor assignat");
+            }
+            Integer tutorIdx = docentIndexByMail.get(doc.getMail());
+            if (tutorIdx == null) {
+                throw new IllegalStateException("Tutor del treball no existeix a la llista de docents: " + doc.getMail());
+            }
+            tutorCount[tutorIdx]++;
         }
 
         System.out.println("[DEBUG] Comptatge tutoritzacions preparat.");
 
-
         // Diagnòstic ràpid de viabilitat abans de modelar-ho tot
-        int[] maxAssignmentsPerProfessor = new int[P + 1];
+        int[] maxAssignmentsPerProfessor = new int[P + 1]; // 1-based
         int totalAssignmentCapacity = 0;
         int veteranPresidencyCapacity = 0;
         for (int p = 1; p <= P; p++) {
@@ -223,13 +233,13 @@ public class DataImportController {
         System.out.printf("[DEBUG] Capacitat presidències veterans: %d | Necessàries: %d%n", veteranPresidencyCapacity, T);
 
         if (totalAssignmentCapacity < requiredAssignments) {
-            System.out.println("❌ Model inviable: la capacitat màxima de tribunals per professor és massa baixa per cobrir tots els TFG.");
+            System.out.println("Model inviable: la capacitat màxima de tribunals per professor és massa baixa per cobrir tots els TFG.");
         }
         if (slotCapacity < T) {
-            System.out.println("❌ Model inviable: no hi ha prou capacitat de slots per totes les defenses.");
+            System.out.println("Model inviable: no hi ha prou capacitat de slots per totes les defenses.");
         }
         if (veteranPresidencyCapacity < T) {
-            System.out.println("❌ Model inviable: no hi ha prou capacitat de veterans per cobrir totes les presidències.");
+            System.out.println("Model inviable: no hi ha prou capacitat de veterans per cobrir totes les presidències.");
         }
 
         // ─────────────────────────────
@@ -245,15 +255,18 @@ public class DataImportController {
         // Precalcular dominis per TFG per reduir l'espai de cerca
         for (int t = 0; t < T; t++) {
             Docent tutor = treballs.get(t).getTutor();
-            int tutorPoss = docents.indexOf(tutor); //Posició del tutor a la llista de docents
+            Integer tutorPoss = docentIndexByMail.get(tutor.getMail()); // 1-based
+            if (tutorPoss == null) {
+                throw new IllegalStateException("Tutor no trobat a la llista de docents: " + tutor.getMail());
+            }
 
             // ProfA ha de ser veteran i no pot ser tutor; filtrar per disponibilitat en algun slot
             List<Integer> candidatesA = new ArrayList<>();
             List<Integer> candidatesB = new ArrayList<>();
 
             for (int p = 1; p <= P; p++) {
-                if (p == tutorPoss) continue; // excloure tutor
-                Docent doc = docents.get(p - 1);
+                if (p == tutorPoss) continue; // excloure tutor (p is 1-based, tutorPoss is 1-based)
+                Docent doc = docents.get(p - 1); // convert to 0-based for list access
 
                 boolean availableSomeSlot = false;
                 for (int s = 1; s <= S; s++) {
@@ -300,7 +313,10 @@ public class DataImportController {
 
         for (int t = 0; t < T; t++) {
             Docent tutor = treballs.get(t).getTutor();
-            int tutorPoss = docents.indexOf(tutor);
+            Integer tutorPoss = docentIndexByMail.get(tutor.getMail()); // 1-based
+            if (tutorPoss == null) {
+                throw new IllegalStateException("Tutor no trobat: " + tutor.getMail());
+            }
 
             // President veterà
             model.member(profA[t], veteranIds).post();
@@ -566,12 +582,13 @@ public class DataImportController {
 
         List<Tribunal> tribunals = new ArrayList<>();
         for (int t = 0; t < treballs.size(); t++) {
-            Docent presidencia = docents.get(presidenciesPerTFG[t]);
-            Docent vocal = docents.get(presidenciesPerTFG[t]);
+            // Convert from 1-based solver indices to 0-based list indices
+            Docent presidencia = docents.get(presidenciesPerTFG[t] - 1);
+            Docent vocal = docents.get(vocalsPerTFG[t] - 1);
             Treball treball = treballs.get(t);
             int slotSolverId = slotsPerTFG[t];
 
-            if (slotSolverId < 1 || slotSolverId > disponibilitatRepository.findAll().size()) {
+            if (slotSolverId < 1 || slotSolverId > slots.size()) {
                 throw new IllegalArgumentException("Slot invalid per al TFG index " + t + ": " + slotSolverId);
             }
 
@@ -609,6 +626,21 @@ public class DataImportController {
             default:
                 return null;
         }
+    }
+
+
+    public TribunalDTO updateTribunal(TribunalDTO update) {
+        Tribunal old = tribunalRepository.findTribunalByTreball_Title(update.TFGTitol());
+        if(old == null) {
+            throw new EntityNotFoundException("Tribunal no trobat per al TFG: " + update.TFGTitol());
+        }
+        Docent presi = docentRepository.findById(update.president()).orElseThrow(() -> new EntityNotFoundException("Docent no trobat: " + update.president()));
+        Docent vocal = docentRepository.findById(update.vocal()).orElseThrow(() -> new EntityNotFoundException("Docent no trobat: " + update.vocal()));
+        old.setPresidencia(presi);
+        old.setVocal(vocal);
+        old.setAdjudicacio(update.data());
+        tribunalRepository.save(old);
+        return tribunalToDTO(old);
     }
     private TribunalDTO tribunalToDTO (Tribunal tribunal) {
         Docent presidencia = tribunal.getPresidencia();
