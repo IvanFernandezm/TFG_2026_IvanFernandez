@@ -4,6 +4,10 @@ import { Tribunal } from '../../../core/model/tribunal-model';
 import { Observable } from 'rxjs';
 import { CommonModule } from '@angular/common';
 
+export interface orgTibunals {
+  Date: Date;
+  tribunals: Tribunal[];
+}
 
 @Component({
   selector: 'app-admin-tribunals',

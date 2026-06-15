@@ -1,21 +1,25 @@
 import { Dialog } from '@angular/cdk/dialog';
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { AddDocent } from '../../../shared/pop-ups/add-docent/add-docent';
+import { Docent } from '../../../core/model/docent-model';
+import { Observable } from 'rxjs';
+import { CommonModule } from '@angular/common';
+import { DocentService } from '../../../core/services/api/docent/docent-service';
 
-interface Docent {
-  email: string;
-  name: string;
-  specs: string[];
-}
+
 @Component({
   selector: 'app-admin-docents',
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './admin-docents.html',
   styleUrl: './admin-docents.scss',
 })
 export class AdminDocents implements OnInit {
+  currentDocent = signal<Docent | null>(null);
+  docents!: Observable<Docent[]>;
 
   private dialog = inject(Dialog);
+
+  constructor(private docentService: DocentService) { }
 
   protected openModal() {
     this.dialog.open(AddDocent, { disableClose: true });
@@ -24,9 +28,6 @@ export class AdminDocents implements OnInit {
   ngOnInit(): void {
     this.loadDocents();
   }
-
-  currentDocent = signal<Docent | null>(null);
-  docents = signal<Docent[]>([]);
 
   deleteDocent() {
     throw new Error('Method not implemented.');
@@ -38,13 +39,7 @@ export class AdminDocents implements OnInit {
     this.currentDocent.set(Docent);
   }
   loadDocents() {
-    //Crida API per obtenir docents
-      const mockDocents: Docent[] = [
-      { email: 'imorenoa@tecnocampus.cat', name: 'Immaculada Moreno', specs: ['Desenvolupament d’aplicacions informàtiques'] },
-      { email: 'jteodoro@tecnocampus.cat', name: 'Jaume Teodoro', specs: ['Desenvolupament d’aplicacions informàtiques'] },
-      { email: 'lina@tecnocampus.cat', name: 'Lina Juan Nadal', specs: ['Desenvolupament d’aplicacions informàtiques', 'Big data'] },
-      { email: 'sesa@tecnocampus.cat', name: 'Enric Sesa', specs: ['Desenvolupament d’aplicacions informàtiques', 'Big data'] },
-      { email: 'rherrero@tecnocampus.cat', name: 'Rosa Herrero', specs: ['Desenvolupament d’aplicacions informàtiques', 'Big data'] }];
-    this.docents.set(mockDocents);
+    this.docents = this.docentService.getDocents();
+
   }
 }

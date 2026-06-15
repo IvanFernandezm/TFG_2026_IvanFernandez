@@ -1,6 +1,10 @@
-<p>admin-tribunals works!</p>
-@if (tribunals | async; as tribunals) {
-  @for (tribunal of tribunals; track tribunal.estudiant) {
+<div>
+  @if (tribunals | async; as tribunals) {
+  <div class="tribunal-calendar">
+    @for (tribunal of tribunals; track tribunal.estudiant) {
     <p>{{ tribunal.estudiant }}</p>
+    <p>{{ tribunal.data }}</p>
+    }
+  </div>
   }
-}
+</div>

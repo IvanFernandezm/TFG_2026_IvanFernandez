@@ -3,12 +3,11 @@
         <h2>Informació del docent</h2>
         <p>Email: {{ currentDocent()?.email }}</p>
         <p>Nom: {{ currentDocent()?.name }}</p>
-        <p>Especialitats: {{ currentDocent()?.specs }}</p>
     </div>
     <div class="docents-list">
         <h2>Llista de docents</h2>
         <ul>
-            @for (docent of docents(); track docent.email) {
+            @for (docent of docents | async; track docent.email) {
             <li (click)="selectDocent(docent)" [class.selected]="currentDocent() === docent">
                 {{ docent.email }},
                 {{ docent.name }}
