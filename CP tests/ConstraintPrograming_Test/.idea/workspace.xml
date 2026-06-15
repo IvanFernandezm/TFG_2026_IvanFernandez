@@ -4,14 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="36b10d7e-a652-48bd-868a-a6f85e7fe34b" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/../../tribunals-backend/src/main/java/org/example/tribunalsbackend/Config/Exceptions/TribunalsAutomatedSolutionException.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../tribunals-backend/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../tribunals-backend/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../tribunals-backend/src/main/java/org/example/tribunalsbackend/Api/TFGTribunalRestController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../tribunals-backend/src/main/java/org/example/tribunalsbackend/Api/TFGTribunalRestController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../tribunals-backend/src/main/java/org/example/tribunalsbackend/Config/GlobalExceptionHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../tribunals-backend/src/main/java/org/example/tribunalsbackend/Config/GlobalExceptionHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../tribunals-backend/src/main/java/org/example/tribunalsbackend/Controller/DataImportController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../tribunals-backend/src/main/java/org/example/tribunalsbackend/Controller/DataImportController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../tribunals-backend/src/main/java/org/example/tribunalsbackend/Domain/Docent.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../tribunals-backend/src/main/java/org/example/tribunalsbackend/Domain/Docent.java" afterDir="false" />
-    </list>
+    <list default="true" id="36b10d7e-a652-48bd-868a-a6f85e7fe34b" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -280,7 +273,8 @@
       <workItem from="1779744936130" duration="1063000" />
       <workItem from="1779785146386" duration="2440000" />
       <workItem from="1779806279290" duration="3812000" />
-      <workItem from="1779811048205" duration="10454000" />
+      <workItem from="1779811048205" duration="13743000" />
+      <workItem from="1779867772946" duration="9603000" />
     </task>
     <servers />
   </component>

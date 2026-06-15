@@ -16,6 +16,11 @@ const routes: Routes = [
     path: 'admin-docents',
     loadComponent: () =>
       import('./admin-docents/admin-docents').then(m => m.AdminDocents)
+  },
+  {
+    path: 'admin-tribunals',
+    loadComponent: () =>
+      import('./admin-tribunals/admin-tribunals').then(m => m.AdminTribunals)
   }
 ];
 

@@ -1,0 +1,6 @@
+<p>admin-tribunals works!</p>
+@if (tribunals | async; as tribunals) {
+  @for (tribunal of tribunals; track tribunal.estudiant) {
+    <p>{{ tribunal.estudiant }}</p>
+  }
+}

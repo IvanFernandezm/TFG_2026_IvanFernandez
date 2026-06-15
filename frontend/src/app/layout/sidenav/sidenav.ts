@@ -61,7 +61,7 @@ export class Sidenav implements OnChanges {
             icon: 'gavel',
             children: [
               { label: 'Planificador', icon: 'calendar_month', route: '/admin/planificador' },
-              { label: 'Veure organització', icon: 'visibility', route: '/admin/adjudicacio' }
+              { label: 'Veure organització', icon: 'visibility', route: '/admin/admin-tribunals' }
             ]
           },
           {
