@@ -28,9 +28,9 @@ public class TFGEstudiantsController {
         Docent tutor = treb.getTutor();
         Expertesa exp = treb.getExpertesa();
         if (tutor == null)
-            return new EstudiantDetailsDTO(student.getMail(), student.getName(), "SENSE TUTOR ASSIGNAT!", "-", treb.getTitle(), exp.getId());
+            return new EstudiantDetailsDTO(student.getName(), student.getMail(), "SENSE TUTOR ASSIGNAT!", "-", treb.getTitle(), exp.getId());
         else
-            return new EstudiantDetailsDTO(student.getMail(), student.getName(), tutor.getName(), tutor.getMail(), treb.getTitle(), exp.getId());
+            return new EstudiantDetailsDTO(student.getName(), student.getMail(), tutor.getName(), tutor.getMail(), treb.getTitle(), exp.getId());
 
     }
 

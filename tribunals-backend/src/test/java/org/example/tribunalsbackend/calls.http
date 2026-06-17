@@ -142,3 +142,6 @@ GET http://localhost:8080/api/tribunal/organitzar?maxClassrooms=2
 
 ### Obtenir els tribunals organitzats
 GET  http://localhost:8080/api/tribunal/all
+
+### Obtenir els detalls d'un estudiant
+GET http://localhost:8080/api/estudiant/tfg?mail=ahernandezm@edu.tecnocampus.cat

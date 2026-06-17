@@ -5,6 +5,7 @@ import { StudentService } from '../../../core/services/api/student/student-servi
 import { Student } from '../../../core/model/student-model';
 import { Observable } from 'rxjs';
 import { CommonModule } from '@angular/common';
+import { StudentDetails } from '../../../core/model/student-details';
 
 
 @Component({
@@ -17,7 +18,7 @@ import { CommonModule } from '@angular/common';
 export class AdminStudents implements OnInit {
 
   students!: Observable<Student[]>;
-  currentStudent = signal<Student | null>(null);
+  currentStudent: StudentDetails | null = null;
   private dialog = inject(Dialog);
 
   constructor(private studentService: StudentService) { }
@@ -36,7 +37,14 @@ export class AdminStudents implements OnInit {
   }
 
   selectStudent(student: Student): void {
-    this.currentStudent.set(student);
+    this.studentService.getStudentByMail(student.mail).pipe().subscribe(
+      (studentDetails: StudentDetails) => {
+        this.currentStudent = studentDetails;
+      },
+      (error) => {
+        console.error('Error al obtenir detalls de l\'alumne: ' + student.name, error);
+      }
+    );
   }
 
   deleteStudent() {

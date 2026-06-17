@@ -1,15 +1,18 @@
 <div class="main-divisor">
     <div class="student-info">
         <h2>Informació de l'alumne</h2>
-        <p>Email: {{ currentStudent()?.mail }}</p>
-        <p>Nom: {{ currentStudent()?.name }}</p>
-       
+        <p>Email: {{ currentStudent?.mail }}</p>
+        <p>Nom: {{ currentStudent?.name }}</p>
+        <p>Tutor: {{ currentStudent?.tutorNom }}</p>
+        <p>Email del tutor: {{ currentStudent?.tutorMail }}</p>
+        <p>TFG: {{ currentStudent?.tfg }}</p>
+        <p>Expertesa: {{ currentStudent?.expertesa }}</p>
     </div>
     <div class="students-list">
         <h2>Llista d'alumnes</h2>
         <ul>
             @for (student of (students | async); track student.mail) {
-            <li (click)="selectStudent(student)" [class.selected]="currentStudent() === student">
+            <li (click)="selectStudent(student)" [class.selected]="currentStudent === student">
                 {{ student.mail }},
                 {{ student.name }}
             </li>
