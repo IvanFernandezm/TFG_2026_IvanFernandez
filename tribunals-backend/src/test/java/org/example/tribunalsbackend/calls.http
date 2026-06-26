@@ -145,3 +145,6 @@ GET  http://localhost:8080/api/tribunal/all
 
 ### Obtenir els detalls d'un estudiant
 GET http://localhost:8080/api/estudiant/tfg?mail=ahernandezm@edu.tecnocampus.cat
+
+### Obtenir els detalls d'un docent
+GET http://localhost:8080/api/docent/details?mail=barberan@tecnocampus.cat

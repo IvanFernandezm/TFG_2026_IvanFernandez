@@ -13,7 +13,6 @@
         <ul>
             @for (student of (students | async); track student.mail) {
             <li (click)="selectStudent(student)" [class.selected]="currentStudent === student">
-                {{ student.mail }},
                 {{ student.name }}
             </li>
             }

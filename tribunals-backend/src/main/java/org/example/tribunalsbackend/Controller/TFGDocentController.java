@@ -43,7 +43,7 @@ public class TFGDocentController {
         List<String> exNames = new ArrayList<>();
         List<LocalDateTime> dispoDates = new ArrayList<>();
         for (Expertesa ex : d.getExperteses()) {
-            exNames.add(ex.getDescription());
+            exNames.add(ex.getId());
         }
         for (Disponibilitat dispo : disponibilitats) {
             dispoDates.add(dispo.getDataDis());

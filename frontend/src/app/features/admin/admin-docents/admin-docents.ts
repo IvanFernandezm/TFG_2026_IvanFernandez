@@ -5,6 +5,7 @@ import { Docent } from '../../../core/model/docent-model';
 import { Observable } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { DocentService } from '../../../core/services/api/docent/docent-service';
+import { DocentDetails } from '../../../core/model/docent-details';
 
 
 @Component({
@@ -14,8 +15,9 @@ import { DocentService } from '../../../core/services/api/docent/docent-service'
   styleUrl: './admin-docents.scss',
 })
 export class AdminDocents implements OnInit {
-  currentDocent = signal<Docent | null>(null);
+  currentDocent!: DocentDetails | null;
   docents!: Observable<Docent[]>;
+  exptToggle: boolean = true;
 
   private dialog = inject(Dialog);
 
@@ -32,12 +34,26 @@ export class AdminDocents implements OnInit {
   deleteDocent() {
     throw new Error('Method not implemented.');
   }
+
+  toggleExpt() {
+    this.exptToggle = !this.exptToggle;
+  }
+
   addDocent() {
     this.openModal();
   }
-  selectDocent(Docent: Docent) {
-    this.currentDocent.set(Docent);
+
+  selectDocent(Docent: Docent): void {
+    this.docentService.getDocentByEmail(Docent.email).pipe().subscribe(
+      (docentDetails: DocentDetails) => {
+        this.currentDocent = docentDetails;
+      },
+      (error) => {
+        console.error('Error al obtenir detalls del docent: ' + Docent.name, error);
+      }
+    );
   }
+
   loadDocents() {
     this.docents = this.docentService.getDocents();
 

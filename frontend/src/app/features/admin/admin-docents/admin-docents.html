@@ -1,15 +1,35 @@
 <div class="main-divisor">
     <div class="docent-info">
-        <h2>Informació del docent</h2>
-        <p>Email: {{ currentDocent()?.email }}</p>
-        <p>Nom: {{ currentDocent()?.name }}</p>
+        <div class="main-info">
+            <h2>Informació del docent</h2>
+            <p>Email: {{ currentDocent?.mail }}</p>
+            <p>Nom: {{ currentDocent?.name }}</p>
+            <p>Veterà: {{ currentDocent?.veteran ? 'Sí' : 'No' }}</p>
+        </div>
+        <div class="expt-disp">
+            <button (click)="toggleExpt()">
+                {{ exptToggle ? 'Veure Disponibilitat' : 'Veure Experteses' }}
+            </button>
+            <div class="expt-disp-info">
+                @if (exptToggle == true) {
+                    @for (item of currentDocent?.experteses; track item) {
+                        <div>- {{ item }}</div>
+                    }
+                }
+                @else {
+                    @for (item of currentDocent?.disponibilitat; track item) {
+                        <div>- {{ item }}</div>
+                    }
+                }
+            </div>
+
+        </div>
     </div>
     <div class="docents-list">
         <h2>Llista de docents</h2>
         <ul>
             @for (docent of docents | async; track docent.email) {
-            <li (click)="selectDocent(docent)" [class.selected]="currentDocent() === docent">
-                {{ docent.email }},
+            <li (click)="selectDocent(docent)" [class.selected]="currentDocent?.mail === docent.email">
                 {{ docent.name }}
             </li>
             }

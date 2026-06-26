@@ -26,7 +26,7 @@ public class TFGDocentRestController {
     }
 
     @GetMapping("/details")
-    public ResponseEntity<DocentDetailsDTO> getDocentDetails(@RequestBody String mail) throws Exception {
+    public ResponseEntity<DocentDetailsDTO> getDocentDetails(@RequestParam String mail) throws Exception {
         DocentDetailsDTO details = docentController.getDocentDetails(mail);
         return ResponseEntity.ok(details);
     }
