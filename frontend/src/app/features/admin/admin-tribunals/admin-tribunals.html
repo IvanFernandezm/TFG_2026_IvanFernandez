@@ -1,10 +1,30 @@
 <div>
-  @if (tribunals | async; as tribunals) {
-  <div class="tribunal-calendar">
-    @for (tribunal of tribunals; track tribunal.estudiant) {
-    <p>{{ tribunal.estudiant }}</p>
-    <p>{{ tribunal.data }}</p>
-    }
-  </div>
-  }
+    <div class="tribunal-calendar">
+        @for (group of groupedTribunals; track group.day) {
+        <h3>{{ group.day | date: "fullDate"}}</h3>
+
+        <div class="tribunal-headers">
+            <p>estudiant</p>
+            <p>TFG</p>
+            <p>tutor</p>
+            <p>president</p>
+            <p>vocal</p>
+            <p>hora</p>
+            <p>aula</p>
+        </div>
+
+        @for (tribunal of group.tribunals; track tribunal.estudiant) {
+        <div class="tribunal-item">
+            <p>{{ tribunal.estudiant }}</p>
+            <p>{{ tribunal.TFGTitol }}</p>
+            <p>{{ tribunal.tutor }}</p>
+            <p>{{ tribunal.president }}</p>
+            <p>{{ tribunal.vocal }}</p>
+            <p>{{ tribunal.data | date: "HH:mm" }}</p>
+            <p>{{ tribunal.clase }}</p>
+
+        </div>
+        }
+        }
+    </div>
 </div>

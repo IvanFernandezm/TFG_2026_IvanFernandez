@@ -1,11 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import { TribunalService } from '../../../core/services/api/tribunal/tribunal-service';
-import { Tribunal } from '../../../core/model/tribunal-model';
-import { Observable } from 'rxjs';
 import { CommonModule } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
+import { Tribunal } from '../../../core/model/tribunal-model';
+import { TribunalService } from '../../../core/services/api/tribunal/tribunal-service';
 
-export interface orgTibunals {
-  Date: Date;
+export interface GroupedTribunals {
+  day: string;
   tribunals: Tribunal[];
 }
 
@@ -15,15 +14,40 @@ export interface orgTibunals {
   templateUrl: './admin-tribunals.html',
   styleUrl: './admin-tribunals.scss',
 })
-
-
 export class AdminTribunals implements OnInit {
-  tribunals!: Observable<Tribunal[]>
+  groupedTribunals: GroupedTribunals[] = [];
   selected: Tribunal | null = null;
-  constructor(private tribunalService: TribunalService) { }
+
+  constructor(private tribunalService: TribunalService) {}
 
   ngOnInit(): void {
-    this.tribunals = this.tribunalService.getTribunals();
+    this.tribunalService.getTribunals().subscribe(tribunals => {
+      this.groupedTribunals = this.groupTribunalsByDay(tribunals);
+    });
   }
 
+  private groupTribunalsByDay(tribunals: Tribunal[]): GroupedTribunals[] {
+    const grouped = new Map<string, Tribunal[]>();
+
+    tribunals.forEach(tribunal => {
+      const day = this.formatDay(tribunal.data);
+      const group = grouped.get(day) ?? [];
+
+      group.push(tribunal);
+      grouped.set(day, group);
+    });
+
+    return Array.from(grouped.entries()).map(([day, groupedTribunals]) => ({
+      day,
+      tribunals: groupedTribunals,
+    }));
+  }
+
+  private formatDay(date: Date): string {
+    const year = date.getFullYear();
+    const month = `${date.getMonth() + 1}`.padStart(2, '0');
+    const day = `${date.getDate()}`.padStart(2, '0');
+
+    return `${year}-${month}-${day}`;
+  }
 }
