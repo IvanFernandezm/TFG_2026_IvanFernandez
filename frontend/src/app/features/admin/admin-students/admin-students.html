@@ -10,8 +10,11 @@
     </div>
     <div class="students-list">
         <h2>Llista d'alumnes</h2>
+        <div class="search-bar">
+            <input type="text" [formControl]="searchControl" placeholder="Cerca per nom o email" class="search-input">
+        </div>
         <ul>
-            @for (student of (students | async); track student.mail) {
+            @for (student of (filteredStudents); track student.mail) {
             <li (click)="selectStudent(student)" [class.selected]="currentStudent === student">
                 {{ student.name }}
             </li>

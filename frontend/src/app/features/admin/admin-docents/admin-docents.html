@@ -12,14 +12,14 @@
             </button>
             <div class="expt-disp-info">
                 @if (exptToggle == true) {
-                    @for (item of currentDocent?.experteses; track item) {
-                        <div>- {{ item }}</div>
-                    }
+                @for (item of currentDocent?.experteses; track item) {
+                <div>- {{ item }}</div>
+                }
                 }
                 @else {
-                    @for (item of currentDocent?.disponibilitat; track item) {
-                        <div>- {{ item }}</div>
-                    }
+                @for (item of currentDocent?.disponibilitat; track item) {
+                <div>- {{ item }}</div>
+                }
                 }
             </div>
 
@@ -27,8 +27,11 @@
     </div>
     <div class="docents-list">
         <h2>Llista de docents</h2>
+        <div class="search-bar">
+            <input type="text" [formControl]="searchControl" placeholder="Cerca per nom o email" class="search-input">
+        </div>
         <ul>
-            @for (docent of docents | async; track docent.email) {
+            @for (docent of filteredDocents; track docent.email) {
             <li (click)="selectDocent(docent)" [class.selected]="currentDocent?.mail === docent.email">
                 {{ docent.name }}
             </li>

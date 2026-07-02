@@ -3,37 +3,51 @@ import { Component, inject, OnInit, signal } from '@angular/core';
 import { AddStudent } from '../../../shared/pop-ups/add-student/add-student';
 import { StudentService } from '../../../core/services/api/student/student-service';
 import { Student } from '../../../core/model/student-model';
-import { Observable } from 'rxjs';
+import { Observable, debounceTime } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { StudentDetails } from '../../../core/model/student-details';
+import { ReactiveFormsModule, FormControl } from "@angular/forms";
+import { VoidExpr } from '@angular/compiler';
 
 
 @Component({
   selector: 'app-admin-students',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './admin-students.html',
   styleUrl: './admin-students.scss',
 })
 export class AdminStudents implements OnInit {
 
-  students!: Observable<Student[]>;
+  //Variables necesaries per al buscador d'alumnes
+  searchControl = new FormControl('');
+  filteredStudents: Student[] = [];
+
+  students: Student[] = [];
   currentStudent: StudentDetails | null = null;
   private dialog = inject(Dialog);
 
   constructor(private studentService: StudentService) { }
 
-  protected openModal() {
-    this.dialog.open(AddStudent,{disableClose: true});
-  }
-
   ngOnInit(): void {
     this.loadStudents();
+    this.searchControl.valueChanges.pipe(
+      debounceTime(300)
+    ).subscribe(searchTerm => {
+      const term = (searchTerm ?? '').toLowerCase();
+      this.filteredStudents = this.students.filter(student =>
+        student.name.toLowerCase().includes(term) ||
+        student.mail.toLowerCase().includes(term)
+      );
+    });
   }
 
-  loadStudents() {
-    this.students = this.studentService.getStudents();
-
+  loadStudents(): void {
+    this.studentService.getStudents().subscribe(students => {
+      this.students = students;
+      this.filteredStudents = students;
+    }
+    );
   }
 
   selectStudent(student: Student): void {
@@ -52,7 +66,7 @@ export class AdminStudents implements OnInit {
   }
 
   addStudent() {
-    this.openModal();
+    this.dialog.open(AddStudent, { disableClose: true });
   }
 
 }

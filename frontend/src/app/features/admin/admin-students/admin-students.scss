@@ -6,6 +6,20 @@
     padding: 1.5rem;
 }
 
+.search-bar {
+    margin-bottom: 1rem;
+    margin-top: 0.5rem;
+}
+
+.search-input{
+    display: flex;
+    width: 33%;
+    font-size: 0.95rem;
+    border-radius: 8px;
+    padding: 0.25rem;
+    
+}
+
 .student-info,
 .students-list {
     background: #ffffff;
