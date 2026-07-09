@@ -1,22 +1,26 @@
+import { CommonModule } from '@angular/common';
 import { Component, signal } from '@angular/core';
+import { DocentService } from '../../../core/services/api/docent/docent-service';
 
 interface TimeSlot {
-  dateTime: string; // ES GUARDARÀ COM A ISO STRING: "2024-09-01T08:00:00"
+  timestamp: string; // ES GUARDARÀ COM A ISO STRING: "2024-09-01T08:00:00"
   selected: boolean;
 }
 
 @Component({
   selector: 'app-planificador',
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './planificador.html',
   styleUrl: './planificador.scss',
 })
 
 export class Planificador {
-sendDisponibilitats() {
-throw new Error('Method not implemented.');
-//Connexió amb el backend on s'envia la llista de disponibilitats seleccionades
-}
+  constructor(private docentService: DocentService) {}
+
+  sendDisponibilitats() {
+    const selectedSlots: string[] = this.slots().filter(slot => slot.selected).map(slot => slot.timestamp);
+    this.docentService.newDisponibilitat(selectedSlots);
+  }
 
   startDate = signal<Date | null>(null);
   endDate = signal<Date | null>(null);
@@ -35,14 +39,14 @@ throw new Error('Method not implemented.');
     const slots = this.generateSchedule(this.startDate()!, this.endDate()!);
     this.slots.set(slots);
 
-    const uniqueDays = [...new Set(slots.map(s => s.dateTime.split('T')[0]))];
+    const uniqueDays = [...new Set(slots.map(s => s.timestamp.split('T')[0]))];
     this.days.set(uniqueDays);
   }
 
   toggleSlot(date: string, hour: string) {
     this.slots.update(slots =>
       slots.map(s =>
-        s.dateTime === `${date}T${hour}:00`
+        s.timestamp === `${date}T${hour}:00`
           ? { ...s, selected: !s.selected }
           : s
       )
@@ -62,7 +66,7 @@ throw new Error('Method not implemented.');
       for (let h = 8; h < 14; h++) {
         const hourStr = `${h.toString().padStart(2, '0')}:00`;
         slots.push({
-          dateTime: `${dateStr}T${hourStr}:00`,
+          timestamp: `${dateStr}T${hourStr}:00`,
           selected: true
         });
       }
@@ -71,7 +75,7 @@ throw new Error('Method not implemented.');
       for (let h = 15; h < 20; h++) {
         const hourStr = `${h.toString().padStart(2, '0')}:00`;
         slots.push({
-          dateTime: `${dateStr}T${hourStr}:00`,
+          timestamp: `${dateStr}T${hourStr}:00`,
           selected: true
         });
       }
@@ -83,7 +87,7 @@ throw new Error('Method not implemented.');
   }
   isSelected(date: string, hour: string): boolean {
     const target = `${date}T${hour}:00`;
-    return this.slots().some(s => s.dateTime === target && s.selected);
+    return this.slots().some(s => s.timestamp === target && s.selected);
   }
   formatDate(date: Date): string {
     return date.toISOString().split('T')[0];

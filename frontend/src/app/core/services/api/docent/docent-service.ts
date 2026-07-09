@@ -23,4 +23,8 @@ export class DocentService {
       }))
     );
   }
+
+  newDisponibilitat(disps: string[]): void {
+    this.http.post(this.apiUrl + '/disponibilitat', disps).subscribe();
+  }
 }

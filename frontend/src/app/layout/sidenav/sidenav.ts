@@ -16,12 +16,14 @@ import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { TribunalService } from '../../core/services/api/tribunal/tribunal-service';
 
 interface MenuItem {
   label: string;
   icon: string;
   route?: string;
   children?: MenuItem[];
+  action?: 'import-excel';
 }
 
 @Component({
@@ -40,6 +42,7 @@ export class Sidenav implements OnChanges {
   @Output() navigate = new EventEmitter<void>();
 
   private readonly router = inject(Router);
+  private readonly tribunalService = inject(TribunalService);
 
   private roleSignal = signal<'ADMIN' | 'DOCENT' | 'ESTUDIANT'>('ADMIN');
 
@@ -67,7 +70,7 @@ export class Sidenav implements OnChanges {
           {
             label: 'Importar dades', icon: 'file_upload',
             children: [
-              { label: 'Des de Excel', icon: 'table_chart', route: '/admin/import' },
+              { label: 'Des de Excel', icon: 'table_chart', action: 'import-excel' },
             ]
           }
         ];
@@ -112,6 +115,30 @@ export class Sidenav implements OnChanges {
     }
 
     this.navigate.emit();
+  }
+
+  onImportExcel(fileInput: HTMLInputElement): void {
+    fileInput.click();
+  }
+
+  onExcelSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0];
+
+    if (!file) {
+      return;
+    }
+
+    this.tribunalService.importExcel(file).subscribe({
+      next: () => {
+        input.value = '';
+        this.navigate.emit();
+      },
+      error: error => {
+        console.error('Error importing Excel file', error);
+        input.value = '';
+      }
+    });
   }
 
 }

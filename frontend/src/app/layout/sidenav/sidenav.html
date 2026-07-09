@@ -27,7 +27,7 @@
           <a
             mat-list-item
             class="submenu-item"
-            (click)="onItemClick(child.route)"
+            (click)="child.action === 'import-excel' ? onImportExcel(excelInput) : onItemClick(child.route)"
           >
             <mat-icon>{{ child.icon }}</mat-icon>
             <span>{{ child.label }}</span>
@@ -40,3 +40,11 @@
   }
 
 </mat-nav-list>
+
+<input
+  #excelInput
+  type="file"
+  accept=".xlsx,.xls"
+  hidden
+  (change)="onExcelSelected($event)"
+/>
