@@ -23,6 +23,9 @@ export class AdminTribunals implements OnInit {
   ngOnInit(): void {
     this.tribunalService.getTribunals().subscribe(tribunals => {
       this.groupedTribunals = this.groupTribunalsByDay(tribunals);
+      for (const group of this.groupedTribunals) {
+        group.tribunals.sort((a, b) => a.data.getTime() - b.data.getTime());
+      }
     });
   }
 
