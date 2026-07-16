@@ -13,7 +13,7 @@ Content-Type: application/json
 GET http://localhost:8080/api/users/signIn?mail=ivan.fernandez@example.com
 
 ### Comprobar que la disponbilitat s'actualitza correctament
-PUT http://localhost:8080/api/docent/disponibilitat
+POST http://localhost:8080/api/docent/disponibilitat
 Content-Type: application/json
 
 [

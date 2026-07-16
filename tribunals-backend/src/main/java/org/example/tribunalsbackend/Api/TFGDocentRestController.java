@@ -31,7 +31,7 @@ public class TFGDocentRestController {
         return ResponseEntity.ok(details);
     }
 
-    @PutMapping("/disponibilitat")
+    @PostMapping("/disponibilitat")
     public void updateDisponibilitat(@RequestBody List<DisponibilitatDTO> dto) throws Exception{
         docentController.updateDisponibilitat(dto);
     }
