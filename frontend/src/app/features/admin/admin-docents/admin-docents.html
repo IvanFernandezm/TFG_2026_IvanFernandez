@@ -7,7 +7,7 @@
             <p>Veterà: {{ currentDocent?.veteran ? 'Sí' : 'No' }}</p>
         </div>
         <div class="expt-disp">
-            <button (click)="toggleExpt()">
+            <button class="docent-button" (click)="toggleExpt()">
                 {{ exptToggle ? 'Veure Disponibilitat' : 'Veure Experteses' }}
             </button>
             <div class="expt-disp-info">
@@ -17,8 +17,21 @@
                 }
                 }
                 @else {
-                @for (item of currentDocent?.disponibilitat; track item) {
-                <div>- {{ item }}</div>
+                    @if (groupedDisponibilitat.length > 0) {
+                    <div class="availability-calendar">
+                        @for (group of groupedDisponibilitat; track group.day) {
+                        <div class="availability-day">
+                            <h3>{{ group.day | date: 'fullDate' }}</h3>
+                            <div class="availability-items">
+                                @for (item of group.slots; track item) {
+                                <div class="availability-item">{{ item | date: 'HH:mm' }}</div>
+                                }
+                            </div>
+                        </div>
+                        }
+                    </div>
+                    } @else {
+                    <p class="availability-empty">No hi ha disponibilitat registrada.</p>
                 }
                 }
             </div>
@@ -38,8 +51,8 @@
             }
         </ul>
         <div class="actions">
-            <button (click)="addDocent()">Afegir</button>
-            <button (click)="deleteDocent()">Eliminar</button>
+            <button class="docent-button" (click)="addDocent()">Afegir</button>
+            <button class="docent-button" (click)="deleteDocent()">Eliminar</button>
         </div>
     </div>
 </div>

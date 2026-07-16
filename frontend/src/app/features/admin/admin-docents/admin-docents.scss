@@ -49,6 +49,36 @@
     line-height: 1.5;
 }
 
+.availability-calendar {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.availability-day h3 {
+    margin: 0 0 0.65rem;
+    font-size: 1rem;
+    font-weight: 700;
+    color: #0f172a;
+}
+
+.availability-items {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.availability-item {
+    padding: 0.4rem 0.25rem;
+    color: #0f172a;
+}
+
+.availability-empty {
+    margin: 0;
+    color: #64748b;
+    font-style: italic;
+}
+
 .docents-list {
     display: flex;
     flex-direction: column;
@@ -89,7 +119,7 @@
     margin-top: 1rem;
 }
 
-.actions button {
+.docent-button {
     flex: 1;
     padding: 0.65rem 1.25rem;
     border: none;
@@ -102,12 +132,12 @@
     color: #ffffff;
 }
 
-.actions button:hover {
+.docent-button:hover {
     background-color: #2563eb;
     box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
 }
 
-.actions button:active {
+.docent-button:active {
     transform: scale(0.98);
 }
 

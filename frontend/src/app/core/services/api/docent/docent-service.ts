@@ -25,6 +25,7 @@ export class DocentService {
   }
 
   newDisponibilitat(disps: string[]): void {
-    this.http.post(this.apiUrl + '/disponibilitat', disps).subscribe();
+    const body = disps.map(d => ({ timestamp: d }));
+    this.http.post(this.apiUrl + '/disponibilitat', body).subscribe();
   }
 }
