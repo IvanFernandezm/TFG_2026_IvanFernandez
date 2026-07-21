@@ -1,6 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { Component, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { DocentService } from '../../../core/services/api/docent/docent-service';
+import { TribunalService } from '../../../core/services/api/tribunal/tribunal-service';
+import { Router } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 interface TimeSlot {
   timestamp: string; // ES GUARDARÀ COM A ISO STRING: "2024-09-01T08:00:00"
@@ -15,7 +18,25 @@ interface TimeSlot {
 })
 
 export class Planificador {
-  constructor(private docentService: DocentService) {}
+
+  private readonly router = inject(Router);
+  private snackBar = inject(MatSnackBar);
+
+
+  constructor(private docentService: DocentService, private tribunalService: TribunalService) { }
+
+  generateTribunals() {
+    this.tribunalService.organitzarTribunals(this.maxClassrooms()).subscribe({
+      next: () => {
+        this.snackBar.open('Nous Tribunals organitzats', 'Tancar', { duration: 3000 });
+        this.router.navigateByUrl('/admin/admin-tribunals');
+      },
+      error: error => {
+        console.error('Error generant tribunals', error.message);
+      }
+    });
+
+  }
 
   sendDisponibilitats() {
     const selectedSlots: string[] = this.slots().filter(slot => slot.selected).map(slot => slot.timestamp);

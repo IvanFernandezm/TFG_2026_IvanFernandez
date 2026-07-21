@@ -27,5 +27,14 @@ export class TribunalService {
     return this.http.post(`${this.apiUrl}/import`, formData, { responseType: 'text' });
   }
 
-
+  organitzarTribunals(classrooms: number): Observable<Tribunal[]> {
+    return this.http.get<Tribunal[]>(`${this.apiUrl}/organitzar`, { params: { maxClassrooms: classrooms.toString() } }).pipe(
+      map(data =>
+        data.map(item => ({
+          ...item,
+          data: new Date(item.data)
+        }))
+      )
+    );
+  }
 }
