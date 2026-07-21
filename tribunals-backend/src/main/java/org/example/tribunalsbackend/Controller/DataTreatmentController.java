@@ -68,8 +68,10 @@ public class DataTreatmentController {
             String title = getCellString(c5);
             String expertesaId = getCellString(c6);
 
-            if(studentEmail == null || tutorName == null || description == null || expertesaId == null || title == null){
-                throw new IllegalArgumentException("Alguna de les dades obligatòries és nula a la fila " + row.getRowNum());
+            if(studentEmail == null || tutorName == null || tutorEmail == null || description == null || expertesaId == null || title == null){
+                if (studentEmail == null && tutorName == null && tutorEmail == null && description == null && expertesaId == null && title == null)
+                    continue;
+                else throw new IllegalArgumentException("Alguna de les dades obligatòries és nula a la fila " + row.getRowNum());
             }
 
             Estudiant student = new Estudiant(studentEmail, studentName);

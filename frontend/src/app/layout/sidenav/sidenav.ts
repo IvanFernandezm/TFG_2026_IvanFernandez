@@ -17,6 +17,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { TribunalService } from '../../core/services/api/tribunal/tribunal-service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 interface MenuItem {
   label: string;
@@ -40,6 +41,8 @@ interface MenuItem {
 export class Sidenav implements OnChanges {
   @Input() role!: 'ADMIN' | 'DOCENT' | 'ESTUDIANT';
   @Output() navigate = new EventEmitter<void>();
+
+  private snackBar = inject(MatSnackBar);
 
   private readonly router = inject(Router);
   private readonly tribunalService = inject(TribunalService);
@@ -132,11 +135,13 @@ export class Sidenav implements OnChanges {
     this.tribunalService.importExcel(file).subscribe({
       next: () => {
         input.value = '';
-        this.navigate.emit();
+        this.router.navigateByUrl('/admin/planificador');
+        this.snackBar.open('Fitxer Excel importat correctament', 'Tancar', { duration: 3000 });
       },
       error: error => {
         console.error('Error importing Excel file', error);
         input.value = '';
+        this.snackBar.open('Error al importar el fitxer Excel', 'Tancar', { duration: 3000 });
       }
     });
   }

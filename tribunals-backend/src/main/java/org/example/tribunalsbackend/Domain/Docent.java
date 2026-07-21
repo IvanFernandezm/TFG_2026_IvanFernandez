@@ -60,7 +60,9 @@ public class Docent extends AppUser {
     }
 
     public void addExpertesa(Expertesa expertesa) {
-        this.experteses.add(expertesa);
+        if(!this.experteses.contains(expertesa)) {
+            this.experteses.add(expertesa);
+        }
     }
 
     public void removeExpertesa(Expertesa expertesa) {

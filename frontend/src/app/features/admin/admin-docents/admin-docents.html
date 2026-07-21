@@ -1,7 +1,7 @@
 <div class="main-divisor">
     <div class="docent-info">
         <div class="main-info">
-            <h2>Informació del docent</h2>
+            <h2>Informació del professor</h2>
             <p>Email: {{ currentDocent?.mail }}</p>
             <p>Nom: {{ currentDocent?.name }}</p>
             <p>Veterà: {{ currentDocent?.veteran ? 'Sí' : 'No' }}</p>
@@ -39,7 +39,7 @@
         </div>
     </div>
     <div class="docents-list">
-        <h2>Llista de docents</h2>
+        <h2>Llista de professorat</h2>
         <div class="search-bar">
             <input type="text" [formControl]="searchControl" placeholder="Cerca per nom o email" class="search-input">
         </div>

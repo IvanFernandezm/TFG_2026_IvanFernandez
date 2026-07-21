@@ -24,6 +24,7 @@ export class Planificador {
 
   startDate = signal<Date | null>(null);
   endDate = signal<Date | null>(null);
+  maxClassrooms = signal<number>(1);
 
   slots = signal<TimeSlot[]>([]);
   days = signal<string[]>([]);
