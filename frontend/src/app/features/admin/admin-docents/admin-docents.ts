@@ -28,23 +28,23 @@ export class AdminDocents implements OnInit {
 
   currentDocent!: DocentDetails | null;
   docents: Docent[] = [];
-  exptToggle: boolean = true;
+  dispToggle: boolean = true;
 
   private dialog = inject(Dialog);
 
-  constructor(private docentService: DocentService) { }  
+  constructor(private docentService: DocentService) { }
 
   ngOnInit(): void {
     this.loadDocents();
-        this.searchControl.valueChanges.pipe(
-          debounceTime(300)
-        ).subscribe(searchTerm => {
-          const term = (searchTerm ?? '').toLowerCase();
-          this.filteredDocents = this.docents.filter(docent =>
-            docent.name.toLowerCase().includes(term) ||
-            docent.email.toLowerCase().includes(term)
-          );
-        });
+    this.searchControl.valueChanges.pipe(
+      debounceTime(300)
+    ).subscribe(searchTerm => {
+      const term = (searchTerm ?? '').toLowerCase();
+      this.filteredDocents = this.docents.filter(docent =>
+        docent.name.toLowerCase().includes(term) ||
+        docent.email.toLowerCase().includes(term)
+      );
+    });
   }
 
   deleteDocent() {
@@ -52,7 +52,7 @@ export class AdminDocents implements OnInit {
   }
 
   toggleExpt() {
-    this.exptToggle = !this.exptToggle;
+    this.dispToggle = !this.dispToggle;
   }
 
   addDocent() {

@@ -7,31 +7,31 @@
             <p>Veterà: {{ currentDocent?.veteran ? 'Sí' : 'No' }}</p>
         </div>
         <div class="expt-disp">
+            <h3>Experteses: </h3>
+            @for (item of currentDocent?.experteses; track item) {
+            <div>- {{ item }}</div>
+            }
             <button class="docent-button" (click)="toggleExpt()">
-                {{ exptToggle ? 'Veure Disponibilitat' : 'Veure Experteses' }}
+                {{ dispToggle ? 'Amagar Experteses' : 'Mostrar Experteses' }}
             </button>
             <div class="expt-disp-info">
-                @if (exptToggle == true) {
-                @for (item of currentDocent?.experteses; track item) {
-                <div>- {{ item }}</div>
-                }
-                }
-                @else {
-                    @if (groupedDisponibilitat.length > 0) {
-                    <div class="availability-calendar">
-                        @for (group of groupedDisponibilitat; track group.day) {
-                        <div class="availability-day">
-                            <h3>{{ group.day | date: 'fullDate' }}</h3>
-                            <div class="availability-items">
-                                @for (item of group.slots; track item) {
-                                <div class="availability-item">{{ item | date: 'HH:mm' }}</div>
-                                }
-                            </div>
+                @if (dispToggle == true)
+                {
+                @if (groupedDisponibilitat.length > 0) {
+                <div class="availability-calendar">
+                    @for (group of groupedDisponibilitat; track group.day) {
+                    <div class="availability-day">
+                        <h3>{{ group.day | date: 'fullDate' }}</h3>
+                        <div class="availability-items">
+                            @for (item of group.slots; track item) {
+                            <div class="availability-item">{{ item | date: 'HH:mm' }}</div>
+                            }
                         </div>
-                        }
                     </div>
-                    } @else {
-                    <p class="availability-empty">No hi ha disponibilitat registrada.</p>
+                    }
+                </div>
+                } @else {
+                <p class="availability-empty">No hi ha disponibilitat registrada.</p>
                 }
                 }
             </div>
