@@ -3,11 +3,13 @@ package org.example.tribunalsbackend.Controller;
 import org.example.tribunalsbackend.Api.DTO.DisponibilitatDTO;
 import org.example.tribunalsbackend.Api.DTO.DocentDTO;
 import org.example.tribunalsbackend.Api.DTO.DocentDetailsDTO;
+import org.example.tribunalsbackend.Config.Exceptions.EntityNotFoundException;
 import org.example.tribunalsbackend.Domain.Disponibilitat;
 import org.example.tribunalsbackend.Domain.Docent;
 import org.example.tribunalsbackend.Domain.Expertesa;
 import org.example.tribunalsbackend.Persistence.DisponibilitatRepository;
 import org.example.tribunalsbackend.Persistence.DocentRepository;
+import org.example.tribunalsbackend.Persistence.ExpertesaRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -21,10 +23,13 @@ import java.util.stream.Collectors;
 public class TFGDocentController {
     DocentRepository docentRepository;
     DisponibilitatRepository disponibilitatRepository;
+    ExpertesaRepository expertesaRepository;
 
-    public TFGDocentController(DocentRepository docentRepository, DisponibilitatRepository disponibilitatRepository) {
+    public TFGDocentController(DocentRepository docentRepository, DisponibilitatRepository disponibilitatRepository,
+                               ExpertesaRepository expertesaRepository) {
         this.docentRepository = docentRepository;
         this.disponibilitatRepository = disponibilitatRepository;
+        this.expertesaRepository = expertesaRepository;
     }
 
     public List<DocentDTO> getDocents() {
@@ -78,5 +83,30 @@ public class TFGDocentController {
         }
 
         docentRepository.saveAll(docents);
+    }
+
+    public DocentDetailsDTO updateDocent(DocentDetailsDTO toUpdate) {
+        Docent docent = docentRepository.getReferenceById(toUpdate.mail());
+        List<Disponibilitat> newAv = new ArrayList<>();
+        List<Expertesa> newEx = new ArrayList<>();
+
+        for(LocalDateTime time: toUpdate.disponibilitat()){
+            newAv.add(disponibilitatRepository.findDisponibilitatByDataDis(time));
+        }
+
+        for(String ex: toUpdate.experteses()){
+            newEx.add(expertesaRepository.findById(ex)
+                    .orElseThrow(
+                            ()-> new EntityNotFoundException("Expertesa no trobada a l'hora d'actualitzar un docent")
+                    ));
+        }
+
+        docent.setName(toUpdate.name());
+        docent.setAvailability(newAv);
+        docent.setExperteses(newEx);
+
+        docentRepository.save(docent);
+
+        return toUpdate;
     }
 }

@@ -126,6 +126,12 @@ Content-Type: application/json
   { "timestamp": "2026-06-09T19:00:00" }
 ]
 
+### Treure tota la disponibilitat
+GET http://localhost:8080/api/tribunal/disponbilitats
+
+### Treure totes les experteses
+GET http://localhost:8080/api/tribunal/experteses
+
 ### Importació de l'excel de prova
 POST http://localhost:8080/api/tribunal/import
 Content-Type: multipart/form-data; boundary=----WebKitFormBoundary
@@ -148,3 +154,22 @@ GET http://localhost:8080/api/estudiant/tfg?mail=ahernandezm@edu.tecnocampus.cat
 
 ### Obtenir els detalls d'un docent
 GET http://localhost:8080/api/docent/details?mail=barberan@tecnocampus.cat
+
+### Editar informació d'un docent
+PUT http://localhost:8080/api/docent/update
+Content-Type: application/json
+
+{
+  "name": "Pere Barberán",
+  "mail": "barberan@tecnocampus.cat",
+  "veteran": true,
+  "experteses": [
+    "Desenvolupament d’aplicacions informàtiques",
+    "Tractament del Senyal"
+  ],
+  "disponibilitat": [
+    "2026-07-06T08:00:00",
+    "2026-07-06T09:00:00",
+    "2026-07-06T10:00:00"
+  ]
+}

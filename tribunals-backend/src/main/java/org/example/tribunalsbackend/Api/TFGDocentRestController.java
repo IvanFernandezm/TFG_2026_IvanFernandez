@@ -35,4 +35,10 @@ public class TFGDocentRestController {
     public void updateDisponibilitat(@RequestBody List<DisponibilitatDTO> dto) throws Exception{
         docentController.updateDisponibilitat(dto);
     }
+
+    @PutMapping("/update")
+    public ResponseEntity<DocentDetailsDTO> updateDocentDetails(@RequestBody DocentDetailsDTO toUpdate) throws Exception{
+        DocentDetailsDTO update = docentController.updateDocent(toUpdate);
+        return ResponseEntity.ok(update);
+    }
 }

@@ -10,6 +10,8 @@ import org.chocosolver.solver.Solution;
 import org.chocosolver.solver.constraints.extension.Tuples;
 import org.chocosolver.solver.variables.BoolVar;
 import org.chocosolver.solver.variables.IntVar;
+import org.example.tribunalsbackend.Api.DTO.DisponibilitatDTO;
+import org.example.tribunalsbackend.Api.DTO.ExpertesaDTO;
 import org.example.tribunalsbackend.Api.DTO.TribunalDTO;
 import org.example.tribunalsbackend.Config.Exceptions.EntityNotFoundException;
 import org.example.tribunalsbackend.Config.Exceptions.TribunalsAutomatedSolutionException;
@@ -653,5 +655,29 @@ public class DataTreatmentController {
         Expertesa exp = treball.getExpertesa();
         return new TribunalDTO(tribunal.getRoom(),presidencia.getName(), vocal.getName(),
                 tribunal.getAdjudicacio(), treball.getTitle(), estudiant.getName(), tutor.getName(), exp.getId());
+    }
+
+    public List<ExpertesaDTO> getAllExperteses() throws Exception{
+        List<Expertesa> exps= expertesaRepository.findAll();
+        if(exps.isEmpty()) throw new EntityNotFoundException("No hi han experteses registrades!");
+        List<ExpertesaDTO> expsDTO = new ArrayList<>();
+
+        for(Expertesa ex: exps){
+            expsDTO.add(new ExpertesaDTO(ex.getId(),ex.getDescription()));
+        }
+
+        return expsDTO;
+    }
+
+    public List<DisponibilitatDTO> getAllDisponibilitats() throws Exception{
+        List<Disponibilitat> disps = disponibilitatRepository.findAll();
+        if(disps.isEmpty()) throw new EntityNotFoundException("No hi ha cap disponibilitat registrada!");
+        List<DisponibilitatDTO> dispsDTO = new ArrayList<>();
+
+        for (Disponibilitat disp: disps){
+            dispsDTO.add(new DisponibilitatDTO(disp.getDataDis()));
+        }
+
+        return dispsDTO;
     }
 }
