@@ -7,6 +7,7 @@ import { CommonModule } from '@angular/common';
 import { DocentService } from '../../../core/services/api/docent/docent-service';
 import { DocentDetails } from '../../../core/model/docent-details';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { UpdateDocent } from '../../../shared/pop-ups/update-docent/update-docent';
 
 export interface GroupedDisponibilitat {
   day: string;
@@ -21,7 +22,6 @@ export interface GroupedDisponibilitat {
   styleUrl: './admin-docents.scss',
 })
 export class AdminDocents implements OnInit {
-
   searchControl = new FormControl('');
   filteredDocents: Docent[] = [];
   groupedDisponibilitat: GroupedDisponibilitat[] = [];
@@ -57,6 +57,10 @@ export class AdminDocents implements OnInit {
 
   addDocent() {
     this.dialog.open(AddDocent, { disableClose: true });
+  }
+
+  updateDocent(Docent: DocentDetails): void {
+    this.dialog.open(UpdateDocent, { disableClose: true, data: Docent });
   }
 
   selectDocent(Docent: Docent): void {

@@ -1,0 +1,37 @@
+<div class="update-form">
+    <h2>Actualitzar docent</h2>
+    <form (submit)="submit()">
+        <label for="email">Email:</label>
+        <p id="email" name="email">{{ docentUpdate.mail }}</p>
+
+        <label for="name">Nom:</label>
+        <input id="name" name="name" [value]="docentUpdate.name">
+
+        <label>Especialitats:</label>
+        <div class="spec-options-container">
+            @for (specOption of specOptions; track specOption) {
+            <mat-checkbox 
+                [checked]="isSpecSelected(specOption)"
+                (change)="toggleSpec(specOption)">
+                {{ specOption.id }}
+            </mat-checkbox>
+            }
+        </div>
+
+        <label>Disponibilitats:</label>
+        <div class="disp-options-container">
+            @for (dispOption of dispOptions; track dispOption) {
+            <mat-checkbox 
+                [checked]="isDispSelected(dispOption)"
+                (change)="toggleDisp(dispOption)">
+                {{ dispOption.timestamp| date:'dd/MM/yyyy HH:mm' }}
+            </mat-checkbox>
+            }
+        </div>
+
+        <div class="actions">
+            <button type="submit">Actualitzar</button>
+            <button type="button" (click)="close()">Cancelar</button>
+        </div>
+    </form>
+</div>

@@ -127,7 +127,7 @@ Content-Type: application/json
 ]
 
 ### Treure tota la disponibilitat
-GET http://localhost:8080/api/tribunal/disponbilitats
+GET http://localhost:8080/api/tribunal/disponibilitats
 
 ### Treure totes les experteses
 GET http://localhost:8080/api/tribunal/experteses

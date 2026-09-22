@@ -28,4 +28,8 @@ export class DocentService {
     const body = disps.map(d => ({ timestamp: d }));
     this.http.post(this.apiUrl + '/disponibilitat', body).subscribe();
   }
+
+  updateDocent(docent: DocentDetails): Observable<DocentDetails> {
+    return this.http.put<DocentDetails>(this.apiUrl + '/update', docent);
+  }
 }

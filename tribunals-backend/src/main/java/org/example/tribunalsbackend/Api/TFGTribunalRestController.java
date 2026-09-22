@@ -38,7 +38,7 @@ public class TFGTribunalRestController {
         return ResponseEntity.ok(experteses);
     }
 
-    @GetMapping("/disponbilitats")public ResponseEntity<List<DisponibilitatDTO>> getDisponibilitats() throws Exception{
+    @GetMapping("/disponibilitats")public ResponseEntity<List<DisponibilitatDTO>> getDisponibilitats() throws Exception{
         List<DisponibilitatDTO> disps = this.dataTreatmentController.getAllDisponibilitats();
         return ResponseEntity.ok(disps);
     }

@@ -12,7 +12,7 @@
             <div>- {{ item }}</div>
             }
             <button class="docent-button" (click)="toggleExpt()">
-                {{ dispToggle ? 'Amagar Experteses' : 'Mostrar Experteses' }}
+                {{ dispToggle ? 'Amagar Disponibilitat' : 'Mostrar Disponibilitat' }}
             </button>
             <div class="expt-disp-info">
                 @if (dispToggle == true)
@@ -35,7 +35,7 @@
                 }
                 }
             </div>
-
+            <button class="docent-button" (click)="updateDocent(currentDocent!)">Editar</button>
         </div>
     </div>
     <div class="docents-list">
