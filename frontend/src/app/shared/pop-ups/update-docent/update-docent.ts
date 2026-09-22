@@ -18,7 +18,14 @@ import { forkJoin } from 'rxjs';
 export class UpdateDocent {
 
   private dialogRef = inject(DialogRef);
-  docentUpdate = inject<DocentDetails>(DIALOG_DATA);
+  docentUpdate = (() => {
+    const data = inject<DocentDetails>(DIALOG_DATA);
+    return {
+      ...data,
+      experteses: [...(data.experteses ?? [])],
+      disponibilitat: (data.disponibilitat ?? []).map(date => new Date(date))
+    };
+  })();
   specOptions: Expertesa[] = [];
   dispOptions: Disponibilitat[] = [];
 
@@ -51,8 +58,10 @@ export class UpdateDocent {
   }
 
   isDispSelected(data: Disponibilitat): boolean {
-    return this.docentUpdate.disponibilitat.some(
-      disp => new Date(disp).getTime() === new Date(data.timestamp).getTime()
+    const timestamp = new Date(data.timestamp).getTime();
+
+    return (this.docentUpdate.disponibilitat ?? []).some(
+      disp => new Date(disp).getTime() === timestamp
     );
   }
 
@@ -65,7 +74,7 @@ export class UpdateDocent {
     }
   }
 
-  isSpecSelected(exp: Expertesa): unknown {
+  isSpecSelected(exp: Expertesa): boolean {
     return this.docentUpdate.experteses.some((expertesa) => expertesa === exp.id);
   }
 
@@ -79,5 +88,4 @@ export class UpdateDocent {
     });
     this.dialogRef.close();
   }
-
 }
