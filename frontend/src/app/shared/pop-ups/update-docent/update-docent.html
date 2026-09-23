@@ -5,7 +5,7 @@
         <p id="email" name="email">{{ docentUpdate.mail }}</p>
 
         <label for="name">Nom:</label>
-        <input id="name" name="name" [value]="docentUpdate.name">
+        <input id="name" name="name" [(ngModel)]="docentUpdate.name">
 
         <label>Especialitats:</label>
         <div class="spec-options-container">

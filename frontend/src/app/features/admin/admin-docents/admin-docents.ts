@@ -8,6 +8,7 @@ import { DocentService } from '../../../core/services/api/docent/docent-service'
 import { DocentDetails } from '../../../core/model/docent-details';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { UpdateDocent } from '../../../shared/pop-ups/update-docent/update-docent';
+import { MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle } from '@angular/material/expansion';
 
 export interface GroupedDisponibilitat {
   day: string;
@@ -17,7 +18,7 @@ export interface GroupedDisponibilitat {
 
 @Component({
   selector: 'app-admin-docents',
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle],
   templateUrl: './admin-docents.html',
   styleUrl: './admin-docents.scss',
 })
