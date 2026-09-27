@@ -6,19 +6,21 @@
             <p>Nom: {{ currentDocent?.name }}</p>
             <p>Veterà: {{ currentDocent?.veteran ? 'Sí' : 'No' }}</p>
         </div>
-        <div class="expt-disp">
-            <mat-expansion-panel class="submenu">
+        <div class="expt-disp-info">
+            <mat-expansion-panel>
                 <mat-expansion-panel-header>
                     <mat-panel-title>
                         <p>Experteses: </p>
                     </mat-panel-title>
                 </mat-expansion-panel-header>
+                <div class="submenu">
                 @for (item of currentDocent?.experteses; track item) {
                 <div>- {{ item }}</div>
                 }
+                </div>
             </mat-expansion-panel>
 
-            <mat-expansion-panel class="submenu">
+            <mat-expansion-panel>
                 <mat-expansion-panel-header>
                     <mat-panel-title>
                         <p>Disponibilitat: </p>
@@ -26,7 +28,7 @@
                 </mat-expansion-panel-header>
                 <div class="expt-disp-info">
                     @if (groupedDisponibilitat.length > 0) {
-                    <div class="availability-calendar">
+                    <div class="submenu">
                         @for (group of groupedDisponibilitat; track group.day) {
                         <div class="availability-day">
                             <h3>{{ group.day | date: 'fullDate' }}</h3>
