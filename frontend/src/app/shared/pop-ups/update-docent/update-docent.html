@@ -22,8 +22,8 @@
         <div class="display-options-container">
             @for (dispOption of dispOptions; track dispOption) {
             <mat-checkbox 
-                [checked]="isDispSelected(dispOption)"
-                (change)="toggleDisp(dispOption)">
+                [checked]="isDispSelected(dispOption.timestamp)"
+                (change)="toggleDisp(dispOption.timestamp)">
                 {{ dispOption.timestamp| date:'dd/MM/yyyy HH:mm' }}
             </mat-checkbox>
             }

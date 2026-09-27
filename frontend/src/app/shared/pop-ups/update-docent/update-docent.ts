@@ -49,20 +49,19 @@ export class UpdateDocent {
 
   }
 
-  toggleDisp(data: Disponibilitat) {
-    const index = this.docentUpdate.disponibilitat.indexOf(data.timestamp);
+  toggleDisp(data: Date) {
+    const index = this.docentUpdate.disponibilitat.indexOf(data);
     if (index > -1) {
       this.docentUpdate.disponibilitat.splice(index, 1);
     } else {
-      this.docentUpdate.disponibilitat.push(data.timestamp);
+      this.docentUpdate.disponibilitat.push(data);
     }
   }
 
-  isDispSelected(data: Disponibilitat): boolean {
-  const timestamp = new Date(data.timestamp).getTime();
+  isDispSelected(data: Date): boolean {
 
   return (this.docentUpdate.disponibilitat ?? []).some(
-    disp => new Date(disp).getTime() === timestamp
+    disp => new Date(disp).getTime() === data.getTime()
   );
   }
 
