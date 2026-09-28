@@ -17,6 +17,7 @@ import org.example.tribunalsbackend.Config.Exceptions.EntityNotFoundException;
 import org.example.tribunalsbackend.Config.Exceptions.TribunalsAutomatedSolutionException;
 import org.example.tribunalsbackend.Domain.*;
 import org.example.tribunalsbackend.Persistence.*;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -45,7 +46,12 @@ public class DataTreatmentController {
         this.tribunalRepository = tribunalRepository;
     }
 
+    @Transactional(rollbackFor = Exception.class)
     public void importExcel(MultipartFile excelFile) throws Exception {
+
+        //abans d'importar les noves dades es fa un reset de les dades actuals
+        resetBBDD();
+
         List<Disponibilitat> disponibilitats = disponibilitatRepository.findAll();
         Workbook workbook = new XSSFWorkbook(excelFile.getInputStream());
         Sheet sheet = workbook.getSheetAt(0);
@@ -93,6 +99,35 @@ public class DataTreatmentController {
             treballRepository.save(tfg);
         }
     }
+
+    private void resetBBDD() throws Exception {
+        //Tribunals depenen dels treballs i dels docents.
+        this.tribunalRepository.deleteAll();
+        this.tribunalRepository.flush();
+
+        //Treballs depenen dels estudiants, docents i experteses.
+        this.treballRepository.deleteAll();
+        this.treballRepository.flush();
+
+        this.estudiantRepository.deleteAll();
+        this.estudiantRepository.flush();
+
+        List<Docent> docents = this.docentRepository.findAll();
+        for (Docent docent : docents) {
+            docent.getAvailability().clear();
+            docent.getExperteses().clear();
+        }
+        this.docentRepository.saveAll(docents);
+        this.docentRepository.flush();
+
+        this.docentRepository.deleteAll();
+        this.docentRepository.flush();
+        this.disponibilitatRepository.deleteAll();
+        this.disponibilitatRepository.flush();
+
+        //Flush ens permet evitar que les transaccions s'acabin abans d'executar la resta. 
+    }
+
     public List<TribunalDTO> organitzarTribunals(int maxDefensesPerSlot) {
         List<Docent> docents = this.docentRepository.findAll();
         List<Estudiant> estudiants = this.estudiantRepository.findAll();
