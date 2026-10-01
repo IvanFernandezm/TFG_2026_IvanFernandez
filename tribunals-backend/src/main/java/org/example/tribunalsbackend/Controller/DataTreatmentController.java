@@ -125,7 +125,7 @@ public class DataTreatmentController {
         this.disponibilitatRepository.deleteAll();
         this.disponibilitatRepository.flush();
 
-        //Flush ens permet evitar que les transaccions s'acabin abans d'executar la resta. 
+        //Flush ens permet evitar que les transaccions s'acabin abans d'executar la resta.
     }
 
     public List<TribunalDTO> organitzarTribunals(int maxDefensesPerSlot) {
@@ -681,6 +681,8 @@ public class DataTreatmentController {
         tribunalRepository.save(old);
         return tribunalToDTO(old);
     }
+
+
     private TribunalDTO tribunalToDTO (Tribunal tribunal) {
         Docent presidencia = tribunal.getPresidencia();
         Docent vocal = tribunal.getVocal();

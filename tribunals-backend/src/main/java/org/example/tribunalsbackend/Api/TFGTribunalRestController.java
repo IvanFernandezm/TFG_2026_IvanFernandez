@@ -33,6 +33,11 @@ public class TFGTribunalRestController {
         return ResponseEntity.ok(tribunals);
     }
 
+    @GetMapping("/docent") public ResponseEntity<List<TribunalDTO>> getTribunalByDocent(@RequestParam String docMail){
+        List<TribunalDTO> tribunalDoc = this.tribunalController.getTribunalsByDocent(docMail);
+        return ResponseEntity.ok(tribunalDoc);
+    }
+
     @GetMapping("/experteses")public ResponseEntity<List<ExpertesaDTO>> getExperteses() throws Exception {
         List<ExpertesaDTO> experteses = this.dataTreatmentController.getAllExperteses();
         return ResponseEntity.ok(experteses);

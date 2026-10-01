@@ -30,6 +30,18 @@ public class TFGTribunalController {
         return tribunalDTOs;
     }
 
+    public List<TribunalDTO> getTribunalsByDocent(String docentEmail) {
+        List<Tribunal> docTribs = tribunalRepository.findTribunalsByPresidencia_MailOrVocal_Mail(docentEmail,docentEmail);
+        if(docTribs.isEmpty()) throw new EntityNotFoundException("No s'han trobat tribunals assignats a aquest professor!");
+
+        List<TribunalDTO> respTribs = new ArrayList<>();
+
+        for(Tribunal t: docTribs){
+            respTribs.add(TribunalToDTO(t));
+        }
+        return respTribs;
+    }
+
     private TribunalDTO TribunalToDTO (Tribunal tribunal) {
         Docent presidencia = tribunal.getPresidencia();
         Docent vocal = tribunal.getVocal();

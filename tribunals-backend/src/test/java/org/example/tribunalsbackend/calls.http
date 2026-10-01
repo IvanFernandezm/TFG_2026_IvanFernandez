@@ -156,6 +156,9 @@ GET http://localhost:8080/api/estudiant/tfg?mail=ahernandezm@edu.tecnocampus.cat
 ### Obtenir els detalls d'un docent
 GET http://localhost:8080/api/docent/details?mail=barberan@tecnocampus.cat
 
+### Obtenir els tribunals d'un docent
+GET http://localhost:8080/api/tribunal/docent?docMail=barberan@tecnocampus.cat
+
 ### Editar informació d'un docent
 PUT http://localhost:8080/api/docent/update
 Content-Type: application/json
