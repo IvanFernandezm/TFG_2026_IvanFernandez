@@ -673,8 +673,8 @@ public class DataTreatmentController {
         if(old == null) {
             throw new EntityNotFoundException("Tribunal no trobat per al TFG: " + update.TFGTitol());
         }
-        Docent presi = docentRepository.findById(update.president()).orElseThrow(() -> new EntityNotFoundException("Docent no trobat: " + update.president()));
-        Docent vocal = docentRepository.findById(update.vocal()).orElseThrow(() -> new EntityNotFoundException("Docent no trobat: " + update.vocal()));
+        Docent presi = docentRepository.findDocentByName(update.president()).orElseThrow(() -> new EntityNotFoundException("Docent no trobat: " + update.president()));
+        Docent vocal = docentRepository.findDocentByName(update.vocal()).orElseThrow(() -> new EntityNotFoundException("Docent no trobat: " + update.vocal()));
         old.setPresidencia(presi);
         old.setVocal(vocal);
         old.setAdjudicacio(update.data());

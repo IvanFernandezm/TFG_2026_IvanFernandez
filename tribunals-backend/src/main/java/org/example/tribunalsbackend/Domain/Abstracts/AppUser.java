@@ -3,6 +3,7 @@ package org.example.tribunalsbackend.Domain.Abstracts;
 import jakarta.persistence.Id;
 import jakarta.persistence.MappedSuperclass;
 import jakarta.persistence.Column;
+import jakarta.persistence.UniqueConstraint;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,6 +16,7 @@ public abstract class AppUser {
     @Id
     @Column(name = "mail")
     private String mail;
+
     private String name;
 
     public AppUser() {}

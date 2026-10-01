@@ -177,3 +177,18 @@ Content-Type: application/json
     "2026-06-06T10:00:00"
   ]
 }
+
+### Editar un tribunal
+PUT http://localhost:8080/api/tribunal/update
+content-type: application/json
+
+{
+    "clase": "SLOT-3",
+    "president": "Pere Tuset",
+    "vocal": "Pere Barberán",
+    "data": "2026-06-06T11:00:00",
+    "TFGTitol": "Optimització de rutes de patrullatge basada en l'anàlisi de mapes de calor de denúncies",
+    "estudiant": "Gandia Domènech, Ferran",
+    "tutor": "Sandra Obiol",
+    "expertesa": "Infraestructures (Seguretat i comunicacions)"
+}
