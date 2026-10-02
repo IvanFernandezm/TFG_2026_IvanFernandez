@@ -1,6 +1,7 @@
 package org.example.tribunalsbackend.Config;
 
 
+import org.example.tribunalsbackend.Config.Exceptions.ConstraintFailureException;
 import org.example.tribunalsbackend.Config.Exceptions.EntityNotFoundException;
 import org.example.tribunalsbackend.Config.Exceptions.TribunalsAutomatedSolutionException;
 import org.springframework.http.HttpStatus;
@@ -17,6 +18,10 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(TribunalsAutomatedSolutionException.class)
     public ResponseEntity<String> handleTribunalsAutomatedSolutionException(TribunalsAutomatedSolutionException e) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+    }
+    @ExceptionHandler(ConstraintFailureException.class)
+    public ResponseEntity<String> handleConstraintFailureException(ConstraintFailureException e){
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
     }
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<String> handleIllegalArgumentException(IllegalArgumentException e) {

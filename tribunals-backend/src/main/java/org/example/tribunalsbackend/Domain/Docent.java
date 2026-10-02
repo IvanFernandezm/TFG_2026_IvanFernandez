@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.example.tribunalsbackend.Domain.Abstracts.AppUser;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -75,6 +76,13 @@ public class Docent extends AppUser {
 
     public boolean isAvailableAt(Disponibilitat disponibilitat) {
         return this.availability.contains(disponibilitat);
+    }
+
+    public boolean isAvailableAtDate(LocalDateTime date){
+        for(Disponibilitat disp: this.availability ){
+            if(disp.getDataDis().equals(date)) return true;
+        }
+        return false;
     }
 
 }

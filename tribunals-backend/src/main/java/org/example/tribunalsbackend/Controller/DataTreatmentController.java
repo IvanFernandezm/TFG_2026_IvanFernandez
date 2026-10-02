@@ -13,6 +13,7 @@ import org.chocosolver.solver.variables.IntVar;
 import org.example.tribunalsbackend.Api.DTO.DisponibilitatDTO;
 import org.example.tribunalsbackend.Api.DTO.ExpertesaDTO;
 import org.example.tribunalsbackend.Api.DTO.TribunalDTO;
+import org.example.tribunalsbackend.Config.Exceptions.ConstraintFailureException;
 import org.example.tribunalsbackend.Config.Exceptions.EntityNotFoundException;
 import org.example.tribunalsbackend.Config.Exceptions.TribunalsAutomatedSolutionException;
 import org.example.tribunalsbackend.Domain.*;
@@ -675,6 +676,11 @@ public class DataTreatmentController {
         }
         Docent presi = docentRepository.findDocentByName(update.president()).orElseThrow(() -> new EntityNotFoundException("Docent no trobat: " + update.president()));
         Docent vocal = docentRepository.findDocentByName(update.vocal()).orElseThrow(() -> new EntityNotFoundException("Docent no trobat: " + update.vocal()));
+        if(!presi.isAvailableAtDate(update.data()) || !vocal.isAvailableAtDate(update.data())){
+            throw new ConstraintFailureException(
+                    "El tribunal no pot assistir a aquesta data: " + update.data()
+            );
+        }
         old.setPresidencia(presi);
         old.setVocal(vocal);
         old.setAdjudicacio(update.data());

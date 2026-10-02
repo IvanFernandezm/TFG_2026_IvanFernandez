@@ -186,7 +186,7 @@ content-type: application/json
     "clase": "SLOT-3",
     "president": "Pere Tuset",
     "vocal": "Pere Barberán",
-    "data": "2026-06-06T11:00:00",
+    "data": "2026-06-06T23:00:00",
     "TFGTitol": "Optimització de rutes de patrullatge basada en l'anàlisi de mapes de calor de denúncies",
     "estudiant": "Gandia Domènech, Ferran",
     "tutor": "Sandra Obiol",
