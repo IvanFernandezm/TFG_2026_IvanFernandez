@@ -109,4 +109,16 @@ public class TFGDocentController {
 
         return toUpdate;
     }
+
+    public Boolean setVeteran(String mail) {
+        Docent doc = docentRepository.findById(mail)
+                .orElseThrow(
+                () -> new EntityNotFoundException("No s'ha trobat cap Docent amb aquest mail: " + mail)
+        );
+        doc.setVeteran();
+
+        docentRepository.save(doc);
+
+        return doc.isVeteran();
+    }
 }

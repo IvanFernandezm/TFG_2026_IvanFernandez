@@ -31,6 +31,11 @@ public class TFGDocentRestController {
         return ResponseEntity.ok(details);
     }
 
+    @PutMapping("/veteran")
+    public ResponseEntity<Boolean> updateVeteran(@RequestParam String mail) throws Exception{
+        return ResponseEntity.ok(docentController.setVeteran(mail));
+    }
+
     @PostMapping("/disponibilitat")
     public void updateDisponibilitat(@RequestBody List<DisponibilitatDTO> dto) throws Exception{
         docentController.updateDisponibilitat(dto);
