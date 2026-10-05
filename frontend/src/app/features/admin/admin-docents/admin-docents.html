@@ -4,7 +4,11 @@
             <h2>Informació del professor</h2>
             <p>Email: {{ currentDocent?.mail }}</p>
             <p>Nom: {{ currentDocent?.name }}</p>
-            <p>Veterà: {{ currentDocent?.veteran ? 'Sí' : 'No' }}</p>
+            <div class="veteran-status">
+                <p>Veterà: {{ currentDocent?.veteran ? 'Sí' : 'No' }}</p>
+                <button class="veteran-button" (click)="setVeteranStatus(currentDocent!)"
+                    [disabled]="!currentDocent">Canviar</button>
+            </div>
         </div>
         <div class="expt-disp-info">
             <mat-expansion-panel>
@@ -14,9 +18,9 @@
                     </mat-panel-title>
                 </mat-expansion-panel-header>
                 <div class="submenu">
-                @for (item of currentDocent?.experteses; track item) {
-                <div>- {{ item }}</div>
-                }
+                    @for (item of currentDocent?.experteses; track item) {
+                    <div>- {{ item }}</div>
+                    }
                 </div>
             </mat-expansion-panel>
 

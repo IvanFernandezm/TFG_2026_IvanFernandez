@@ -32,4 +32,10 @@ export class DocentService {
   updateDocent(docent: DocentDetails): Observable<DocentDetails> {
     return this.http.put<DocentDetails>(this.apiUrl + '/update', docent);
   }
+
+  setVeteranStatus(email: string): Observable<boolean> {
+    return this.http.put<boolean>(this.apiUrl + `/veteran?mail=${email}`, {}).pipe(
+      map(response => response === true)
+    );
+  }
 }

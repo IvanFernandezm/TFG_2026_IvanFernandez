@@ -9,6 +9,7 @@ import { DocentDetails } from '../../../core/model/docent-details';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { UpdateDocent } from '../../../shared/pop-ups/update-docent/update-docent';
 import { MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle } from '@angular/material/expansion';
+import { VeteranConfirm } from '../../../shared/pop-ups/veteran-confirm/veteran-confirm';
 
 export interface GroupedDisponibilitat {
   day: string;
@@ -110,5 +111,14 @@ export class AdminDocents implements OnInit {
         this.filteredDocents = docents;
       }
     );
+  }
+  setVeteranStatus(docent: DocentDetails) {
+    this.dialog.open(VeteranConfirm, { disableClose: true, data: docent.mail }).closed.subscribe(() => {
+      this.loadDocents();
+      this.docentService.getDocentByEmail(docent.mail).subscribe((updatedDocent: DocentDetails) => {
+        this.currentDocent = updatedDocent;
+        this.groupedDisponibilitat = this.groupDisponibilitat(updatedDocent.disponibilitat ?? []);
+      });
+    });
   }
 }
