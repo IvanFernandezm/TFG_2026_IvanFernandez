@@ -23,6 +23,10 @@ export class TribunalService {
     );
   }
 
+  getTribunalsByDocentEmail(email: string): Observable<Tribunal[]> {
+    return this.http.get<Tribunal[]>(`${this.apiUrl}/docent?docMail=${email}`);
+  }
+
   importExcel(file: File): Observable<any> {
     const formData = new FormData();
     formData.append('file', file);
@@ -39,6 +43,7 @@ export class TribunalService {
       )
     );
   }
+
 
   getExperteses(): Observable<Expertesa[]> {
     return this.http.get<Expertesa[]>(`${this.apiUrl}/experteses`);

@@ -1,55 +1,71 @@
 <div class="main-divisor">
-    <div class="docent-info">
-        <div class="main-info">
-            <h2>Informació del professor</h2>
-            <p>Email: {{ currentDocent?.mail }}</p>
-            <p>Nom: {{ currentDocent?.name }}</p>
-            <div class="veteran-status">
-                <p>Veterà: {{ currentDocent?.veteran ? 'Sí' : 'No' }}</p>
-                <button class="veteran-button" (click)="setVeteranStatus(currentDocent!)"
-                    [disabled]="!currentDocent">Canviar</button>
-            </div>
-        </div>
-        <div class="expt-disp-info">
-            <mat-expansion-panel>
-                <mat-expansion-panel-header>
-                    <mat-panel-title>
-                        <p>Experteses: </p>
-                    </mat-panel-title>
-                </mat-expansion-panel-header>
-                <div class="submenu">
-                    @for (item of currentDocent?.experteses; track item) {
-                    <div>- {{ item }}</div>
-                    }
+    <div class="docent-leftside">
+        <div class="docent-info">
+            <div class="main-info">
+                <h2>Informació del professor</h2>
+                <p>Email: {{ currentDocent?.mail }}</p>
+                <p>Nom: {{ currentDocent?.name }}</p>
+                <div class="veteran-status">
+                    <p>Veterà: {{ currentDocent?.veteran ? 'Sí' : 'No' }}</p>
+                    <button class="veteran-button" (click)="setVeteranStatus(currentDocent!.mail)"
+                        [disabled]="!currentDocent">Canviar</button>
                 </div>
-            </mat-expansion-panel>
-
-            <mat-expansion-panel>
-                <mat-expansion-panel-header>
-                    <mat-panel-title>
-                        <p>Disponibilitat: </p>
-                    </mat-panel-title>
-                </mat-expansion-panel-header>
-                <div class="expt-disp-info">
-                    @if (groupedDisponibilitat.length > 0) {
+            </div>
+            <div class="expt-disp-info">
+                <mat-expansion-panel>
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            <p>Experteses: </p>
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
                     <div class="submenu">
-                        @for (group of groupedDisponibilitat; track group.day) {
-                        <div class="availability-day">
-                            <h3>{{ group.day | date: 'fullDate' }}</h3>
-                            <div class="availability-items">
-                                @for (item of group.slots; track item) {
-                                <div class="availability-item">{{ item | date: 'HH:mm' }}</div>
-                                }
-                            </div>
-                        </div>
+                        @for (item of currentDocent?.experteses; track item) {
+                        <div>- {{ item }}</div>
                         }
                     </div>
-                    } @else {
-                    <p class="availability-empty">No hi ha disponibilitat registrada.</p>
-                    }
-                </div>
-            </mat-expansion-panel>
-            <button class="docent-button" (click)="updateDocent(currentDocent!)">Editar</button>
+                </mat-expansion-panel>
+
+                <mat-expansion-panel>
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            <p>Disponibilitat: </p>
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <div class="expt-disp-info">
+                        @if (groupedDisponibilitat.length > 0) {
+                        <div class="submenu">
+                            @for (group of groupedDisponibilitat; track group.day) {
+                            <div class="availability-day">
+                                <h3>{{ group.day | date: 'fullDate' }}</h3>
+                                <div class="availability-items">
+                                    @for (item of group.slots; track item) {
+                                    <div class="availability-item">{{ item | date: 'HH:mm' }}</div>
+                                    }
+                                </div>
+                            </div>
+                            }
+                        </div>
+                        } @else {
+                        <p class="availability-empty">No hi ha disponibilitat registrada.</p>
+                        }
+                    </div>
+                </mat-expansion-panel>
+                <button class="docent-button" (click)="updateDocent(currentDocent!)">Editar</button>
+            </div>
+        </div>
+        <div class ="docent-info">
+            <h2>Tribunals assignats</h2>
+            @if (currentDocentTribunals.length > 0) {
+            <ul>
+                @for (tribunal of currentDocentTribunals; track tribunal.TFGTitol) {
+                <li>
+                    <p>Nom: {{ tribunal.TFGTitol }}</p>
+                    <p>Data: {{ tribunal.data| date: 'dd/MM/yyyy HH:mm' }}</p>                </li>
+                }
+            </ul>
+            } @else {
+            <p>No hi ha tribunals assignats.</p>
+            }
         </div>
     </div>
     <div class="docents-list">

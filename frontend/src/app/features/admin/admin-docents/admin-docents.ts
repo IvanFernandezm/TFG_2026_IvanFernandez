@@ -10,6 +10,8 @@ import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { UpdateDocent } from '../../../shared/pop-ups/update-docent/update-docent';
 import { MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle } from '@angular/material/expansion';
 import { VeteranConfirm } from '../../../shared/pop-ups/veteran-confirm/veteran-confirm';
+import { Tribunal } from '../../../core/model/tribunal-model';
+import { TribunalService } from '../../../core/services/api/tribunal/tribunal-service';
 
 export interface GroupedDisponibilitat {
   day: string;
@@ -29,12 +31,16 @@ export class AdminDocents implements OnInit {
   groupedDisponibilitat: GroupedDisponibilitat[] = [];
 
   currentDocent!: DocentDetails | null;
+  currentDocentTribunals: Tribunal[] = [];
   docents: Docent[] = [];
   dispToggle: boolean = true;
 
   private dialog = inject(Dialog);
 
-  constructor(private docentService: DocentService) { }
+  constructor(
+    private docentService: DocentService,
+    private tribunalService: TribunalService
+  ) { }
 
   ngOnInit(): void {
     this.loadDocents();
@@ -75,6 +81,15 @@ export class AdminDocents implements OnInit {
         console.error('Error al obtenir detalls del docent: ' + Docent.name, error.message);
       }
     );
+    this.tribunalService.getTribunalsByDocentEmail(Docent.email).subscribe(
+      (tribunals: Tribunal[]) => {
+        this.currentDocentTribunals = [];
+        this.currentDocentTribunals = tribunals;
+      },
+      (error) => {
+        console.error('Error al obtenir tribunals del docent: ' + Docent.name, error.message);
+      }
+    );
   }
 
   private groupDisponibilitat(disponibilitat: Date[]): GroupedDisponibilitat[] {
@@ -112,13 +127,12 @@ export class AdminDocents implements OnInit {
       }
     );
   }
-  setVeteranStatus(docent: DocentDetails) {
-    this.dialog.open(VeteranConfirm, { disableClose: true, data: docent.mail }).closed.subscribe(() => {
-      this.loadDocents();
-      this.docentService.getDocentByEmail(docent.mail).subscribe((updatedDocent: DocentDetails) => {
-        this.currentDocent = updatedDocent;
-        this.groupedDisponibilitat = this.groupDisponibilitat(updatedDocent.disponibilitat ?? []);
-      });
-    });
+  setVeteranStatus(mail: string) {
+    this.dialog.open(VeteranConfirm, { disableClose: true, data: mail }).closed.subscribe(() => { });
+    this.loadDocents();
+    const docent = this.docents.find(d => d.email === mail);
+    if (docent) {
+      this.selectDocent(docent);
+    }
   }
 }
