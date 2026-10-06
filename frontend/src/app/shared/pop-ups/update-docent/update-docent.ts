@@ -19,13 +19,13 @@ import { FormsModule } from '@angular/forms';
 export class UpdateDocent {
 
   private dialogRef = inject(DialogRef);
-  docentUpdate =(() => {
+  docentUpdate = (() => {
     const data = inject<DocentDetails>(DIALOG_DATA);
-      return {
-    ...data,
-    experteses: [...(data.experteses ?? [])],
-    disponibilitat: (data.disponibilitat ?? []).map(date => new Date(date))
-  };
+    return {
+      ...data,
+      experteses: [...(data.experteses ?? [])],
+      disponibilitat: [...(data.disponibilitat ?? [])]
+    };
   })();
   specOptions: Expertesa[] = [];
   dispOptions: Disponibilitat[] = [];
@@ -49,7 +49,7 @@ export class UpdateDocent {
 
   }
 
-  toggleDisp(data: Date) {
+  toggleDisp(data: string) {
     const index = this.docentUpdate.disponibilitat.indexOf(data);
     if (index > -1) {
       this.docentUpdate.disponibilitat.splice(index, 1);
@@ -58,11 +58,11 @@ export class UpdateDocent {
     }
   }
 
-  isDispSelected(data: Date): boolean {
+  isDispSelected(data: string): boolean {
 
-  return (this.docentUpdate.disponibilitat ?? []).some(
-    disp => new Date(disp).getTime() === data.getTime()
-  );
+    return (this.docentUpdate.disponibilitat ?? []).some(
+      (disp) => disp === data
+    );
   }
 
   toggleSpec(exp: Expertesa) {

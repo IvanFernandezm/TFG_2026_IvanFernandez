@@ -16,12 +16,7 @@ export class DocentService {
   }
 
   getDocentByEmail(email: string): Observable<DocentDetails> {
-    return this.http.get<DocentDetails>(this.apiUrl + `/details?mail=${email}`).pipe(
-      map(data => ({
-        ...data,
-        disponibilitat: (data.disponibilitat ?? []).map(date => new Date(date))
-      }))
-    );
+    return this.http.get<DocentDetails>(this.apiUrl + `/details?mail=${email}`);
   }
 
   newDisponibilitat(disps: string[]): void {

@@ -3,5 +3,5 @@ export interface DocentDetails {
     mail: string;
     veteran: boolean;
     experteses: string[];
-    disponibilitat: Date[];
+    disponibilitat: string[];
 }

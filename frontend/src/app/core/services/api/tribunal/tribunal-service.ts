@@ -50,13 +50,6 @@ export class TribunalService {
   }
 
   getDisponibilitats(): Observable<Disponibilitat[]> {
-    return this.http.get<Disponibilitat[]>(`${this.apiUrl}/disponibilitats`).pipe(
-      map(data =>
-        data.map(item => ({
-          ...item,
-          timestamp: new Date(item.timestamp)
-        }))
-      )
-    );
+    return this.http.get<Disponibilitat[]>(`${this.apiUrl}/disponibilitats`);
   }
 }

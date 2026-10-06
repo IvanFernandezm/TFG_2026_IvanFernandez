@@ -91,7 +91,10 @@ public class TFGDocentController {
         List<Expertesa> newEx = new ArrayList<>();
 
         for(LocalDateTime time: toUpdate.disponibilitat()){
-            newAv.add(disponibilitatRepository.findDisponibilitatByDataDis(time));
+            newAv.add(disponibilitatRepository.findDisponibilitatByDataDis(time)
+                    .orElseThrow(
+                            ()-> new EntityNotFoundException("Disponibilitat " + time + " no trobada dins la base de dades")
+                    ));
         }
 
         for(String ex: toUpdate.experteses()){

@@ -1,3 +1,3 @@
 export interface Disponibilitat {
-    timestamp: Date;
+    timestamp: string;
 }

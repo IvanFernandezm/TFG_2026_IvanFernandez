@@ -92,10 +92,11 @@ export class AdminDocents implements OnInit {
     );
   }
 
-  private groupDisponibilitat(disponibilitat: Date[]): GroupedDisponibilitat[] {
+  private groupDisponibilitat(disponibilitat: string[]): GroupedDisponibilitat[] {
     const grouped = new Map<string, Date[]>();
 
-    [...disponibilitat]
+    disponibilitat
+      .map(slot => new Date(slot))
       .sort((a, b) => a.getTime() - b.getTime())
       .forEach(slot => {
         const day = this.formatDay(slot);
