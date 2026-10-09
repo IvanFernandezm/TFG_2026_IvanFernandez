@@ -192,7 +192,7 @@ public class DataTreatmentController {
             for (int s = 1; s <= S; s++) {
                 Docent doc = docents.get(p - 1);
                 Disponibilitat dis = slots.get(s-1);
-                if (doc.isAvailableAt(dis)) {
+                if (doc.isAvailableAtDiponibilitat(dis)) {
                     availability.add(p, s);
                 }
             }
@@ -311,7 +311,7 @@ public class DataTreatmentController {
                 boolean availableSomeSlot = false;
                 for (int s = 1; s <= S; s++) {
                     Disponibilitat dis = slots.get(s-1);
-                    if (doc.isAvailableAt(dis)) { availableSomeSlot = true; break; }
+                    if (doc.isAvailableAtDiponibilitat(dis)) { availableSomeSlot = true; break; }
                 }
                 if (!availableSomeSlot) continue;
 
@@ -688,6 +688,45 @@ public class DataTreatmentController {
         return tribunalToDTO(old);
     }
 
+    public String warnUpdateTribunal(TribunalDTO update) {
+        String response ="";
+        Treball treb = this.treballRepository.getTreballByTitle(update.TFGTitol()).orElseThrow(
+                ()-> new EntityNotFoundException("Treball amb titol: " + update.TFGTitol() + " no trobat per fer la comprovació")
+        );
+        Docent tutor = this.docentRepository.findDocentByName(update.tutor()).orElseThrow(
+                ()-> new EntityNotFoundException("Tutor amb el nom: "+ update.tutor() + " no trobat per fer la comprovació")
+        );
+        Docent president = this.docentRepository.findDocentByName(update.president()).orElseThrow(
+                ()-> new EntityNotFoundException("Presiencia no trobada amb aquest nom: " + update.president()+ " per fer la comprovació")
+        );
+        Docent vocal = this.docentRepository.findDocentByName(update.vocal()).orElseThrow(
+                ()-> new EntityNotFoundException("Vocal no trobat amb aquest nom: " + update.vocal()+ " per fer la comprovació")
+        );
+        Disponibilitat horariTribunal= this.disponibilitatRepository.findDisponibilitatByDataDis(update.data()).orElseThrow(
+                ()-> new EntityNotFoundException("L'horari que s'ha inidicat no consta a la base de dades com a horari disponible.")
+        );
+        if(!tutor.isAvailableAtDiponibilitat(horariTribunal)){
+            response.concat("El tutor no podrà assistir a aquesta hora. \n");
+        }else if (tribunalRepository.findTribunalsByPresidencia_MailOrVocal_MailAndAdjudicacio(tutor.getMail(),tutor.getMail(),horariTribunal.getDataDis()).isEmpty()){
+            response.concat("El tutor té tribunals assignats al dia i hora que s'ha marcat");
+        }
+        if(!tribunalRepository.findTribunalsByPresidencia_MailOrVocal_MailAndAdjudicacio(president.getMail(),president.getMail(),horariTribunal.getDataDis()).isEmpty()){
+            response.concat("La presidència ja té un tribunal assignat a aquest dia i hora. \n");
+        } else if (!president.isAvailableAtDiponibilitat(horariTribunal)) {
+            response.concat("La presidència seleccionada no estarà disponible el dia i hora que s'ha marcat");
+        }
+        if(!tribunalRepository.findTribunalsByPresidencia_MailOrVocal_MailAndAdjudicacio(vocal.getMail(),vocal.getMail(),horariTribunal.getDataDis()).isEmpty()){
+            response.concat("La vocalia ja té un tribunal assignat a aquest dia i hora. \n");
+        }else if (!vocal.isAvailableAtDiponibilitat(horariTribunal)){
+            response.concat("La vocalia seleccionada no estarà disponible el dia i hora que s'ha marcat.\n" );
+        }
+        if(tribunalRepository.findTribunalsByAdjudicacio(horariTribunal.getDataDis()).size()>1){
+            response.concat("Es provable que no hi hagin aules disponibles en l'hora indicada.\n");
+        }
+        if(response.isBlank()) return "Es pot fer el canvi sense problema";
+        return response;
+    }
+
 
     private TribunalDTO tribunalToDTO (Tribunal tribunal) {
         Docent presidencia = tribunal.getPresidencia();
@@ -722,5 +761,20 @@ public class DataTreatmentController {
         }
 
         return dispsDTO;
+    }
+
+    @Transactional
+    public String deleteTribunal(String tfgTitol) {
+        Treball treb = treballRepository.getTreballByTitle(tfgTitol).orElseThrow(
+                ()-> new EntityNotFoundException("No s'ha treball el treball a eliminar: " + tfgTitol)
+        );
+        try{
+            this.tribunalRepository.deleteTribunalByTreball(treb);
+        }
+        catch(Exception e){
+            return "No s'ha pogut eliminar corretamnet el tribunal per al TFG: "+ tfgTitol
+                    + "\nDegut al error: " + e.getMessage();
+        }
+        return "Tribunal per al TFG: "+ tfgTitol+ " eliminat correctament";
     }
 }

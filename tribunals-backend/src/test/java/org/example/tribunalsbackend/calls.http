@@ -195,3 +195,23 @@ content-type: application/json
     "tutor": "Sandra Obiol",
     "expertesa": "Infraestructures (Seguretat i comunicacions)"
 }
+
+### Comprovar tribunal
+GET http://localhost:8080/api/tribunal/warn
+content-type: application/json
+
+{
+  "clase": "SLOT-3",
+  "president": "Pere Tuset",
+  "vocal": "Pere Barberán",
+  "data": "2026-06-06T01:00:00",
+  "TFGTitol": "Optimització de rutes de patrullatge basada en l'anàlisi de mapes de calor de denúncies",
+  "estudiant": "Gandia Domènech, Ferran",
+  "tutor": "Sandra Obiol",
+  "expertesa": "Infraestructures (Seguretat i comunicacions)"
+}
+
+### Eliminar un tribunal
+DELETE http://localhost:8080/api/tribunal/delete
+
+Optimització de rutes de patrullatge basada en l'anàlisi de mapes de calor de denúncies

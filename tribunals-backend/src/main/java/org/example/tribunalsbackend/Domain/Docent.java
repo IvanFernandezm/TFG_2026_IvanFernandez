@@ -74,7 +74,7 @@ public class Docent extends AppUser {
         this.veteran = !this.veteran;
     }
 
-    public boolean isAvailableAt(Disponibilitat disponibilitat) {
+    public boolean isAvailableAtDiponibilitat(Disponibilitat disponibilitat) {
         return this.availability.contains(disponibilitat);
     }
 

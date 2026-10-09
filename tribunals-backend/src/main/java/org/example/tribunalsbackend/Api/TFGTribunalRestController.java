@@ -48,6 +48,17 @@ public class TFGTribunalRestController {
         return ResponseEntity.ok(disps);
     }
 
+
+    @GetMapping("/warn") public ResponseEntity<String> warnUpdateTribunal(@RequestBody TribunalDTO update){
+        String warnings = this.dataTreatmentController.warnUpdateTribunal(update);
+        return ResponseEntity.ok(warnings);
+    }
+
+    @DeleteMapping("/delete")public ResponseEntity<String> deleteTribunal(@RequestBody String tfgTitol){
+        String message = this.dataTreatmentController.deleteTribunal(tfgTitol);
+        return ResponseEntity.ok(message);
+    }
+
     @PostMapping("/import")
     public ResponseEntity<String> importData(@RequestParam("file") MultipartFile excel) throws Exception {
         this.dataTreatmentController.importExcel(excel);

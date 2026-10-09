@@ -60,6 +60,11 @@
                 @for (tribunal of currentDocentTribunals; track tribunal.TFGTitol) {
                 <li>
                     <p>Nom: {{ tribunal.TFGTitol }}</p>
+                    <p>Estudiant: {{ tribunal.estudiant }}</p>
+                    <p>Expertesa: {{ tribunal.expertesa }}</p>
+                    <p>Presidencia: {{ tribunal.president }}</p>
+                    <p>Vocalia: {{ tribunal.vocal }}</p>
+                    <p>Aula: {{ tribunal.clase }}</p>
                     <p>Data: {{ tribunal.data| date: 'dd/MM/yyyy HH:mm' }}</p>                </li>
                 }
             </ul>
