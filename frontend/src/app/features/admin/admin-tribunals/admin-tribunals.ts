@@ -1,7 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { Tribunal } from '../../../core/model/tribunal-model';
 import { TribunalService } from '../../../core/services/api/tribunal/tribunal-service';
+import { Dialog } from '@angular/cdk/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 export interface GroupedTribunals {
   day: string;
@@ -15,12 +17,21 @@ export interface GroupedTribunals {
   styleUrl: './admin-tribunals.scss',
 })
 export class AdminTribunals implements OnInit {
+
   groupedTribunals: GroupedTribunals[] = [];
   selected: Tribunal | null = null;
 
-  constructor(private tribunalService: TribunalService) {}
+  private dialog = inject(Dialog);
+  private snackBar = inject(MatSnackBar);
+
+
+  constructor(private tribunalService: TribunalService) { }
 
   ngOnInit(): void {
+    this.loadTribunals();
+  }
+
+  loadTribunals() {
     this.tribunalService.getTribunals().subscribe(tribunals => {
       this.groupedTribunals = this.groupTribunalsByDay(tribunals);
       for (const group of this.groupedTribunals) {
@@ -52,5 +63,21 @@ export class AdminTribunals implements OnInit {
     const day = `${date.getDate()}`.padStart(2, '0');
 
     return `${year}-${month}-${day}`;
+  }
+
+  editarTribunal(tribunal: Tribunal) {
+    throw new Error('Method not implemented.');
+  }
+  
+  eliminarTribunal(titol: string) {
+    this.tribunalService.deleteTribunal(titol).subscribe(
+      (response) => {
+        this.snackBar.open('Tribunal eliminat correctament', 'Tancar', { duration: 3000 });
+        this.ngOnInit();
+      },
+      (error) => {
+        this.snackBar.open('Error al eliminar el tribunal: ' + error.message, 'Tancar', { duration: 3000 });
+      }
+    );
   }
 }

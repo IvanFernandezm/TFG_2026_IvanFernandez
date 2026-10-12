@@ -44,12 +44,18 @@ export class TribunalService {
     );
   }
 
-
   getExperteses(): Observable<Expertesa[]> {
     return this.http.get<Expertesa[]>(`${this.apiUrl}/experteses`);
   }
 
   getDisponibilitats(): Observable<Disponibilitat[]> {
     return this.http.get<Disponibilitat[]>(`${this.apiUrl}/disponibilitats`);
+  }
+
+  deleteTribunal(titol: string): Observable<string> {
+    return this.http.delete(`${this.apiUrl}/delete`, {
+      body: titol,
+      responseType: 'text',
+    });
   }
 }

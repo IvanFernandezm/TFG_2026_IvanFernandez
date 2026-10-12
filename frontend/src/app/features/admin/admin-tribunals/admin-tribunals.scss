@@ -1,7 +1,11 @@
+.tribunal-calendar {
+    --tribunal-action-column: 6rem;
+}
+
 .tribunal-headers,
 .tribunal-item {
     display: grid;
-    grid-template-columns: minmax(10rem, 1.6fr) minmax(14rem, 2fr) minmax(10rem, 1.4fr) minmax(10rem, 1.2fr) minmax(8rem, 1fr) minmax(8rem, 0.9fr) minmax(8rem, 0.9fr);
+    grid-template-columns: var(--tribunal-action-column) minmax(10rem, 1.6fr) minmax(14rem, 2fr) minmax(10rem, 1.4fr) minmax(10rem, 1.2fr) minmax(8rem, 1fr) minmax(8rem, 0.9fr) minmax(8rem, 0.9fr) var(--tribunal-action-column);
     gap: 0.75rem;
     align-items: center;
 }
@@ -26,6 +30,11 @@
     margin: 0;
 }
 
-.tribunal-item:nth-child(even) {
+.tribunal-item:nth-of-type(even) {
     background: #f8fafc;
+}
+
+.tribunal-button {
+    width: 100%;
+    white-space: nowrap;
 }

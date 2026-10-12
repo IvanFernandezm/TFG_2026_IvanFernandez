@@ -4,6 +4,7 @@
         <h3>{{ group.day | date: "fullDate"}}</h3>
 
         <div class="tribunal-headers">
+            <span aria-hidden="true"></span>
             <p>estudiant</p>
             <p>TFG</p>
             <p>tutoria</p>
@@ -11,10 +12,12 @@
             <p>vocalia</p>
             <p>hora</p>
             <p>aula</p>
+            <span aria-hidden="true"></span>
         </div>
 
         @for (tribunal of group.tribunals; track tribunal.estudiant) {
         <div class="tribunal-item">
+            <button class="tribunal-button" type="button" (click)="editarTribunal(tribunal)">Editar</button>
             <p>{{ tribunal.estudiant }}</p>
             <p>{{ tribunal.TFGTitol }}</p>
             <p>{{ tribunal.tutor }}</p>
@@ -22,7 +25,7 @@
             <p>{{ tribunal.vocal }}</p>
             <p>{{ tribunal.data | date: "HH:mm" }}</p>
             <p>{{ tribunal.clase }}</p>
-
+            <button class="tribunal-button" type="button" (click)="eliminarTribunal(tribunal.TFGTitol)">Eliminar</button>
         </div>
         }
         }
