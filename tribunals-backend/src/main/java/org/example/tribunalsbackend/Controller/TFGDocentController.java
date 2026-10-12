@@ -11,6 +11,7 @@ import org.example.tribunalsbackend.Persistence.DisponibilitatRepository;
 import org.example.tribunalsbackend.Persistence.DocentRepository;
 import org.example.tribunalsbackend.Persistence.ExpertesaRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -57,6 +58,7 @@ public class TFGDocentController {
     }
 
     //A l'actualitzar l'horari per als tribunals es reseteja la disponibilitat dels docents
+    @Transactional
     public void updateDisponibilitat(List<DisponibilitatDTO> dto) {
         List<Docent> docents = docentRepository.findAll();
 
@@ -85,6 +87,7 @@ public class TFGDocentController {
         docentRepository.saveAll(docents);
     }
 
+    @Transactional
     public DocentDetailsDTO updateDocent(DocentDetailsDTO toUpdate) {
         Docent docent = docentRepository.getReferenceById(toUpdate.mail());
         List<Disponibilitat> newAv = new ArrayList<>();
@@ -113,6 +116,7 @@ public class TFGDocentController {
         return toUpdate;
     }
 
+    @Transactional
     public Boolean setVeteran(String mail) {
         Docent doc = docentRepository.findById(mail)
                 .orElseThrow(
