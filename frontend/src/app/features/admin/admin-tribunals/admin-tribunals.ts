@@ -4,6 +4,7 @@ import { Tribunal } from '../../../core/model/tribunal-model';
 import { TribunalService } from '../../../core/services/api/tribunal/tribunal-service';
 import { Dialog } from '@angular/cdk/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { UpdateTribunal } from '../../../shared/pop-ups/update-tribunal/update-tribunal';
 
 export interface GroupedTribunals {
   day: string;
@@ -66,9 +67,9 @@ export class AdminTribunals implements OnInit {
   }
 
   editarTribunal(tribunal: Tribunal) {
-    throw new Error('Method not implemented.');
+    this.dialog.open(UpdateTribunal, { disableClose: true, data: tribunal });
   }
-  
+
   eliminarTribunal(titol: string) {
     this.tribunalService.deleteTribunal(titol).subscribe(
       (response) => {
