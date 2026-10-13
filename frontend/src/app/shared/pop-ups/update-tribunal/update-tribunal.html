@@ -23,12 +23,11 @@
 
             <label for="clase">Aula:</label>
             <input id="clase" [(ngModel)]="tribUpdate.clase" />
+            <div class="tribunal-buttons">
+                <button class="tribunal-button">Guardar</button>
+                <button class="tribunal-button" (click)="comprovar()">Comprovar</button>
+                <button class="tribunal-button" (click)="closeDialog()">Tancar</button>
+            </div>
         </div>
-    </div>
-    <div class="tribunal-buttons">
-        <button class="tribunal-button">Guardar</button>
-        <button class="tribunal-button" (click)="comprovar()">Comprovar</button>
-        <button class="tribunal-button" (click)="closeDialog()">Tancar</button>
-
     </div>
 </div>

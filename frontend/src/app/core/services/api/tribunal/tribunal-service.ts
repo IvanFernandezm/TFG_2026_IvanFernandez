@@ -62,4 +62,8 @@ export class TribunalService {
   comprovarTribunal(tribunal: Tribunal): Observable<string> {
     return this.http.post(`${this.apiUrl}/warn`, tribunal, { responseType: 'text' });
   }
+
+  updateTribunal(tribunal: Tribunal): Observable<Tribunal> {
+    return this.http.put<Tribunal>(`${this.apiUrl}/update`, tribunal);
+  }
 }

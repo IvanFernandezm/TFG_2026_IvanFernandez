@@ -53,14 +53,14 @@
 }
 
 
-.actions {
+.tribunal-buttons {
     display: flex;
     justify-content: space-between;
     gap: 0.75rem;
     margin-top: 0.5rem;
 }
 
-.actions button {
+.tribunal-buttons button {
     flex: 1;
     padding: 0.65rem 1.25rem;
     border-radius: 8px;
@@ -70,29 +70,29 @@
     transition: all 0.2s ease;
 }
 
-.actions button[type='submit'] {
+.tribunal-buttons button[type='submit'] {
     border: none;
     background-color: #3b82f6;
     color: #ffffff;
 }
 
-.actions button[type='submit']:hover {
+.tribunal-buttons button[type='submit']:hover {
     background-color: #2563eb;
     box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
 }
 
-.actions button[type='button'] {
+.tribunal-buttons button[type='button'] {
     border: 1px solid #cbd5e1;
     background: #ffffff;
     color: #334155;
 }
 
-.actions button[type='button']:hover {
+.tribunal-buttons button[type='button']:hover {
     border-color: #94a3b8;
     background: #f8fafc;
 }
 
-.actions button:active {
+.tribunal-buttons button:active {
     transform: scale(0.98);
 }
 
@@ -107,7 +107,7 @@
         padding: 0.5rem 0.7rem;
     }
 
-    .actions {
+    .tribunal-buttons {
         flex-direction: column;
     }
 }

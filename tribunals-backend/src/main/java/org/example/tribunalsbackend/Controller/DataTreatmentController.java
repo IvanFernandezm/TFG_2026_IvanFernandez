@@ -720,25 +720,25 @@ public class DataTreatmentController {
                 () -> new EntityNotFoundException("L'horari que s'ha inidicat no consta a la base de dades com a horari disponible.")
         );
         if (!tutor.isAvailableAtDiponibilitat(horariTribunal)) {
-            response.concat("El tutor no podrà assistir a aquesta hora. \n");
+            response+= "El tutor no podrà assistir a aquesta hora. \n";
         } else if (tribunalRepository.findTribunalsByPresidencia_MailOrVocal_MailAndAdjudicacio(tutor.getMail(), tutor.getMail(), horariTribunal.getDataDis()).isEmpty()) {
-            response.concat("El tutor té tribunals assignats al dia i hora que s'ha marcat");
+            response+= "El tutor té tribunals assignats al dia i hora que s'ha marcat";
         }
         if (!tribunalRepository.findTribunalsByPresidencia_MailOrVocal_MailAndAdjudicacio(president.getMail(), president.getMail(), horariTribunal.getDataDis()).isEmpty()) {
-            response.concat("La presidència ja té un tribunal assignat a aquest dia i hora. \n");
+            response+="La presidència ja té un tribunal assignat a aquest dia i hora. \n";
         } else if (!president.isAvailableAtDiponibilitat(horariTribunal)) {
-            response.concat("La presidència seleccionada no estarà disponible el dia i hora que s'ha marcat \n");
+            response+="La presidència seleccionada no estarà disponible el dia i hora que s'ha marcat \n";
         }
         if (!tribunalRepository.findTribunalsByPresidencia_MailOrVocal_MailAndAdjudicacio(vocal.getMail(), vocal.getMail(), horariTribunal.getDataDis()).isEmpty()) {
-            response.concat("La vocalia ja té un tribunal assignat a aquest dia i hora. \n");
+            response+="La vocalia ja té un tribunal assignat a aquest dia i hora. \n";
         } else if (!vocal.isAvailableAtDiponibilitat(horariTribunal)) {
-            response.concat("La vocalia seleccionada no estarà disponible el dia i hora que s'ha marcat.\n");
+            response+="La vocalia seleccionada no estarà disponible el dia i hora que s'ha marcat.\n";
         }
         if (!president.isVeteran()) {
-            response.concat("El docent que ocupa la presidència no consta com a veterà.\n");
+            response+="El docent que ocupa la presidència no consta com a veterà.\n";
         }
         if (tribunalRepository.findTribunalsByAdjudicacio(horariTribunal.getDataDis()).size() > 1) {
-            response.concat("Es provable que no hi hagin aules disponibles en l'hora indicada.\n");
+            response+="Es provable que no hi hagin aules disponibles en l'hora indicada.\n";
         }
         if (response.isBlank()) return "Es pot fer el canvi sense problema";
         return response;
