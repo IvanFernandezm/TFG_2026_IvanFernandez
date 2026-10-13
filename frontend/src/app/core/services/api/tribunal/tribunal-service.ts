@@ -58,4 +58,8 @@ export class TribunalService {
       responseType: 'text',
     });
   }
+
+  comprovarTribunal(tribunal: Tribunal): Observable<string> {
+    return this.http.post(`${this.apiUrl}/warn`, tribunal, { responseType: 'text' });
+  }
 }

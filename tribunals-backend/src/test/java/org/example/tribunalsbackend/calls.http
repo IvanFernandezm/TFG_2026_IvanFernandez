@@ -197,7 +197,7 @@ content-type: application/json
 }
 
 ### Comprovar tribunal
-GET http://localhost:8080/api/tribunal/warn
+POST http://localhost:8080/api/tribunal/warn
 content-type: application/json
 
 {

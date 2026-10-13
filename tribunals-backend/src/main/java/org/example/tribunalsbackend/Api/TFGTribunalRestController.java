@@ -49,7 +49,7 @@ public class TFGTribunalRestController {
     }
 
 
-    @GetMapping("/warn") public ResponseEntity<String> warnUpdateTribunal(@RequestBody TribunalDTO update){
+    @PostMapping("/warn") public ResponseEntity<String> warnUpdateTribunal(@RequestBody TribunalDTO update){
         String warnings = this.dataTreatmentController.warnUpdateTribunal(update);
         return ResponseEntity.ok(warnings);
     }

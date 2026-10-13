@@ -1,8 +1,33 @@
 <p>update-tribunal works!</p>
 <div>
+    <div>
+        <h2>Editar Tribunal</h2>
+        <div class="update-form">
+            <label for="estudiant">Estudiant:</label>
+            <input id="estudiant" [(ngModel)]="tribUpdate.estudiant" />
+
+            <label for="TFGTitol">TFG Títol:</label>
+            <input id="TFGTitol" [(ngModel)]="tribUpdate.TFGTitol" />
+
+            <label for="tutor">Tutor:</label>
+            <input id="tutor" [(ngModel)]="tribUpdate.tutor" />
+
+            <label for="president">Presidència:</label>
+            <input id="president" [(ngModel)]="tribUpdate.president" />
+
+            <label for="vocal">Vocalia:</label>
+            <input id="vocal" [(ngModel)]="tribUpdate.vocal" />
+
+            <label for="data">Data i Hora:</label>
+            <input id="data" type="datetime-local" [(ngModel)]="tribUpdate.data" />
+
+            <label for="clase">Aula:</label>
+            <input id="clase" [(ngModel)]="tribUpdate.clase" />
+        </div>
+    </div>
     <div class="tribunal-buttons">
         <button class="tribunal-button">Guardar</button>
-        <button class="tribunal-button">Comprovar</button>
+        <button class="tribunal-button" (click)="comprovar()">Comprovar</button>
         <button class="tribunal-button" (click)="closeDialog()">Tancar</button>
 
     </div>
