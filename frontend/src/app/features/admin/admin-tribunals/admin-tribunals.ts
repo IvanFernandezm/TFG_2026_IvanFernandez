@@ -5,6 +5,7 @@ import { TribunalService } from '../../../core/services/api/tribunal/tribunal-se
 import { Dialog } from '@angular/cdk/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { UpdateTribunal } from '../../../shared/pop-ups/update-tribunal/update-tribunal';
+import { MatIconModule } from '@angular/material/icon';
 
 export interface GroupedTribunals {
   day: string;
@@ -13,7 +14,7 @@ export interface GroupedTribunals {
 
 @Component({
   selector: 'app-admin-tribunals',
-  imports: [CommonModule],
+  imports: [CommonModule, MatIconModule],
   templateUrl: './admin-tribunals.html',
   styleUrl: './admin-tribunals.scss',
 })

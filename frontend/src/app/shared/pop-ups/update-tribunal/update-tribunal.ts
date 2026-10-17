@@ -8,10 +8,11 @@ import { Docent } from '../../../core/model/docent-model';
 import { Tribunal } from '../../../core/model/tribunal-model';
 import { FormsModule } from "@angular/forms";
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatSelectModule, MatSelect, MatOption } from '@angular/material/select';
 
 @Component({
   selector: 'app-update-tribunal',
-  imports: [FormsModule],
+  imports: [FormsModule, MatSelect, MatOption],
   templateUrl: './update-tribunal.html',
   styleUrl: './update-tribunal.scss',
 })
@@ -62,7 +63,7 @@ export class UpdateTribunal {
     );
   }
 
-  updateTribunal() {
+  onSubmit() {
     this.tribunalService.updateTribunal(this.tribUpdate).subscribe(
       (result: Tribunal) => {
         this.snackBar.open('Tribunal actualitzat correctament', 'Tancar', {

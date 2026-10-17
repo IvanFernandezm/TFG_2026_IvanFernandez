@@ -1,33 +1,48 @@
-<p>update-tribunal works!</p>
-<div>
-    <div>
-        <h2>Editar Tribunal</h2>
-        <div class="update-form">
-            <label for="estudiant">Estudiant:</label>
-            <input id="estudiant" [(ngModel)]="tribUpdate.estudiant" />
+<div class="update-form">
+    <h2>Editar Tribunal</h2>
+    <form (ngSubmit)="onSubmit()">
+        <label for="estudiant">Estudiant:</label>
+        <input id="estudiant" disabled [(ngModel)]="tribUpdate.estudiant" name="estudiant" />
 
-            <label for="TFGTitol">TFG Títol:</label>
-            <input id="TFGTitol" [(ngModel)]="tribUpdate.TFGTitol" />
+        <label for="TFGTitol">TFG Títol:</label>
+        <input id="TFGTitol" [(ngModel)]="tribUpdate.TFGTitol" name="TFGTitol" />
 
-            <label for="tutor">Tutor:</label>
-            <input id="tutor" [(ngModel)]="tribUpdate.tutor" />
+        <label for="tutor">Tutor:</label>
+        <input id="tutor" disabled [(ngModel)]="tribUpdate.tutor" name="tutor" />
 
-            <label for="president">Presidència:</label>
-            <input id="president" [(ngModel)]="tribUpdate.president" />
+        <label for="president">Presidència:</label>
+        <mat-select id="president" [(ngModel)]="tribUpdate.president" name="president">
+            @for (docent of docOptions; track docent.email) {
+            <mat-option [value]="docent.name">
+                {{ docent.name }}
+            </mat-option>
+            }
+        </mat-select>
+        <label for="vocal">Vocalia:</label>
+        <mat-select id="vocal" [(ngModel)]="tribUpdate.vocal" name="vocal">
+            @for (docent of docOptions; track docent.email) {
+            <mat-option [value]="docent.name">
+                {{ docent.name }}
+            </mat-option>
+            }
+        </mat-select>
 
-            <label for="vocal">Vocalia:</label>
-            <input id="vocal" [(ngModel)]="tribUpdate.vocal" />
+        <label for="data">Data i Hora:</label>
+        <mat-select id="data" [(ngModel)]="tribUpdate.data" name="data">
+            @for (dispOption of dispOptions;
+            track dispOption.timestamp) {
+            <mat-option [value]="dispOption.timestamp">
+                {{ dispOption.timestamp }}
+            </mat-option>
+            }
+        </mat-select>
 
-            <label for="data">Data i Hora:</label>
-            <input id="data" type="datetime-local" [(ngModel)]="tribUpdate.data" />
-
-            <label for="clase">Aula:</label>
-            <input id="clase" [(ngModel)]="tribUpdate.clase" />
-            <div class="tribunal-buttons">
-                <button class="tribunal-button">Guardar</button>
-                <button class="tribunal-button" (click)="comprovar()">Comprovar</button>
-                <button class="tribunal-button" (click)="closeDialog()">Tancar</button>
-            </div>
+        <label for="clase">Aula:</label>
+        <input id="clase" [(ngModel)]="tribUpdate.clase" name="clase" />
+        <div class="tribunal-buttons">
+            <button class="tribunal-button" type="submit">Guardar</button>
+            <button class="tribunal-button" type="button" (click)="comprovar()">Comprovar</button>
+            <button class="tribunal-button" type="button" (click)="closeDialog()">Tancar</button>
         </div>
-    </div>
+    </form>
 </div>

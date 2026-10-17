@@ -17,7 +17,9 @@
 
         @for (tribunal of group.tribunals; track tribunal.estudiant) {
         <div class="tribunal-item">
-            <button class="tribunal-button" type="button" (click)="editarTribunal(tribunal)">Editar</button>
+            <button class="tribunal-button" type="button" (click)="editarTribunal(tribunal)">
+                <mat-icon>edit</mat-icon>
+            </button>
             <p>{{ tribunal.estudiant }}</p>
             <p>{{ tribunal.TFGTitol }}</p>
             <p>{{ tribunal.tutor }}</p>
@@ -25,7 +27,9 @@
             <p>{{ tribunal.vocal }}</p>
             <p>{{ tribunal.data | date: "HH:mm" }}</p>
             <p>{{ tribunal.clase }}</p>
-            <button class="tribunal-button" type="button" (click)="eliminarTribunal(tribunal.TFGTitol)">Eliminar</button>
+            <button class="tribunal-button" type="button" (click)="eliminarTribunal(tribunal.TFGTitol)">
+                <mat-icon>delete</mat-icon>
+            </button>
         </div>
         }
         }
