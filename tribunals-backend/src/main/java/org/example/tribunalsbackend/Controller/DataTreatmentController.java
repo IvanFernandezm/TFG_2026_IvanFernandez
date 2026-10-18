@@ -740,6 +740,12 @@ public class DataTreatmentController {
         if (tribunalRepository.findTribunalsByAdjudicacio(horariTribunal.getDataDis()).size() > 1) {
             response+="Es provable que no hi hagin aules disponibles en l'hora indicada.\n";
         }
+        if(!president.hasExpertesa(treb.getExpertesa())){
+            response+="La presidència no té expertesa en aquest treball.\n";
+        }
+        if(!vocal.hasExpertesa(treb.getExpertesa())){
+            response+="La vocalia no té expertesa en aquest treball.\n";
+        }
         if (response.isBlank()) return "Es pot fer el canvi sense problema";
         return response;
     }

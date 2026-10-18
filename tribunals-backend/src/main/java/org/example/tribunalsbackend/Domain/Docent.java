@@ -85,4 +85,7 @@ public class Docent extends AppUser {
         return false;
     }
 
+    public boolean hasExpertesa(Expertesa expertesa) {
+        return this.experteses.contains(expertesa);
+    }
 }
