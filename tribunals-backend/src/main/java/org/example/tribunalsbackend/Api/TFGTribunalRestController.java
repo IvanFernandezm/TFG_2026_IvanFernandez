@@ -5,6 +5,8 @@ import org.example.tribunalsbackend.Api.DTO.ExpertesaDTO;
 import org.example.tribunalsbackend.Api.DTO.TribunalDTO;
 import org.example.tribunalsbackend.Controller.DataTreatmentController;
 import org.example.tribunalsbackend.Controller.TFGTribunalController;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -46,6 +48,22 @@ public class TFGTribunalRestController {
     @GetMapping("/disponibilitats")public ResponseEntity<List<DisponibilitatDTO>> getDisponibilitats() throws Exception{
         List<DisponibilitatDTO> disps = this.dataTreatmentController.getAllDisponibilitats();
         return ResponseEntity.ok(disps);
+    }
+
+    @GetMapping("/exportar")
+    public ResponseEntity<byte[]> exportarExcel() throws Exception {
+
+        byte[] excel = tribunalController.exportarTribunals();
+
+        return ResponseEntity.ok()
+                .header(
+                        HttpHeaders.CONTENT_DISPOSITION,
+                        "attachment; filename=\"tribunals-informàctica-2026.xlsx\""
+                )
+                .contentType(MediaType.parseMediaType(
+                        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                ))
+                .body(excel);
     }
 
 

@@ -33,6 +33,10 @@ export class TribunalService {
     return this.http.post(`${this.apiUrl}/import`, formData, { responseType: 'text' });
   }
 
+  exportAPDF(): Observable<Blob> {
+    return this.http.get(`${this.apiUrl}/exportar`, { responseType: 'blob' });
+  }
+
   organitzarTribunals(classrooms: number): Observable<Tribunal[]> {
     return this.http.get<Tribunal[]>(`${this.apiUrl}/organitzar`, { params: { maxClassrooms: classrooms.toString() } }).pipe(
       map(data =>

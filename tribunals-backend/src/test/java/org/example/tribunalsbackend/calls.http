@@ -215,3 +215,7 @@ content-type: application/json
 DELETE http://localhost:8080/api/tribunal/delete
 
 Optimització de rutes de patrullatge basada en l'anàlisi de mapes de calor de denúncies
+
+### Tribunals a Excel
+GET http://localhost:8080/api/tribunal/exportar
+Accept: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
