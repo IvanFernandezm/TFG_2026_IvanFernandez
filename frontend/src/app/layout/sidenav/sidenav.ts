@@ -24,7 +24,7 @@ interface MenuItem {
   icon: string;
   route?: string;
   children?: MenuItem[];
-  action?: 'import-excel';
+  action?: 'import-excel' | 'exportar-tribunals';
 }
 
 @Component({
@@ -65,7 +65,8 @@ export class Sidenav implements OnChanges {
             icon: 'gavel',
             children: [
               { label: 'Planificador', icon: 'calendar_month', route: '/admin/planificador' },
-              { label: 'Veure organització', icon: 'visibility', route: '/admin/admin-tribunals' }
+              { label: 'Veure organització', icon: 'visibility', route: '/admin/admin-tribunals' },
+              { label: 'Exportar tribunals a Excel', icon: 'file_download', action: 'exportar-tribunals' }
             ]
           },
           {
@@ -139,9 +140,26 @@ export class Sidenav implements OnChanges {
         this.snackBar.open('Fitxer Excel importat correctament', 'Tancar', { duration: 3000 });
       },
       error: error => {
-        console.error('Error importing Excel file', error);
         input.value = '';
-        this.snackBar.open('Error al importar el fitxer Excel', 'Tancar', { duration: 3000 });
+        this.snackBar.open('Error al importar el fitxer Excel: ' + error.message, 'Tancar', { duration: 3000 });
+      }
+    });
+  }
+
+  onExportarTribunals(): void {
+    this.tribunalService.exportAExcel().subscribe({
+      next: (blob: Blob) => {
+        const url = window.URL.createObjectURL(blob);
+        const enlace = document.createElement('a');
+
+        enlace.href = url;
+        enlace.download = 'tribunales.xlsx';
+        enlace.click();
+
+        window.URL.revokeObjectURL(url);
+      },
+      error: (error) => {
+        console.error('Error al exportar a Excel:', error);
       }
     });
   }

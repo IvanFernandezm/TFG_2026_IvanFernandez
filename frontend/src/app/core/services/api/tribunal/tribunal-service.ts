@@ -33,7 +33,7 @@ export class TribunalService {
     return this.http.post(`${this.apiUrl}/import`, formData, { responseType: 'text' });
   }
 
-  exportAPDF(): Observable<Blob> {
+  exportAExcel(): Observable<Blob> {
     return this.http.get(`${this.apiUrl}/exportar`, { responseType: 'blob' });
   }
 

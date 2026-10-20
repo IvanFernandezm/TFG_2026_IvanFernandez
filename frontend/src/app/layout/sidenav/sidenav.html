@@ -27,7 +27,11 @@
           <a
             mat-list-item
             class="submenu-item"
-            (click)="child.action === 'import-excel' ? onImportExcel(excelInput) : onItemClick(child.route)"
+            (click)="child.action === 'import-excel'
+              ? onImportExcel(excelInput)
+              : child.action === 'exportar-tribunals'
+                ? onExportarTribunals()
+                : onItemClick(child.route)"
           >
             <mat-icon>{{ child.icon }}</mat-icon>
             <span>{{ child.label }}</span>
