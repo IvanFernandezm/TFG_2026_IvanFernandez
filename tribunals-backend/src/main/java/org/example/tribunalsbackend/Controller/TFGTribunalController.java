@@ -71,9 +71,9 @@ public class TFGTribunalController {
             Sheet sheet = workbook.createSheet("Tribunals_informàtica_2026");
 
             String[] columnas = {
-                    "Aula", "Data i hora", "Presidència",
-                    "Vocalía", "Títol del TFG",
-                    "Estudiant", "Tutoria", "Expertesa"
+                    "Data i hora", "Aula", "Estudiant",
+                    "Títol del TFG", "Tutoria",
+                    "Presidència", "Vocalia"
             };
 
             Row header = sheet.createRow(0);
@@ -89,10 +89,6 @@ public class TFGTribunalController {
                 Treball treball = tribunal.getTreball();
 
                 fila.createCell(0).setCellValue(
-                        tribunal.getRoom()
-                );
-
-                fila.createCell(1).setCellValue(
                         tribunal.getAdjudicacio() == null
                                 ? "-"
                                 : DATA_FORMAT.format(
@@ -100,30 +96,28 @@ public class TFGTribunalController {
                         )
                 );
 
+                fila.createCell(1).setCellValue(
+                        tribunal.getRoom()
+                );
+
                 fila.createCell(2).setCellValue(
-                        tribunal.getPresidencia().getName()
-                );
-
-                fila.createCell(3).setCellValue(
-                        tribunal.getVocal().getName()
-                );
-
-                fila.createCell(4).setCellValue(
-                        treball.getTitle()
-                );
-
-                fila.createCell(5).setCellValue(
                         treball.getStudent().getName()
                 );
 
-                fila.createCell(6).setCellValue(
+                fila.createCell(3).setCellValue(
+                        treball.getTitle()
+                );
+
+                fila.createCell(4).setCellValue(
                         treball.getTutor().getName()
                 );
 
-                fila.createCell(7).setCellValue(
+                fila.createCell(5).setCellValue(
+                        tribunal.getPresidencia().getName()
+                );
 
-                        treball.getExpertesa().getId()
-
+                fila.createCell(6).setCellValue(
+                        tribunal.getVocal().getName()
                 );
             }
 

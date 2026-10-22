@@ -688,18 +688,44 @@ public class DataTreatmentController {
         if (old == null) {
             throw new EntityNotFoundException("Tribunal no trobat per al TFG: " + update.TFGTitol());
         }
+        Docent tutor = docentRepository.findDocentByName(update.tutor()).orElseThrow(() -> new EntityNotFoundException("Docent no trobat: " + update.tutor()));
         Docent presi = docentRepository.findDocentByName(update.president()).orElseThrow(() -> new EntityNotFoundException("Docent no trobat: " + update.president()));
         Docent vocal = docentRepository.findDocentByName(update.vocal()).orElseThrow(() -> new EntityNotFoundException("Docent no trobat: " + update.vocal()));
-        if (!presi.isAvailableAtDate(update.data()) || !vocal.isAvailableAtDate(update.data())) {
-            throw new ConstraintFailureException(
-                    "El tribunal no pot assistir a aquesta data: " + update.data()
-            );
-        }
+        Disponibilitat horariTribunal = disponibilitatRepository.findDisponibilitatByDataDis(update.data()).orElseThrow(() -> new EntityNotFoundException("Data no consta com a horari de defenses: " + update.data()));
+        validateHardConstraints(tutor, presi, vocal, horariTribunal);
         old.setPresidencia(presi);
         old.setVocal(vocal);
         old.setAdjudicacio(update.data());
         tribunalRepository.save(old);
         return tribunalToDTO(old);
+    }
+
+    private void validateHardConstraints(Docent tutor, Docent president, Docent vocal, Disponibilitat horariTribunal) {
+        //mètode privat per validar constraints dures.
+
+        if (tutor.equals(president) || tutor.equals(vocal)) {
+            throw new ConstraintFailureException("El tutor del TFG forma part del tribunal que has indicat");
+        }
+
+        if (president.equals(vocal)) {
+            throw new ConstraintFailureException("El tribunal ha d'estar format per dos docents diferents");
+        }
+
+        if (!president.isAvailableAtDiponibilitat(horariTribunal) || !vocal.isAvailableAtDiponibilitat(horariTribunal)) {
+            throw new ConstraintFailureException("Almenys un dels integrants del tribunal no pot assistir a aquesta hora");
+        }
+
+        if (!tribunalRepository.findTribunalsByPresidencia_MailOrVocal_MailAndAdjudicacio(president.getMail(), president.getMail(), horariTribunal.getDataDis()).isEmpty()) {
+            throw new ConstraintFailureException("La presidència ja té un tribunal assignat a aquest dia i hora.");
+        }
+
+        if (!tribunalRepository.findTribunalsByPresidencia_MailOrVocal_MailAndAdjudicacio(vocal.getMail(), vocal.getMail(), horariTribunal.getDataDis()).isEmpty()) {
+            throw new ConstraintFailureException("La vocalia ja té un tribunal assignat a aquest dia i hora.");
+        }
+
+        if (!president.isVeteran()) {
+            throw new ConstraintFailureException("El docent que ocupa la presidència no consta com a veterà.");
+        }
     }
 
     public String warnUpdateTribunal(TribunalDTO update) {
@@ -719,32 +745,22 @@ public class DataTreatmentController {
         Disponibilitat horariTribunal = this.disponibilitatRepository.findDisponibilitatByDataDis(update.data()).orElseThrow(
                 () -> new EntityNotFoundException("L'horari que s'ha inidicat no consta a la base de dades com a horari disponible.")
         );
+
+        validateHardConstraints(tutor, president, vocal, horariTribunal);
+
         if (!tutor.isAvailableAtDiponibilitat(horariTribunal)) {
-            response+= "El tutor no podrà assistir a aquesta hora. \n";
+            response += "El tutor no podrà assistir a aquesta hora. \n";
         } else if (tribunalRepository.findTribunalsByPresidencia_MailOrVocal_MailAndAdjudicacio(tutor.getMail(), tutor.getMail(), horariTribunal.getDataDis()).isEmpty()) {
-            response+= "El tutor té tribunals assignats al dia i hora que s'ha marcat";
+            response += "El tutor té tribunals assignats al dia i hora que s'ha marcat. \n";
         }
-        if (!tribunalRepository.findTribunalsByPresidencia_MailOrVocal_MailAndAdjudicacio(president.getMail(), president.getMail(), horariTribunal.getDataDis()).isEmpty()) {
-            response+="La presidència ja té un tribunal assignat a aquest dia i hora. \n";
-        } else if (!president.isAvailableAtDiponibilitat(horariTribunal)) {
-            response+="La presidència seleccionada no estarà disponible el dia i hora que s'ha marcat \n";
-        }
-        if (!tribunalRepository.findTribunalsByPresidencia_MailOrVocal_MailAndAdjudicacio(vocal.getMail(), vocal.getMail(), horariTribunal.getDataDis()).isEmpty()) {
-            response+="La vocalia ja té un tribunal assignat a aquest dia i hora. \n";
-        } else if (!vocal.isAvailableAtDiponibilitat(horariTribunal)) {
-            response+="La vocalia seleccionada no estarà disponible el dia i hora que s'ha marcat.\n";
-        }
-        if (!president.isVeteran()) {
-            response+="El docent que ocupa la presidència no consta com a veterà.\n";
-        }
-        if (tribunalRepository.findTribunalsByAdjudicacio(horariTribunal.getDataDis()).size() > 1) {
+        /*if (tribunalRepository.findTribunalsByAdjudicacio(horariTribunal.getDataDis()).size() > 1) {
             response+="Es provable que no hi hagin aules disponibles en l'hora indicada.\n";
+        }*/
+        if (!president.hasExpertesa(treb.getExpertesa())) {
+            response += "La presidència no té expertesa en aquest treball.\n";
         }
-        if(!president.hasExpertesa(treb.getExpertesa())){
-            response+="La presidència no té expertesa en aquest treball.\n";
-        }
-        if(!vocal.hasExpertesa(treb.getExpertesa())){
-            response+="La vocalia no té expertesa en aquest treball.\n";
+        if (!vocal.hasExpertesa(treb.getExpertesa())) {
+            response += "La vocalia no té expertesa en aquest treball.\n";
         }
         if (response.isBlank()) return "Es pot fer el canvi sense problema";
         return response;
