@@ -7,6 +7,10 @@
         <p>Email del tutor: {{ currentStudent?.tutorMail }}</p>
         <p>TFG: {{ currentStudent?.tfg }}</p>
         <p>Expertesa: {{ currentStudent?.expertesa }}</p>
+        <div class="apte-status">
+            <p>Apte: {{ currentStudent?.apte ? 'Sí' : 'No' }}</p>
+            <button class="apte-button" (click)="setApte()" [disabled]="!currentStudent">Canviar</button>
+        </div>
     </div>
     <div class="students-list">
         <h2>Llista d'estudiants</h2>

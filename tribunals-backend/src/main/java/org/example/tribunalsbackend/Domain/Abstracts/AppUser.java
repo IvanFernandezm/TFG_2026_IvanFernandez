@@ -19,10 +19,11 @@ public abstract class AppUser {
 
     private String name;
 
-    public AppUser() {}
+    public AppUser() {
+    }
+
     public AppUser(String mail, String name) {
         this.mail = mail;
         this.name = name;
     }
-
 }

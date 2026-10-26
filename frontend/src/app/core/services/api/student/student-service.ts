@@ -20,4 +20,11 @@ export class StudentService {
       `${this.apiUrl}/tfg?mail=${mail}`
     );
   }
+
+  setApte(mail: string): Observable<StudentDetails> {
+    return this.http.put<StudentDetails>(
+      `${this.apiUrl}/tfg/apte?mail=${mail}`,
+      {}
+    );
+  }
 }

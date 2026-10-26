@@ -71,8 +71,8 @@ export class UpdateTribunal {
         });
         this.closeDialog();
       },
-      (error: Error) => {
-        this.snackBar.open('Error al actualitzar el tribunal: ' + error, 'Tancar', {
+      (error: HttpErrorResponse) => {
+        this.snackBar.open('Error al actualitzar el tribunal: ' + error.error, 'Tancar', {
           duration: 3000,
         });
       }

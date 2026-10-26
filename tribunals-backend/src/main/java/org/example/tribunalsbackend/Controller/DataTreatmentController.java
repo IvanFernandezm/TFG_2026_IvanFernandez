@@ -138,7 +138,7 @@ public class DataTreatmentController {
 
         List<Docent> docents = this.docentRepository.findAll();
         List<Estudiant> estudiants = this.estudiantRepository.findAll();
-        List<Treball> treballs = this.treballRepository.findAll();
+        List<Treball> treballs = this.treballRepository.findAllByApte(true);
         List<Disponibilitat> slots = this.disponibilitatRepository.findAll();
         List<Expertesa> experteses = this.expertesaRepository.findAll();
 

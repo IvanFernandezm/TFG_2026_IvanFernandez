@@ -8,6 +8,8 @@ import { CommonModule } from '@angular/common';
 import { StudentDetails } from '../../../core/model/student-details';
 import { ReactiveFormsModule, FormControl } from "@angular/forms";
 import { VoidExpr } from '@angular/compiler';
+import { HttpErrorResponse } from '@angular/common/http';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 
 @Component({
@@ -26,6 +28,7 @@ export class AdminStudents implements OnInit {
   students: Student[] = [];
   currentStudent: StudentDetails | null = null;
   private dialog = inject(Dialog);
+  private snackBar = inject(MatSnackBar);
 
   constructor(private studentService: StudentService) { }
 
@@ -67,6 +70,22 @@ export class AdminStudents implements OnInit {
 
   addStudent() {
     this.dialog.open(AddStudent, { disableClose: true });
+  }
+
+  setApte() {
+    if (this.currentStudent) {
+      this.studentService.setApte(this.currentStudent.mail).subscribe(
+        (updatedStudent: StudentDetails) => {
+          this.currentStudent = updatedStudent;
+          this.loadStudents();
+        },
+        (error: HttpErrorResponse) => {
+          this.snackBar.open('Error al canviar l\'estat d\'apte: ' + error.message, 'Tancar', {
+            duration: 3000,
+          });
+        }
+      );
+    }
   }
 
 }

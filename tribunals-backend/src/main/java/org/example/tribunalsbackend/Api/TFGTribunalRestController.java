@@ -72,15 +72,15 @@ public class TFGTribunalRestController {
         return ResponseEntity.ok(warnings);
     }
 
-    @DeleteMapping("/delete")public ResponseEntity<String> deleteTribunal(@RequestBody String tfgTitol){
-        String message = this.dataTreatmentController.deleteTribunal(tfgTitol);
-        return ResponseEntity.ok(message);
-    }
-
     @PostMapping("/import")
     public ResponseEntity<String> importData(@RequestParam("file") MultipartFile excel) throws Exception {
         this.dataTreatmentController.importExcel(excel);
         return ResponseEntity.ok("Importació correcta");
+    }
+
+    @DeleteMapping("/delete")public ResponseEntity<String> deleteTribunal(@RequestBody String tfgTitol){
+        String message = this.dataTreatmentController.deleteTribunal(tfgTitol);
+        return ResponseEntity.ok(message);
     }
 
     @PutMapping("/update") public ResponseEntity<TribunalDTO> updateTribunal(@RequestBody TribunalDTO update) {

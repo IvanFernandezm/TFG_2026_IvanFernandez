@@ -13,4 +13,6 @@ public interface TreballRepository extends JpaRepository<Treball, Long> {
     Optional<Treball>findTreballByStudent(Estudiant student);
 
     Optional<Treball> getTreballByTitle(String title);
+
+    List<Treball> findAllByApte(boolean apte);
 }

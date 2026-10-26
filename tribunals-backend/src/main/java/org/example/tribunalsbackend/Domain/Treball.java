@@ -16,6 +16,7 @@ public class Treball {
 
     private String title;
     private String description;
+    private boolean apte; //DETERMINA SI UN TREBALL ÉS APTE PER PODER ASSGINAR-LI UN TRIBUNAL
 
     @OneToOne
     @JoinColumn(name = "estudiant_mail")
@@ -30,7 +31,9 @@ public class Treball {
     @JoinColumn(name = "expertesa_id")
     private Expertesa expertesa;
 
-    public Treball() {}
+    public Treball() {
+        this.apte = true;
+    }
 
     public Treball(String title, String description, Estudiant student, Docent tutor, Expertesa expertesa) {
         this.title = title;
@@ -38,5 +41,10 @@ public class Treball {
         this.student = student;
         this.tutor = tutor;
         this.expertesa = expertesa;
+        this.apte = true;
+    }
+
+    public void setApte(){
+        this.apte = !this.apte;
     }
 }

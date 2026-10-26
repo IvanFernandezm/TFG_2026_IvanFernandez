@@ -4,10 +4,7 @@ import org.example.tribunalsbackend.Api.DTO.EstudiantDTO;
 import org.example.tribunalsbackend.Api.DTO.EstudiantDetailsDTO;
 import org.example.tribunalsbackend.Controller.TFGEstudiantsController;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -32,5 +29,11 @@ public class TFGEstudiantRestController {
     public ResponseEntity<List<EstudiantDTO>> getAllEstudiants() throws Exception {
         List<EstudiantDTO> estudiants = estudiantsService.getAllEstudiants();
         return ResponseEntity.ok(estudiants);
+    }
+
+    @PutMapping("/tfg/apte")
+    public ResponseEntity<EstudiantDetailsDTO> setApte(@RequestParam String mail){
+        EstudiantDetailsDTO result = estudiantsService.setApte(mail);
+        return  ResponseEntity.ok(result);
     }
 }

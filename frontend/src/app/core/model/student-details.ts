@@ -5,4 +5,5 @@ export interface StudentDetails {
     tutorMail: string;
     tfg: string;
     expertesa: string;
+    apte: boolean;
 }

@@ -50,17 +50,6 @@ public class TFGTribunalController {
         return respTribs;
     }
 
-    private TribunalDTO TribunalToDTO(Tribunal tribunal) {
-        Docent presidencia = tribunal.getPresidencia();
-        Docent vocal = tribunal.getVocal();
-        Treball treball = tribunal.getTreball();
-        Estudiant estudiant = treball.getStudent();
-        Docent tutor = treball.getTutor();
-        Expertesa exp = treball.getExpertesa();
-        return new TribunalDTO(tribunal.getRoom(), presidencia.getName(), vocal.getName(),
-                tribunal.getAdjudicacio(), treball.getTitle(), estudiant.getName(), tutor.getName(), exp.getId());
-    }
-
     public byte[] exportarTribunals() throws Exception {
         List<Tribunal> tribunals = tribunalRepository.findAll();
         if (tribunals.isEmpty()) throw new EntityNotFoundException("No hi han tribunals encara establerts!");
@@ -129,5 +118,16 @@ public class TFGTribunalController {
             return output.toByteArray();
         }
 
+    }
+
+    private TribunalDTO TribunalToDTO(Tribunal tribunal) {
+        Docent presidencia = tribunal.getPresidencia();
+        Docent vocal = tribunal.getVocal();
+        Treball treball = tribunal.getTreball();
+        Estudiant estudiant = treball.getStudent();
+        Docent tutor = treball.getTutor();
+        Expertesa exp = treball.getExpertesa();
+        return new TribunalDTO(tribunal.getRoom(), presidencia.getName(), vocal.getName(),
+                tribunal.getAdjudicacio(), treball.getTitle(), estudiant.getName(), tutor.getName(), exp.getId());
     }
 }

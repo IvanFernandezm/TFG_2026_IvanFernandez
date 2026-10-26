@@ -23,19 +23,30 @@ public class TFGEstudiantsController {
     }
 
     public EstudiantDetailsDTO getTFGEstudiant(String mail) {
-        Estudiant student = estudiantRepository.findById(mail).orElseThrow(() -> new RuntimeException("Estudiant amb mail: " + mail + " no registrat!"));
-        Treball treb = treballRepository.findTreballByStudent(student).orElseThrow(() -> new RuntimeException("L'estudiant amb mail: " + mail + " no té un treball associat!"));
+        Estudiant student = this.estudiantRepository.findById(mail).orElseThrow(() -> new RuntimeException("Estudiant amb mail: " + mail + " no registrat!"));
+        Treball treb = this.treballRepository.findTreballByStudent(student).orElseThrow(() -> new RuntimeException("L'estudiant amb mail: " + mail + " no té un treball associat!"));
         Docent tutor = treb.getTutor();
         Expertesa exp = treb.getExpertesa();
         if (tutor == null)
-            return new EstudiantDetailsDTO(student.getName(), student.getMail(), "SENSE TUTOR ASSIGNAT!", "-", treb.getTitle(), exp.getId());
+            return new EstudiantDetailsDTO(student.getName(), student.getMail(), "SENSE TUTOR ASSIGNAT!", "-", treb.getTitle(), exp.getId(), treb.isApte());
         else
-            return new EstudiantDetailsDTO(student.getName(), student.getMail(), tutor.getName(), tutor.getMail(), treb.getTitle(), exp.getId());
+            return new EstudiantDetailsDTO(student.getName(), student.getMail(), tutor.getName(), tutor.getMail(), treb.getTitle(), exp.getId(), treb.isApte());
 
     }
 
     public List<EstudiantDTO> getAllEstudiants() {
-        List<Estudiant> estudiants = estudiantRepository.findAll();
+        List<Estudiant> estudiants = this.estudiantRepository.findAll();
         return estudiants.stream().map(estudiant -> new EstudiantDTO(estudiant.getMail(),estudiant.getName())).toList();
+    }
+
+    public EstudiantDetailsDTO setApte(String mail) {
+        Estudiant student = this.estudiantRepository.findById(mail).orElseThrow(() -> new RuntimeException("Estudiant amb mail: " + mail + " no registrat!"));
+        Treball treb = this.treballRepository.findTreballByStudent(student).orElseThrow(() -> new RuntimeException("L'estudiant amb mail: " + mail + " no té un treball associat!"));
+        Docent tutor = treb.getTutor();
+        Expertesa exp = treb.getExpertesa();
+        treb.setApte();
+        this.treballRepository.save(treb);
+        return new EstudiantDetailsDTO(student.getName(), student.getMail(), tutor.getName(), tutor.getMail(), treb.getTitle(), exp.getId(), treb.isApte());
+
     }
 }
