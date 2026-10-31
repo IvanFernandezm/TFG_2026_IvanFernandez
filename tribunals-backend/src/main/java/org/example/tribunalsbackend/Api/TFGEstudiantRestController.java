@@ -31,6 +31,12 @@ public class TFGEstudiantRestController {
         return ResponseEntity.ok(estudiants);
     }
 
+    @GetMapping("/noTrib")
+    public ResponseEntity<List<EstudiantDetailsDTO>> getNoTrib() throws Exception {
+        List<EstudiantDetailsDTO> noTribs = estudiantsService.getNoTribsTreballs();
+        return ResponseEntity.ok(noTribs);
+    }
+
     @PutMapping("/tfg/apte")
     public ResponseEntity<EstudiantDetailsDTO> setApte(@RequestParam String mail){
         EstudiantDetailsDTO result = estudiantsService.setApte(mail);

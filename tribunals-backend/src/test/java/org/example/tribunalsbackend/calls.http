@@ -219,3 +219,7 @@ Optimització de rutes de patrullatge basada en l'anàlisi de mapes de calor de 
 ### Tribunals a Excel
 GET http://localhost:8080/api/tribunal/exportar
 Accept: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
+
+### Treballs sense trib
+GET http://localhost:8080/api/estudiant/noTrib
+

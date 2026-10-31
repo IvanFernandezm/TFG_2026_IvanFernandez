@@ -23,7 +23,7 @@ public class TFGEstudiantsController {
     }
 
     public EstudiantDetailsDTO getTFGEstudiant(String mail) {
-        Estudiant student = this.estudiantRepository.findById(mail).orElseThrow(() -> new RuntimeException("Estudiant amb mail: " + mail + " no registrat!"));
+        Estudiant student = getEstudiant(mail);
         Treball treb = this.treballRepository.findTreballByStudent(student).orElseThrow(() -> new RuntimeException("L'estudiant amb mail: " + mail + " no té un treball associat!"));
         Docent tutor = treb.getTutor();
         Expertesa exp = treb.getExpertesa();
@@ -39,8 +39,29 @@ public class TFGEstudiantsController {
         return estudiants.stream().map(estudiant -> new EstudiantDTO(estudiant.getMail(),estudiant.getName())).toList();
     }
 
+
+    public List<EstudiantDetailsDTO> getNoTribsTreballs() {
+        return this.treballRepository.findAptesWithoutTribunal().stream()
+                .map(treb -> {
+                    Estudiant student = treb.getStudent();
+                    Docent tutor = treb.getTutor();
+                    Expertesa exp = treb.getExpertesa();
+
+                    return new EstudiantDetailsDTO(
+                            student.getName(),
+                            student.getMail(),
+                            tutor == null ? "SENSE TUTOR ASSIGNAT!" : tutor.getName(),
+                            tutor == null ? "-" : tutor.getMail(),
+                            treb.getTitle(),
+                            exp.getId(),
+                            treb.isApte()
+                    );
+                })
+                .toList();
+    }
+
     public EstudiantDetailsDTO setApte(String mail) {
-        Estudiant student = this.estudiantRepository.findById(mail).orElseThrow(() -> new RuntimeException("Estudiant amb mail: " + mail + " no registrat!"));
+        Estudiant student = getEstudiant(mail);
         Treball treb = this.treballRepository.findTreballByStudent(student).orElseThrow(() -> new RuntimeException("L'estudiant amb mail: " + mail + " no té un treball associat!"));
         Docent tutor = treb.getTutor();
         Expertesa exp = treb.getExpertesa();
@@ -48,5 +69,9 @@ public class TFGEstudiantsController {
         this.treballRepository.save(treb);
         return new EstudiantDetailsDTO(student.getName(), student.getMail(), tutor.getName(), tutor.getMail(), treb.getTitle(), exp.getId(), treb.isApte());
 
+    }
+
+    private Estudiant getEstudiant(String mail) {
+        return this.estudiantRepository.findById(mail).orElseThrow(() -> new RuntimeException("Estudiant amb mail: " + mail + " no registrat!"));
     }
 }

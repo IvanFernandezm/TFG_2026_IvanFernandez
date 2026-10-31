@@ -620,7 +620,7 @@ public class DataTreatmentController {
         return tribunalDTOs;
     }
 
-    public List<Tribunal> guardarSolucioEnTribunals(
+    private List<Tribunal> guardarSolucioEnTribunals(
             int[] presidenciesPerTFG,
             int[] vocalsPerTFG,
             int[] slotsPerTFG
