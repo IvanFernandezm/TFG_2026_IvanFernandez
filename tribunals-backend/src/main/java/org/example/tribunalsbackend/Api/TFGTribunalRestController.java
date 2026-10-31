@@ -65,10 +65,10 @@ public class TFGTribunalRestController {
                 ))
                 .body(excel);
     }
-   /* @PostMapping("/new") public ResponseEntity<TribunalDTO> newTribunal(@RequestBody TribunalDTO tribunalDTO) throws Exception {
-        TribunalDTO trib = this.tribunalController.newTribunal(tribunalDTO);
+    @PostMapping("/new") public ResponseEntity<TribunalDTO> newTribunal(@RequestBody TribunalDTO tribunalDTO) throws Exception {
+        TribunalDTO trib = this.dataTreatmentController.newTribunal(tribunalDTO);
         return ResponseEntity.ok(trib);
-    }*/
+    }
     @PostMapping("/warn") public ResponseEntity<String> warnUpdateTribunal(@RequestBody TribunalDTO update){
         String warnings = this.dataTreatmentController.warnUpdateTribunal(update);
         return ResponseEntity.ok(warnings);

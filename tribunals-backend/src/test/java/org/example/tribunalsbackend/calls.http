@@ -157,7 +157,7 @@ GET http://localhost:8080/api/estudiant/tfg?mail=ahernandezm@edu.tecnocampus.cat
 GET http://localhost:8080/api/docent/details?mail=barberan@tecnocampus.cat
 
 ### Obtenir els tribunals d'un docent
-GET http://localhost:8080/api/tribunal/docent?docMail=barberan@tecnocampus.cat
+GET http://localhost:8080/api/tribunal/docent?docMail=arueda@tecnocampus.cat
 
 ### set de la veterania del Docent
 PUT http://localhost:8080/api/docent/veteran?mail=barberan@tecnocampus.cat
@@ -223,3 +223,17 @@ Accept: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
 ### Treballs sense trib
 GET http://localhost:8080/api/estudiant/noTrib
 
+### Crear un tribunal
+POST http://localhost:8080/api/tribunal/new
+content-type: application/json
+
+{
+  "clase": "SLOT-3",
+  "president": "Sandra Obiol",
+  "vocal": "Alfredo Rueda",
+  "data": "2026-07-09T08:00:00",
+  "TFGTitol": "Desenvolupament d'una aplicació web per a un sistema de votació basat en blockchain",
+  "estudiant": "Acosta Sicila, Luís",
+  "tutor": "Jordi Boix",
+  "expertesa": "Analítica de dades"
+}

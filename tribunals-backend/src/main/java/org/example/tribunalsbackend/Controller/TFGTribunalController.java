@@ -5,6 +5,7 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.example.tribunalsbackend.Api.DTO.TribunalDTO;
+import org.example.tribunalsbackend.Config.Exceptions.ConstraintFailureException;
 import org.example.tribunalsbackend.Config.Exceptions.EntityNotFoundException;
 import org.example.tribunalsbackend.Domain.*;
 import org.example.tribunalsbackend.Persistence.TribunalRepository;

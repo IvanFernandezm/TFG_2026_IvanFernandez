@@ -34,11 +34,12 @@ public class Tribunal { //ENTITAT DE SORTIDA DE L'ALGORITME
     public Tribunal() {
     }
 
-    public Tribunal(String room, Docent presidency, Docent vocal, Treball treball) {
+    public Tribunal(String room, Docent presidency, Docent vocal, Treball treball, LocalDateTime adjudicacio) {
         this.room = room;
         this.presidencia = presidency;
         this.vocal = vocal;
         this.treball = treball;
+        this.adjudicacio = adjudicacio;
     }
 
     public void intercambiarPresidenciaVocal() {
