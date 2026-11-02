@@ -3,9 +3,9 @@ import { Component, inject, OnInit } from '@angular/core';
 import { Tribunal } from '../../../core/model/tribunal-model';
 import { TribunalService } from '../../../core/services/api/tribunal/tribunal-service';
 import { Dialog } from '@angular/cdk/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { UpdateTribunal } from '../../../shared/pop-ups/update-tribunal/update-tribunal';
 import { MatIconModule } from '@angular/material/icon';
+import { TribunalDelete } from '../../../shared/pop-ups/tribunal-delete/tribunal-delete';
 
 export interface GroupedTribunals {
   day: string;
@@ -24,7 +24,6 @@ export class AdminTribunals implements OnInit {
   selected: Tribunal | null = null;
 
   private dialog = inject(Dialog);
-  private snackBar = inject(MatSnackBar);
 
 
   constructor(private tribunalService: TribunalService) { }
@@ -72,13 +71,11 @@ export class AdminTribunals implements OnInit {
   }
 
   eliminarTribunal(titol: string) {
-    this.tribunalService.deleteTribunal(titol).subscribe(
-      (response) => {
-        this.snackBar.open('Tribunal eliminat correctament', 'Tancar', { duration: 3000 });
-        this.ngOnInit();
-      },
-      (error) => {
-        this.snackBar.open('Error al eliminar el tribunal: ' + error.message, 'Tancar', { duration: 3000 });
+    this.dialog.open(TribunalDelete, { disableClose: true, data: titol }).closed.subscribe(
+      (deleted) => {
+        if (deleted) {
+          this.ngOnInit();
+        }
       }
     );
   }
