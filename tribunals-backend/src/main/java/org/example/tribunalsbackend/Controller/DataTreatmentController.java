@@ -12,6 +12,7 @@ import org.chocosolver.solver.variables.BoolVar;
 import org.chocosolver.solver.variables.IntVar;
 import org.example.tribunalsbackend.Api.DTO.DisponibilitatDTO;
 import org.example.tribunalsbackend.Api.DTO.ExpertesaDTO;
+import org.example.tribunalsbackend.Api.DTO.ResumDTO;
 import org.example.tribunalsbackend.Api.DTO.TribunalDTO;
 import org.example.tribunalsbackend.Config.Exceptions.ConstraintFailureException;
 import org.example.tribunalsbackend.Config.Exceptions.EntityNotFoundException;
@@ -780,6 +781,13 @@ public class DataTreatmentController {
         this.tribunalRepository.save(tribunal);
         return tribunalDTO;
 
+    }
+    public ResumDTO getGeneralInfo() {
+        long studentTotal = this.estudiantRepository.count();
+        long docentTotal = this.docentRepository.count();
+        long tribunalTotal = this.tribunalRepository.count();
+        long aptes = this.treballRepository.countAptes();
+        return new ResumDTO(studentTotal, docentTotal, tribunalTotal, aptes);
     }
 
     private Tribunal DTOtoTrbiunal(TribunalDTO tribunalDTO) {

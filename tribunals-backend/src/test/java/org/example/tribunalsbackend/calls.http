@@ -237,3 +237,6 @@ content-type: application/json
   "tutor": "Jordi Boix",
   "expertesa": "Analítica de dades"
 }
+
+### GET INFO GENERAL
+GET http://localhost:8080/api/general/info

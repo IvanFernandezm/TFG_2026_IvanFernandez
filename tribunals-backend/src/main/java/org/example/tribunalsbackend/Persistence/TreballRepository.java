@@ -28,4 +28,13 @@ public interface TreballRepository extends JpaRepository<Treball, Long> {
               )
             """)
     List<Treball> findAptesWithoutTribunal();
+
+    @Query(
+            """
+                    SELECT count(*)
+                    FROM Treball t
+                    WHERE t.apte = true
+                    """
+    )
+    long countAptes();
 }
