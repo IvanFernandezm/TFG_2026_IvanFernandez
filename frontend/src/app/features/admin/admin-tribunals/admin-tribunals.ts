@@ -67,7 +67,13 @@ export class AdminTribunals implements OnInit {
   }
 
   editarTribunal(tribunal: Tribunal) {
-    this.dialog.open(UpdateTribunal, { disableClose: true, data: tribunal });
+    this.dialog.open(UpdateTribunal, { disableClose: true, data: tribunal }).closed.subscribe(
+      (updated) => {
+        if (updated) {
+          this.ngOnInit();
+        }
+      }
+    );
   }
 
   eliminarTribunal(titol: string) {

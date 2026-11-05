@@ -23,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -689,10 +690,11 @@ public class DataTreatmentController {
         if (old == null) {
             throw new EntityNotFoundException("Tribunal no trobat per al TFG: " + update.TFGTitol());
         }
-        Tribunal newTrib = DTOtoTrbiunal(update);
+        Tribunal newTrib = DTOtoTribunalWithoutSelfConflict(update, old);
         old.setPresidencia(newTrib.getPresidencia());
         old.setVocal(newTrib.getVocal());
-        old.setAdjudicacio(update.data());
+        old.setAdjudicacio(newTrib.getAdjudicacio());
+        old.setRoom(newTrib.getRoom());
         tribunalRepository.save(old);
         return tribunalToDTO(old);
     }
@@ -714,11 +716,12 @@ public class DataTreatmentController {
                 () -> new EntityNotFoundException("L'horari que s'ha inidicat no consta a la base de dades com a horari disponible.")
         );
 
-        validateHardConstraints(tutor, president, vocal, horariTribunal);
+        validateHardConstraints(tutor, president, vocal, horariTribunal,
+                tribunalRepository.findTribunalByTreball_Title(update.TFGTitol()));
 
         if (!tutor.isAvailableAtDiponibilitat(horariTribunal)) {
             response += "El tutor no podrà assistir a aquesta hora. \n";
-        } else if (tribunalRepository.findByDocentAndAdjudicacio(tutor.getMail(), horariTribunal.getDataDis()).isEmpty()) {
+        } else if (!tribunalRepository.findByDocentAndAdjudicacio(tutor.getMail(), horariTribunal.getDataDis()).isEmpty()) {
             response += "El tutor té tribunals assignats al dia i hora que s'ha marcat. \n";
         }
         /*if (tribunalRepository.findTribunalsByAdjudicacio(horariTribunal.getDataDis()).size() > 1) {
@@ -791,13 +794,17 @@ public class DataTreatmentController {
     }
 
     private Tribunal DTOtoTrbiunal(TribunalDTO tribunalDTO) {
+        return DTOtoTribunalWithoutSelfConflict(tribunalDTO, null);
+    }
+
+    private Tribunal DTOtoTribunalWithoutSelfConflict(TribunalDTO tribunalDTO, Tribunal tribunalToExclude) {
         Docent tutor = docentRepository.findDocentByName(tribunalDTO.tutor()).orElseThrow(() -> new EntityNotFoundException("Docent no trobat: " + tribunalDTO.tutor()));
         Docent president = docentRepository.findDocentByName(tribunalDTO.president()).orElseThrow(() -> new EntityNotFoundException("Docent no trobat: " + tribunalDTO.president()));
         Docent vocal = docentRepository.findDocentByName(tribunalDTO.vocal()).orElseThrow(() -> new EntityNotFoundException("Docent no trobat: " + tribunalDTO.vocal()));
         Disponibilitat horariTribunal = disponibilitatRepository.findDisponibilitatByDataDis(tribunalDTO.data()).orElseThrow(() -> new EntityNotFoundException("Data no consta com a horari de defenses: " + tribunalDTO.data()));
         Treball treball = this.treballRepository.getTreballByTitle(tribunalDTO.TFGTitol()).orElseThrow(()-> new EntityNotFoundException("Treball no trobat: " + tribunalDTO.TFGTitol()));
 
-        validateHardConstraints(tutor,president,vocal,horariTribunal);
+        validateHardConstraints(tutor, president, vocal, horariTribunal, tribunalToExclude);
         return new Tribunal(tribunalDTO.clase(),president,vocal,treball,horariTribunal.getDataDis());
     }
 
@@ -813,6 +820,16 @@ public class DataTreatmentController {
     }
 
     private void validateHardConstraints(Docent tutor,Docent president,Docent vocal, Disponibilitat horariTribunal) {
+        validateHardConstraints(tutor, president, vocal, horariTribunal, null);
+    }
+
+    private void validateHardConstraints(
+            Docent tutor,
+            Docent president,
+            Docent vocal,
+            Disponibilitat horariTribunal,
+            Tribunal tribunalToExclude
+    ) {
         //mètode privat per validar constraints dures.
         if (tutor.equals(president) || tutor.equals(vocal)) {
             throw new ConstraintFailureException("El tutor del TFG forma part del tribunal que has indicat");
@@ -826,17 +843,23 @@ public class DataTreatmentController {
             throw new ConstraintFailureException("Almenys un dels integrants del tribunal no pot assistir a aquesta hora");
         }
 
-        if (!tribunalRepository.findByDocentAndAdjudicacio(president.getMail(), horariTribunal.getDataDis()).isEmpty()) {
+        if (hasOtherTribunalAtTime(president.getMail(), horariTribunal.getDataDis(), tribunalToExclude)) {
             throw new ConstraintFailureException("La presidència ja té un tribunal assignat a aquest dia i hora.");
         }
 
-        if (!tribunalRepository.findByDocentAndAdjudicacio(vocal.getMail(), horariTribunal.getDataDis()).isEmpty()) {
+        if (hasOtherTribunalAtTime(vocal.getMail(), horariTribunal.getDataDis(), tribunalToExclude)) {
             throw new ConstraintFailureException("La vocalia ja té un tribunal assignat a aquest dia i hora.");
         }
 
         if (!president.isVeteran()) {
             throw new ConstraintFailureException("El docent que ocupa la presidència no consta com a veterà.");
         }
+    }
+
+    private boolean hasOtherTribunalAtTime(String docentMail, LocalDateTime adjudicacio, Tribunal tribunalToExclude) {
+        return tribunalRepository.findByDocentAndAdjudicacio(docentMail, adjudicacio).stream()
+                .anyMatch(tribunal -> tribunalToExclude == null
+                        || !tribunal.getTreball().equals(tribunalToExclude.getTreball()));
     }
 
 }
