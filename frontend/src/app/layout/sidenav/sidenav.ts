@@ -54,6 +54,7 @@ export class Sidenav implements OnChanges {
 
       case 'ADMIN':
         return [
+          { label: 'Inici', icon: 'home', route: '/' },
           {
             label: 'Importar dades', icon: 'file_upload',
             children: [

@@ -19,7 +19,8 @@ export const routes: Routes = [
       {
         path: '',
         pathMatch: 'full',
-        redirectTo: 'admin'
+        loadComponent: () =>
+          import('./features/welcome/welcome').then(m => m.Welcome)
       }
     ]
   },

@@ -21,6 +21,10 @@ export class StudentService {
     );
   }
 
+  getNoTribunalStudents(): Observable<StudentDetails[]> {
+    return this.http.get<StudentDetails[]>(`${this.apiUrl}/noTrib`);
+  }
+
   setApte(mail: string): Observable<StudentDetails> {
     return this.http.put<StudentDetails>(
       `${this.apiUrl}/tfg/apte?mail=${mail}`,
