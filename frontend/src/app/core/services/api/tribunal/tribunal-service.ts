@@ -63,6 +63,10 @@ export class TribunalService {
     });
   }
 
+  crearTribunal(tribunal: Tribunal): Observable<Tribunal> {
+    return this.http.post<Tribunal>(`${this.apiUrl}/new`, tribunal);
+  }
+
   comprovarTribunal(tribunal: Tribunal): Observable<string> {
     return this.http.post(`${this.apiUrl}/warn`, tribunal, { responseType: 'text' });
   }
@@ -70,4 +74,5 @@ export class TribunalService {
   updateTribunal(tribunal: Tribunal): Observable<Tribunal> {
     return this.http.put<Tribunal>(`${this.apiUrl}/update`, tribunal);
   }
+
 }

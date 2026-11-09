@@ -29,6 +29,8 @@
             class="submenu-item"
             (click)="child.action === 'import-excel'
               ? onImportExcel(excelInput)
+              : child.action === 'crear-tribunal'
+                ? onCreateTribunal()
               : child.action === 'exportar-tribunals'
                 ? onExportarTribunals()
                 : onItemClick(child.route)"

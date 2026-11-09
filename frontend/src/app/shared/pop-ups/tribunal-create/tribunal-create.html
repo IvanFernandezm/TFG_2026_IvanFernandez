@@ -1,0 +1,68 @@
+<div class="tribunal-form">
+    <h2>Crear Tribunal</h2>
+    <form (ngSubmit)="onSubmit()">
+        <label for="TFGTitol">TFG Títol:</label>
+        <mat-select
+            id="TFGTitol"
+            [(ngModel)]="selectedStudent"
+            (ngModelChange)="onStudentSelected($event)"
+            name="TFGTitol"
+            required
+        >
+            @for (student of tribsOptions; track student.mail) {
+            <mat-option [value]="student">
+                {{ student.tfg }}
+            </mat-option>
+            }
+        </mat-select>
+
+        <div class="selected-details">
+            <div>
+                <span class="detail-label">Estudiant</span>
+                <span>{{ newTribunal.estudiant || 'Selecciona un TFG' }}</span>
+            </div>
+            <div>
+                <span class="detail-label">Expertesa</span>
+                <span>{{ newTribunal.expertesa || 'Selecciona un TFG' }}</span>
+            </div>
+            <div>
+                <span class="detail-label">Tutor</span>
+                <span>{{ newTribunal.tutor || 'Selecciona un TFG' }}</span>
+            </div>
+        </div>
+
+        <label for="president">Presidència:</label>
+        <mat-select id="president" [(ngModel)]="newTribunal.president" name="president">
+            @for (docent of docOptions; track docent.email) {
+            <mat-option [value]="docent.name">
+                {{ docent.name }}
+            </mat-option>
+            }
+        </mat-select>
+        <label for="vocal">Vocalia:</label>
+        <mat-select id="vocal" [(ngModel)]="newTribunal.vocal" name="vocal">
+            @for (docent of docOptions; track docent.email) {
+            <mat-option [value]="docent.name">
+                {{ docent.name }}
+            </mat-option>
+            }
+        </mat-select>
+
+        <label for="data">Data i Hora:</label>
+        <mat-select id="data" [(ngModel)]="newTribunal.data" name="data">
+            @for (dispOption of dispOptions;
+            track dispOption.timestamp) {
+            <mat-option [value]="dispOption.timestamp">
+                {{ dispOption.timestamp }}
+            </mat-option>
+            }
+        </mat-select>
+
+        <label for="clase">Aula:</label>
+        <input id="clase" [(ngModel)]="newTribunal.clase" name="clase" />
+        <div class="tribunal-buttons">
+            <button class="tribunal-button" type="submit">Guardar</button>
+            <button class="tribunal-button" type="button" (click)="closeDialog()">Cancela</button>
+        </div>
+    </form>
+</div>
