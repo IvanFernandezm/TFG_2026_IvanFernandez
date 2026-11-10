@@ -2,41 +2,50 @@
   <div class="welcome-heading">
     <h1>Benvingut/da</h1>
   </div>
-  <h2>Resum informació general</h2>
 
   @if (loading()) {
-    <p class="status-message" role="status">Carregant informació...</p>
+  <p class="status-message" role="status">Carregant informació...</p>
   } @else if (errorMessage()) {
-    <p class="status-message error-message" role="alert">{{ errorMessage() }}</p>
+  <p class="status-message error-message" role="alert">{{ errorMessage() }}</p>
   } @else if (generalInfo(); as info) {
-    <div class="stats-grid">
-      <article class="stat-card">
-        <div>
-          <p class="stat-label">Estudiants</p>
-          <p class="stat-value">{{ info.estudiants }}</p>
-        </div>
-      </article>
+  <h2>Informació general</h2>
+  <div class="stats-grid">
+    <article class="stat-card">
+      <div>
+        <p class="stat-label">Estudiants</p>
+        <p class="stat-value">{{ info.estudiants }}</p>
+      </div>
+    </article>
 
-      <article class="stat-card">
-        <div>
-          <p class="stat-label">Docents</p>
-          <p class="stat-value">{{ info.docents }}</p>
-        </div>
-      </article>
+    <article class="stat-card">
+      <div>
+        <p class="stat-label">Docents</p>
+        <p class="stat-value">{{ info.docents }}</p>
+      </div>
+    </article>
 
-      <article class="stat-card">
-        <div>
-          <p class="stat-label">Tribunals</p>
-          <p class="stat-value">{{ info.tribunals }}</p>
-        </div>
-      </article>
+    <article class="stat-card">
+      <div>
+        <p class="stat-label">Estudiants no aptes</p>
+        <p class="stat-value">{{ info.estudiants - info.aptes }}</p>
+      </div>
+    </article>
+  </div>
+  <h2>Informació de tribunals</h2>
+  <div class="stats-grid">
+        <article class="stat-card">
+      <div>
+        <p class="stat-label">Tribunals assignats</p>
+        <p class="stat-value">{{ info.tribunals }}</p>
+      </div>
+    </article>
+        <article class="stat-card">
+      <div>
+        <p class="stat-label">Tribunals per assignar</p>
+        <p class="stat-value">{{ info.aptes - info.tribunals }}</p>
+      </div>
+    </article>
 
-      <article class="stat-card">
-        <div>
-          <p class="stat-label">Aptes</p>
-          <p class="stat-value">{{ info.aptes }}</p>
-        </div>
-      </article>
-    </div>
+  </div>
   }
 </section>

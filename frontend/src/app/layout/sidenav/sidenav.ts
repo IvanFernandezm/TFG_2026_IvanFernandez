@@ -78,7 +78,7 @@ export class Sidenav implements OnChanges {
             label: 'Gestió d\'usuaris',
             icon: 'people',
             children: [
-              { label: 'Alumnes', icon: 'person', route: '/admin/admin-students' },
+              { label: 'Estudiants', icon: 'person', route: '/admin/admin-students' },
               { label: 'Docents', icon: 'badge', route: '/admin/admin-docents' }
             ]
           }
