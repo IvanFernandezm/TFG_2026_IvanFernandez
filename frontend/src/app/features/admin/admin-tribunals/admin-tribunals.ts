@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { Tribunal } from '../../../core/model/tribunal-model';
 import { TribunalService } from '../../../core/services/api/tribunal/tribunal-service';
 import { Dialog } from '@angular/cdk/dialog';
@@ -20,8 +20,8 @@ export interface GroupedTribunals {
 })
 export class AdminTribunals implements OnInit {
 
-  groupedTribunals: GroupedTribunals[] = [];
-  selected: Tribunal | null = null;
+  groupedTribunals = signal<GroupedTribunals[]>([]);
+  selected = signal<Tribunal | null>(null);
 
   private dialog = inject(Dialog);
 
@@ -34,10 +34,11 @@ export class AdminTribunals implements OnInit {
 
   loadTribunals() {
     this.tribunalService.getTribunals().subscribe(tribunals => {
-      this.groupedTribunals = this.groupTribunalsByDay(tribunals);
-      for (const group of this.groupedTribunals) {
+      const groupedTribunals = this.groupTribunalsByDay(tribunals);
+      for (const group of groupedTribunals) {
         group.tribunals.sort((a, b) => a.data.getTime() - b.data.getTime());
       }
+      this.groupedTribunals.set(groupedTribunals);
     });
   }
 

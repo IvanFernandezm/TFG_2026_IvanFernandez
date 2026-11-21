@@ -1,6 +1,6 @@
 <div>
     <div class="tribunal-calendar">
-        @for (group of groupedTribunals; track group.day) {
+        @for (group of groupedTribunals(); track group.day) {
         <h3>{{ group.day | date: "fullDate"}}</h3>
 
         <div class="tribunal-headers">
