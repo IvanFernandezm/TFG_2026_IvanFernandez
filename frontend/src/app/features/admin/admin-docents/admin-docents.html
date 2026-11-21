@@ -3,12 +3,12 @@
         <div class="docent-info">
             <div class="main-info">
                 <h2>Informació del professor</h2>
-                <p>Email: {{ currentDocent?.mail }}</p>
-                <p>Nom: {{ currentDocent?.name }}</p>
+                <p>Email: {{ currentDocent()?.mail }}</p>
+                <p>Nom: {{ currentDocent()?.name }}</p>
                 <div class="veteran-status">
-                    <p>Veterà: {{ currentDocent?.veteran ? 'Sí' : 'No' }}</p>
-                    <button class="veteran-button" (click)="setVeteranStatus(currentDocent!.mail)"
-                        [disabled]="!currentDocent">Canviar</button>
+                    <p>Veterà: {{ currentDocent()?.veteran ? 'Sí' : 'No' }}</p>
+                    <button class="veteran-button" (click)="setVeteranStatus(currentDocent()!.mail)"
+                        [disabled]="!currentDocent()">Canviar</button>
                 </div>
             </div>
             <div class="expt-disp-info">
@@ -19,7 +19,7 @@
                         </mat-panel-title>
                     </mat-expansion-panel-header>
                     <div class="submenu">
-                        @for (item of currentDocent?.experteses; track item) {
+                        @for (item of currentDocent()?.experteses; track item) {
                         <div>- {{ item }}</div>
                         }
                     </div>
@@ -32,9 +32,9 @@
                         </mat-panel-title>
                     </mat-expansion-panel-header>
                     <div class="expt-disp-info">
-                        @if (groupedDisponibilitat.length > 0) {
+                        @if (groupedDisponibilitat().length > 0) {
                         <div class="submenu">
-                            @for (group of groupedDisponibilitat; track group.day) {
+                            @for (group of groupedDisponibilitat(); track group.day) {
                             <div class="availability-day">
                                 <h3>{{ group.day | date: 'fullDate' }}</h3>
                                 <div class="availability-items">
@@ -50,14 +50,14 @@
                         }
                     </div>
                 </mat-expansion-panel>
-                <button class="docent-button" (click)="updateDocent(currentDocent!)">Editar</button>
+                <button class="docent-button" (click)="updateDocent(currentDocent()!)" [disabled]="!currentDocent()">Editar</button>
             </div>
         </div>
         <div class ="docent-info">
             <h2>Tribunals assignats</h2>
-            @if (currentDocentTribunals.length > 0) {
+            @if (currentDocentTribunals().length > 0) {
             <ul>
-                @for (tribunal of currentDocentTribunals; track tribunal.TFGTitol) {
+                @for (tribunal of currentDocentTribunals(); track tribunal.TFGTitol) {
                 <li>
                     <p>Nom: {{ tribunal.TFGTitol }}</p>
                     <p>Estudiant: {{ tribunal.estudiant }}</p>
@@ -79,8 +79,8 @@
             <input type="text" [formControl]="searchControl" placeholder="Cerca per nom o email" class="search-input">
         </div>
         <ul>
-            @for (docent of filteredDocents; track docent.email) {
-            <li (click)="selectDocent(docent)" [class.selected]="currentDocent?.mail === docent.email">
+            @for (docent of filteredDocents(); track docent.email) {
+            <li (click)="selectDocent(docent)" [class.selected]="selectedDocentMail() === docent.email">
                 {{ docent.name }}
             </li>
             }

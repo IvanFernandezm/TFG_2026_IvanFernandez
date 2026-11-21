@@ -1,15 +1,15 @@
 <div class="main-divisor">
     <div class="student-info">
         <h2>Informació de l'estudiant</h2>
-        <p>Email: {{ currentStudent?.mail }}</p>
-        <p>Nom: {{ currentStudent?.name }}</p>
-        <p>Tutor: {{ currentStudent?.tutorNom }}</p>
-        <p>Email del tutor: {{ currentStudent?.tutorMail }}</p>
-        <p>TFG: {{ currentStudent?.tfg }}</p>
-        <p>Expertesa: {{ currentStudent?.expertesa }}</p>
+        <p>Email: {{ currentStudent()?.mail }}</p>
+        <p>Nom: {{ currentStudent()?.name }}</p>
+        <p>Tutor: {{ currentStudent()?.tutorNom }}</p>
+        <p>Email del tutor: {{ currentStudent()?.tutorMail }}</p>
+        <p>TFG: {{ currentStudent()?.tfg }}</p>
+        <p>Expertesa: {{ currentStudent()?.expertesa }}</p>
         <div class="apte-status">
-            <p>Apte: {{ currentStudent?.apte ? 'Sí' : 'No' }}</p>
-            <button class="apte-button" (click)="setApte()" [disabled]="!currentStudent">Canviar</button>
+            <p>Apte: {{ currentStudent()?.apte ? 'Sí' : 'No' }}</p>
+            <button class="apte-button" (click)="setApte()" [disabled]="!currentStudent()">Canviar</button>
         </div>
     </div>
     <div class="students-list">
@@ -18,8 +18,8 @@
             <input type="text" [formControl]="searchControl" placeholder="Cerca per nom o email" class="search-input">
         </div>
         <ul>
-            @for (student of (filteredStudents); track student.mail) {
-            <li (click)="selectStudent(student)" [class.selected]="currentStudent === student">
+            @for (student of filteredStudents(); track student.mail) {
+            <li (click)="selectStudent(student)" [class.selected]="selectedStudentMail() === student.mail">
                 {{ student.name }}
             </li>
             }

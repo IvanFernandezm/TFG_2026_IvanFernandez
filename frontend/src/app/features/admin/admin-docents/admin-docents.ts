@@ -2,7 +2,7 @@ import { Dialog } from '@angular/cdk/dialog';
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { AddDocent } from '../../../shared/pop-ups/add-docent/add-docent';
 import { Docent } from '../../../core/model/docent-model';
-import { debounceTime, Observable } from 'rxjs';
+import { debounceTime, startWith } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { DocentService } from '../../../core/services/api/docent/docent-service';
 import { DocentDetails } from '../../../core/model/docent-details';
@@ -27,13 +27,14 @@ export interface GroupedDisponibilitat {
 })
 export class AdminDocents implements OnInit {
   searchControl = new FormControl('');
-  filteredDocents: Docent[] = [];
-  groupedDisponibilitat: GroupedDisponibilitat[] = [];
+  filteredDocents = signal<Docent[]>([]);
+  groupedDisponibilitat = signal<GroupedDisponibilitat[]>([]);
 
-  currentDocent!: DocentDetails | null;
-  currentDocentTribunals: Tribunal[] = [];
-  docents: Docent[] = [];
-  dispToggle: boolean = true;
+  currentDocent = signal<DocentDetails | null>(null);
+  currentDocentTribunals = signal<Tribunal[]>([]);
+  private docents = signal<Docent[]>([]);
+  selectedDocentMail = signal<string | null>(null);
+  dispToggle = signal(true);
 
   private dialog = inject(Dialog);
 
@@ -45,13 +46,14 @@ export class AdminDocents implements OnInit {
   ngOnInit(): void {
     this.loadDocents();
     this.searchControl.valueChanges.pipe(
-      debounceTime(300)
+      startWith(this.searchControl.value ?? ''),
+      debounceTime(300),
     ).subscribe(searchTerm => {
       const term = (searchTerm ?? '').toLowerCase();
-      this.filteredDocents = this.docents.filter(docent =>
+      this.filteredDocents.set(this.docents().filter(docent =>
         docent.name.toLowerCase().includes(term) ||
         docent.email.toLowerCase().includes(term)
-      );
+      ));
     });
   }
 
@@ -60,7 +62,7 @@ export class AdminDocents implements OnInit {
   }
 
   toggleExpt() {
-    this.dispToggle = !this.dispToggle;
+    this.dispToggle.update(value => !value);
   }
 
   addDocent() {
@@ -72,10 +74,13 @@ export class AdminDocents implements OnInit {
   }
 
   selectDocent(Docent: Docent): void {
+    this.selectedDocentMail.set(Docent.email);
     this.docentService.getDocentByEmail(Docent.email).pipe().subscribe(
       (docentDetails: DocentDetails) => {
-        this.currentDocent = docentDetails;
-        this.groupedDisponibilitat = this.groupDisponibilitat(docentDetails.disponibilitat ?? []);
+        this.currentDocent.set(docentDetails);
+        this.groupedDisponibilitat.set(
+          this.groupDisponibilitat(docentDetails.disponibilitat ?? [])
+        );
       },
       (error) => {
         console.error('Error al obtenir detalls del docent: ' + Docent.name, error.message);
@@ -83,8 +88,7 @@ export class AdminDocents implements OnInit {
     );
     this.tribunalService.getTribunalsByDocentEmail(Docent.email).subscribe(
       (tribunals: Tribunal[]) => {
-        this.currentDocentTribunals = [];
-        this.currentDocentTribunals = tribunals;
+        this.currentDocentTribunals.set(tribunals);
       },
       (error) => {
         console.error('Error al obtenir tribunals del docent: ' + Docent.name, error.message);
@@ -123,17 +127,23 @@ export class AdminDocents implements OnInit {
   loadDocents() {
     this.docentService.getDocents().subscribe(
       (docents: Docent[]) => {
-        this.docents = docents;
-        this.filteredDocents = docents;
+        this.docents.set(docents);
+
+        const term = (this.searchControl.value ?? '').toLowerCase();
+        this.filteredDocents.set(docents.filter(docent =>
+          docent.name.toLowerCase().includes(term) ||
+          docent.email.toLowerCase().includes(term)
+        ));
       }
     );
   }
   setVeteranStatus(mail: string) {
-    this.dialog.open(VeteranConfirm, { disableClose: true, data: mail }).closed.subscribe(() => { });
-    this.loadDocents();
-    const docent = this.docents.find(d => d.email === mail);
-    if (docent) {
-      this.selectDocent(docent);
-    }
+    this.dialog.open(VeteranConfirm, { disableClose: true, data: mail }).closed.subscribe(() => {
+      this.loadDocents();
+      const docent = this.docents().find(d => d.email === mail);
+      if (docent) {
+        this.selectDocent(docent);
+      }
+    });
   }
 }

@@ -3,11 +3,10 @@ import { Component, inject, OnInit, signal } from '@angular/core';
 import { AddStudent } from '../../../shared/pop-ups/add-student/add-student';
 import { StudentService } from '../../../core/services/api/student/student-service';
 import { Student } from '../../../core/model/student-model';
-import { Observable, debounceTime } from 'rxjs';
+import { debounceTime, startWith } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { StudentDetails } from '../../../core/model/student-details';
 import { ReactiveFormsModule, FormControl } from "@angular/forms";
-import { VoidExpr } from '@angular/compiler';
 import { HttpErrorResponse } from '@angular/common/http';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
@@ -23,10 +22,11 @@ export class AdminStudents implements OnInit {
 
   //Variables necesaries per al buscador d'alumnes
   searchControl = new FormControl('');
-  filteredStudents: Student[] = [];
+  filteredStudents = signal<Student[]>([]);
 
-  students: Student[] = [];
-  currentStudent: StudentDetails | null = null;
+  private students = signal<Student[]>([]);
+  currentStudent = signal<StudentDetails | null>(null);
+  selectedStudentMail = signal<string | null>(null);
   private dialog = inject(Dialog);
   private snackBar = inject(MatSnackBar);
 
@@ -35,28 +35,34 @@ export class AdminStudents implements OnInit {
   ngOnInit(): void {
     this.loadStudents();
     this.searchControl.valueChanges.pipe(
-      debounceTime(300)
+      startWith(this.searchControl.value ?? ''),
+      debounceTime(300),
     ).subscribe(searchTerm => {
       const term = (searchTerm ?? '').toLowerCase();
-      this.filteredStudents = this.students.filter(student =>
+      this.filteredStudents.set(this.students().filter(student =>
         student.name.toLowerCase().includes(term) ||
         student.mail.toLowerCase().includes(term)
-      );
+      ));
     });
   }
 
   loadStudents(): void {
     this.studentService.getStudents().subscribe(students => {
-      this.students = students;
-      this.filteredStudents = students;
-    }
-    );
+      this.students.set(students);
+
+      const term = (this.searchControl.value ?? '').toLowerCase();
+      this.filteredStudents.set(students.filter(student =>
+        student.name.toLowerCase().includes(term) ||
+        student.mail.toLowerCase().includes(term)
+      ));
+    });
   }
 
   selectStudent(student: Student): void {
+    this.selectedStudentMail.set(student.mail);
     this.studentService.getStudentByMail(student.mail).pipe().subscribe(
       (studentDetails: StudentDetails) => {
-        this.currentStudent = studentDetails;
+        this.currentStudent.set(studentDetails);
       },
       (error) => {
         console.error('Error al obtenir detalls de l\'alumne: ' + student.name, error);
@@ -73,10 +79,11 @@ export class AdminStudents implements OnInit {
   }
 
   setApte() {
-    if (this.currentStudent) {
-      this.studentService.setApte(this.currentStudent.mail).subscribe(
+    const currentStudent = this.currentStudent();
+    if (currentStudent) {
+      this.studentService.setApte(currentStudent.mail).subscribe(
         (updatedStudent: StudentDetails) => {
-          this.currentStudent = updatedStudent;
+          this.currentStudent.set(updatedStudent);
           this.loadStudents();
         },
         (error: HttpErrorResponse) => {
