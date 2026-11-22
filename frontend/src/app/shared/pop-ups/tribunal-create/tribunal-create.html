@@ -4,12 +4,12 @@
         <label for="TFGTitol">Estudiant:</label>
         <mat-select
             id="Estudiant"
-            [(ngModel)]="selectedStudent"
+            [ngModel]="selectedStudent()"
             (ngModelChange)="onStudentSelected($event)"
             name="Estudiant"
             required
         >
-            @for (student of tribsOptions; track student.mail) {
+            @for (student of tribsOptions(); track student.mail) {
             <mat-option [value]="student">
                 {{ student.name || 'Selecciona un Estudiant' }}
             </mat-option>
@@ -19,29 +19,31 @@
         <div class="selected-details">
             <div>
                 <span class="detail-label">TFG</span>
-                <span>{{ newTribunal.TFGTitol || 'Selecciona un Estudiant' }}</span>
+                <span>{{ newTribunal().TFGTitol || 'Selecciona un Estudiant' }}</span>
             </div>
             <div>
                 <span class="detail-label">Expertesa</span>
-                <span>{{ newTribunal.expertesa || 'Selecciona un Estudiant' }}</span>
+                <span>{{ newTribunal().expertesa || 'Selecciona un Estudiant' }}</span>
             </div>
             <div>
                 <span class="detail-label">Tutor</span>
-                <span>{{ newTribunal.tutor || 'Selecciona un Estudiant' }}</span>
+                <span>{{ newTribunal().tutor || 'Selecciona un Estudiant' }}</span>
             </div>
         </div>
 
         <label for="president">Presidència:</label>
-        <mat-select id="president" [(ngModel)]="newTribunal.president" name="president">
-            @for (docent of docOptions; track docent.email) {
+        <mat-select id="president" [ngModel]="newTribunal().president"
+            (ngModelChange)="updateField('president', $event)" name="president">
+            @for (docent of docOptions(); track docent.email) {
             <mat-option [value]="docent.name">
                 {{ docent.name }}
             </mat-option>
             }
         </mat-select>
         <label for="vocal">Vocalia:</label>
-        <mat-select id="vocal" [(ngModel)]="newTribunal.vocal" name="vocal">
-            @for (docent of docOptions; track docent.email) {
+        <mat-select id="vocal" [ngModel]="newTribunal().vocal"
+            (ngModelChange)="updateField('vocal', $event)" name="vocal">
+            @for (docent of docOptions(); track docent.email) {
             <mat-option [value]="docent.name">
                 {{ docent.name }}
             </mat-option>
@@ -49,8 +51,9 @@
         </mat-select>
 
         <label for="data">Data i Hora:</label>
-        <mat-select id="data" [(ngModel)]="newTribunal.data" name="data">
-            @for (dispOption of dispOptions;
+        <mat-select id="data" [ngModel]="newTribunal().data"
+            (ngModelChange)="updateField('data', $event)" name="data">
+            @for (dispOption of dispOptions();
             track dispOption.timestamp) {
             <mat-option [value]="dispOption.timestamp">
                 {{ dispOption.timestamp }}
@@ -59,7 +62,8 @@
         </mat-select>
 
         <label for="clase">Aula:</label>
-        <input id="clase" [(ngModel)]="newTribunal.clase" name="clase" />
+        <input id="clase" [ngModel]="newTribunal().clase"
+            (ngModelChange)="updateField('clase', $event)" name="clase" />
         <div class="tribunal-buttons">
             <button class="tribunal-button" type="submit">Guardar</button>
             <button class="tribunal-button" type="button" (click)="closeDialog()">Cancela</button>

@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { Docent } from '../../../core/model/docent-model';
 import { Disponibilitat } from '../../../core/model/disponibilitat-model';
 import { StudentDetails } from '../../../core/model/student-details';
@@ -18,15 +18,15 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './tribunal-create.html',
   styleUrl: './tribunal-create.scss',
 })
-export class TribunalCreate {
+export class TribunalCreate implements OnInit {
   private dialogRef = inject(DialogRef);
   private snackBar = inject(MatSnackBar);
   
-  dispOptions: Disponibilitat[] = [];
-  docOptions: Docent[] = [];
-  tribsOptions: StudentDetails[] = [];
-  selectedStudent: StudentDetails | null = null;
-  newTribunal: Tribunal = {
+  dispOptions = signal<Disponibilitat[]>([]);
+  docOptions = signal<Docent[]>([]);
+  tribsOptions = signal<StudentDetails[]>([]);
+  selectedStudent = signal<StudentDetails | null>(null);
+  newTribunal = signal<Tribunal>({
     clase: '',
     president: '',
     vocal: '',
@@ -35,7 +35,7 @@ export class TribunalCreate {
     estudiant: '',
     tutor: '',
     expertesa: '',
-  };
+  });
 
     constructor(
       private docentService: DocentService,
@@ -43,23 +43,22 @@ export class TribunalCreate {
       private studentService: StudentService    
     ) { }
 
-    ngOnInit() {
+  ngOnInit() {
     this.tribunalService.getDisponibilitats().subscribe(disponibilitats => {
-      this.dispOptions = disponibilitats;
+      this.dispOptions.set(disponibilitats);
     });
 
     this.docentService.getDocents().subscribe(
       (docents: Docent[]) => {
-        this.docOptions = docents;
+        this.docOptions.set(docents);
       }
     );
 
     this.studentService.getNoTribunalStudents().subscribe(
       (students: StudentDetails[]) => {
-        this.tribsOptions = students;
+        this.tribsOptions.set(students);
       }
     );
-
   }
 
   closeDialog() {
@@ -67,28 +66,41 @@ export class TribunalCreate {
   }
 
   onStudentSelected(student: StudentDetails | null): void {
+    this.selectedStudent.set(student);
+
     if (!student) {
+      this.newTribunal.update(tribunal => ({
+        ...tribunal,
+        TFGTitol: '',
+        estudiant: '',
+        expertesa: '',
+        tutor: '',
+      }));
       return;
     }
 
-    this.newTribunal = {
-      ...this.newTribunal,
+    this.newTribunal.update(tribunal => ({
+      ...tribunal,
       TFGTitol: student.tfg,
       estudiant: student.name,
       expertesa: student.expertesa,
       tutor: student.tutorNom,
-    };
+    }));
   }
 
-    onSubmit() {
-    if (!this.selectedStudent) {
+  updateField<K extends keyof Tribunal>(field: K, value: Tribunal[K]) {
+    this.newTribunal.update(tribunal => ({ ...tribunal, [field]: value }));
+  }
+
+  onSubmit() {
+    if (!this.selectedStudent()) {
       this.snackBar.open('Si us plau, selecciona un estudiant per crear el tribunal.', 'Tancar', {
         duration: 3000,
       });
       return;
     }
 
-    this.tribunalService.crearTribunal(this.newTribunal).subscribe(
+    this.tribunalService.crearTribunal(this.newTribunal()).subscribe(
       (result: Tribunal) => {
         this.snackBar.open('Tribunal creat correctament', 'Tancar', {
           duration: 3000,
