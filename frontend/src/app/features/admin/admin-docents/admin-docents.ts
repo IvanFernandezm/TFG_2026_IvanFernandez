@@ -91,6 +91,7 @@ export class AdminDocents implements OnInit {
         this.currentDocentTribunals.set(tribunals);
       },
       (error) => {
+        this.currentDocentTribunals.set([]);
         console.error('Error al obtenir tribunals del docent: ' + Docent.name, error.message);
       }
     );
@@ -138,12 +139,15 @@ export class AdminDocents implements OnInit {
     );
   }
   setVeteranStatus(mail: string) {
-    this.dialog.open(VeteranConfirm, { disableClose: true, data: mail }).closed.subscribe(() => {
-      this.loadDocents();
-      const docent = this.docents().find(d => d.email === mail);
-      if (docent) {
-        this.selectDocent(docent);
+    this.dialog.open(VeteranConfirm, { disableClose: true, data: mail }).closed.subscribe(
+      (veteranStatus) => {
+        if (typeof veteranStatus === 'boolean') {
+          this.currentDocent.update(docent =>
+            docent ? { ...docent, veteran: veteranStatus } : null
+          );
+          this.loadDocents();
+        }
       }
-    });
+    );
   }
 }

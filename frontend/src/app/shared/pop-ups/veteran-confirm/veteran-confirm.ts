@@ -10,7 +10,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   styleUrl: './veteran-confirm.scss',
 })
 export class VeteranConfirm {
-  private dialogRef = inject(DialogRef);
+  private dialogRef = inject<DialogRef<boolean>>(DialogRef);
   private data = inject<string>(DIALOG_DATA);
 
   constructor(
@@ -19,14 +19,25 @@ export class VeteranConfirm {
   ) { }
 
   confirm() {
-    this.docentService.setVeteranStatus(this.data).subscribe(() => {
-      this.snackbar.open('Estat veterà del docent actualitzat correctament', 'Tancar', {
-        duration: 3000,
-      });
+    this.docentService.setVeteranStatus(this.data).subscribe({
+      next: (veteranStatus) => {
+        this.snackbar.open('Estat veterà del docent actualitzat correctament', 'Tancar', {
+          duration: 3000,
+        });
+        this.dialogRef.close(veteranStatus);
+      },
+      error: (error) => {
+        this.snackbar.open(
+          'Error al actualitzar l\'estat veterà: ' + (error.message ?? 'Error desconegut'),
+          'Tancar',
+          { duration: 3000 }
+        );
+        this.dialogRef.close(undefined);
+      },
     });
-    this.dialogRef.close();
   }
+
   close() {
-    this.dialogRef.close();
+    this.dialogRef.close(undefined);
   }
 }
