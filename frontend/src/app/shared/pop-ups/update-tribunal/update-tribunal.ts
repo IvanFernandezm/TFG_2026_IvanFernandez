@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Disponibilitat } from '../../../core/model/disponibilitat-model';
 import { DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
@@ -8,7 +8,7 @@ import { Docent } from '../../../core/model/docent-model';
 import { Tribunal } from '../../../core/model/tribunal-model';
 import { FormsModule } from "@angular/forms";
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { MatSelectModule, MatSelect, MatOption } from '@angular/material/select';
+import { MatSelect, MatOption } from '@angular/material/select';
 
 @Component({
   selector: 'app-update-tribunal',
@@ -16,15 +16,15 @@ import { MatSelectModule, MatSelect, MatOption } from '@angular/material/select'
   templateUrl: './update-tribunal.html',
   styleUrl: './update-tribunal.scss',
 })
-export class UpdateTribunal {
+export class UpdateTribunal implements OnInit {
 
   private dialogRef = inject(DialogRef);
   private dialogData = inject<Tribunal>(DIALOG_DATA);
   private snackBar = inject(MatSnackBar);
 
-  dispOptions: Disponibilitat[] = [];
-  docOptions: Docent[] = [];
-  tribUpdate!: Tribunal;
+  dispOptions = signal<Disponibilitat[]>([]);
+  docOptions = signal<Docent[]>([]);
+  tribUpdate = signal<Tribunal>({ ...this.dialogData });
 
   constructor(
     private docentService: DocentService,
@@ -33,24 +33,37 @@ export class UpdateTribunal {
 
   ngOnInit() {
     this.tribunalService.getDisponibilitats().subscribe(disponibilitats => {
-      this.dispOptions = disponibilitats;
+      this.dispOptions.set(disponibilitats);
     });
 
     this.docentService.getDocents().subscribe(
       (docents: Docent[]) => {
-        this.docOptions = docents;
+        this.docOptions.set(docents);
       }
     );
-
-    this.tribUpdate = this.dialogData;
   }
 
-  closeDialog() {
-    this.dialogRef.close();
+  closeDialog(result?: Tribunal) {
+    this.dialogRef.close(result);
+  }
+
+  updateField<K extends keyof Tribunal>(field: K, value: Tribunal[K]) {
+    this.tribUpdate.update(tribunal => ({ ...tribunal, [field]: value }));
+  }
+
+  selectedTimestamp(): string {
+    const data = this.tribUpdate().data;
+    return typeof data === 'string'
+      ? data
+      : data.toISOString();
+  }
+
+  updateTimestamp(timestamp: string) {
+    this.updateField('data', new Date(timestamp));
   }
 
   comprovar() {
-    this.tribunalService.comprovarTribunal(this.tribUpdate).subscribe(
+    this.tribunalService.comprovarTribunal(this.tribUpdate()).subscribe(
       (result: string) => {
         alert(result);
       },
@@ -64,12 +77,12 @@ export class UpdateTribunal {
   }
 
   onSubmit() {
-    this.tribunalService.updateTribunal(this.tribUpdate).subscribe(
+    this.tribunalService.updateTribunal(this.tribUpdate()).subscribe(
       (result: Tribunal) => {
         this.snackBar.open('Tribunal actualitzat correctament', 'Tancar', {
           duration: 3000,
         });
-        this.closeDialog();
+        this.closeDialog(result);
       },
       (error: HttpErrorResponse) => {
         this.snackBar.open('Error al actualitzar el tribunal: ' + error.error, 'Tancar', {

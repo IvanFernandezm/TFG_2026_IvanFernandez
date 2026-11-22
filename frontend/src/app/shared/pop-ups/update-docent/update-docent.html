@@ -2,14 +2,15 @@
     <h2>Actualitzar docent</h2>
     <form (submit)="submit()">
         <label for="email">Email:</label>
-        <p id="email" name="email">{{ docentUpdate.mail }}</p>
+        <p id="email" name="email">{{ docentUpdate().mail }}</p>
 
         <label for="name">Nom:</label>
-        <input id="name" name="name" [(ngModel)]="docentUpdate.name">
+        <input id="name" name="name" [ngModel]="docentUpdate().name"
+            (ngModelChange)="updateName($event)">
 
         <label>Especialitats:</label>
         <div class="display-options-container">
-            @for (specOption of specOptions; track specOption) {
+            @for (specOption of specOptions(); track specOption.id) {
             <mat-checkbox 
                 [checked]="isSpecSelected(specOption)"
                 (change)="toggleSpec(specOption)">
@@ -20,7 +21,7 @@
 
         <label>Disponibilitats:</label>
         <div class="display-options-container">
-            @for (dispOption of dispOptions; track dispOption) {
+            @for (dispOption of dispOptions(); track dispOption.timestamp) {
             <mat-checkbox 
                 [checked]="isDispSelected(dispOption.timestamp)"
                 (change)="toggleDisp(dispOption.timestamp)">

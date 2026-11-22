@@ -1,5 +1,5 @@
 import { DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { DocentDetails } from '../../../core/model/docent-details';
 import { Expertesa } from '../../../core/model/expertesa-model';
 import { MatCheckboxModule } from "@angular/material/checkbox";
@@ -16,19 +16,19 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './update-docent.html',
   styleUrl: './update-docent.scss',
 })
-export class UpdateDocent {
+export class UpdateDocent implements OnInit {
 
   private dialogRef = inject(DialogRef);
-  docentUpdate = (() => {
+  docentUpdate = signal<DocentDetails>((() => {
     const data = inject<DocentDetails>(DIALOG_DATA);
     return {
       ...data,
       experteses: [...(data.experteses ?? [])],
       disponibilitat: [...(data.disponibilitat ?? [])]
     };
-  })();
-  specOptions: Expertesa[] = [];
-  dispOptions: Disponibilitat[] = [];
+  })());
+  specOptions = signal<Expertesa[]>([]);
+  dispOptions = signal<Disponibilitat[]>([]);
 
   constructor(
     private docentService: DocentService,
@@ -42,40 +42,53 @@ export class UpdateDocent {
       disponibilitats: this.tribunalService.getDisponibilitats()
     }).subscribe(({ experteses, disponibilitats }) => {
 
-      this.specOptions = experteses;
-      this.dispOptions = disponibilitats;
+      this.specOptions.set(experteses);
+      this.dispOptions.set(disponibilitats);
 
     });
 
   }
 
   toggleDisp(data: string) {
-    const index = this.docentUpdate.disponibilitat.indexOf(data);
+    const docent = this.docentUpdate();
+    const index = docent.disponibilitat.indexOf(data);
+    const disponibilitat = [...docent.disponibilitat];
+
     if (index > -1) {
-      this.docentUpdate.disponibilitat.splice(index, 1);
+      disponibilitat.splice(index, 1);
     } else {
-      this.docentUpdate.disponibilitat.push(data);
+      disponibilitat.push(data);
     }
+
+    this.docentUpdate.set({ ...docent, disponibilitat });
   }
 
   isDispSelected(data: string): boolean {
-
-    return (this.docentUpdate.disponibilitat ?? []).some(
+    return (this.docentUpdate().disponibilitat ?? []).some(
       (disp) => disp === data
     );
   }
 
   toggleSpec(exp: Expertesa) {
-    const index = this.docentUpdate.experteses.indexOf(exp.id);
+    const docent = this.docentUpdate();
+    const index = docent.experteses.indexOf(exp.id);
+    const experteses = [...docent.experteses];
+
     if (index > -1) {
-      this.docentUpdate.experteses.splice(index, 1);
+      experteses.splice(index, 1);
     } else {
-      this.docentUpdate.experteses.push(exp.id);
+      experteses.push(exp.id);
     }
+
+    this.docentUpdate.set({ ...docent, experteses });
   }
 
   isSpecSelected(exp: Expertesa): boolean {
-    return this.docentUpdate.experteses.some((expertesa) => expertesa === exp.id);
+    return this.docentUpdate().experteses.some((expertesa) => expertesa === exp.id);
+  }
+
+  updateName(name: string) {
+    this.docentUpdate.update(docent => ({ ...docent, name }));
   }
 
   close() {
@@ -83,9 +96,9 @@ export class UpdateDocent {
   }
 
   submit() {
-    this.docentService.updateDocent(this.docentUpdate).subscribe((updatedDocent) => {
+    this.docentService.updateDocent(this.docentUpdate()).subscribe((updatedDocent) => {
       console.log('Docent updated:', updatedDocent);
+      this.dialogRef.close(updatedDocent);
     });
-    this.dialogRef.close();
   }
 }
