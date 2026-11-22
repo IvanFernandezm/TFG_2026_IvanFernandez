@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Tribunal } from '../../../model/tribunal-model';
-import { map, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { Expertesa } from '../../../model/expertesa-model';
 import { Disponibilitat } from '../../../model/disponibilitat-model';
 
@@ -13,14 +13,7 @@ export class TribunalService {
   constructor(private http: HttpClient) { }
 
   getTribunals(): Observable<Tribunal[]> {
-    return this.http.get<Tribunal[]>(`${this.apiUrl}/all`).pipe(
-      map(data =>
-        data.map(item => ({
-          ...item,
-          data: new Date(item.data)
-        }))
-      )
-    );
+    return this.http.get<Tribunal[]>(`${this.apiUrl}/all`);
   }
 
   getTribunalsByDocentEmail(email: string): Observable<Tribunal[]> {
@@ -38,14 +31,7 @@ export class TribunalService {
   }
 
   organitzarTribunals(classrooms: number): Observable<Tribunal[]> {
-    return this.http.get<Tribunal[]>(`${this.apiUrl}/organitzar`, { params: { maxClassrooms: classrooms.toString() } }).pipe(
-      map(data =>
-        data.map(item => ({
-          ...item,
-          data: new Date(item.data)
-        }))
-      )
-    );
+    return this.http.get<Tribunal[]>(`${this.apiUrl}/organitzar`, { params: { maxClassrooms: classrooms.toString() } });
   }
 
   getExperteses(): Observable<Expertesa[]> {

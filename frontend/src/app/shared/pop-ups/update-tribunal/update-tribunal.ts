@@ -52,14 +52,11 @@ export class UpdateTribunal implements OnInit {
   }
 
   selectedTimestamp(): string {
-    const data = this.tribUpdate().data;
-    return typeof data === 'string'
-      ? data
-      : data.toISOString();
+    return this.tribUpdate().data;
   }
 
   updateTimestamp(timestamp: string) {
-    this.updateField('data', new Date(timestamp));
+    this.updateField('data', timestamp);
   }
 
   comprovar() {

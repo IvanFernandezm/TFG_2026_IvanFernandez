@@ -36,7 +36,7 @@ export class AdminTribunals implements OnInit {
     this.tribunalService.getTribunals().subscribe(tribunals => {
       const groupedTribunals = this.groupTribunalsByDay(tribunals);
       for (const group of groupedTribunals) {
-        group.tribunals.sort((a, b) => a.data.getTime() - b.data.getTime());
+        group.tribunals.sort((a, b) => a.data.localeCompare(b.data));
       }
       this.groupedTribunals.set(groupedTribunals);
     });
@@ -59,12 +59,8 @@ export class AdminTribunals implements OnInit {
     }));
   }
 
-  private formatDay(date: Date): string {
-    const year = date.getFullYear();
-    const month = `${date.getMonth() + 1}`.padStart(2, '0');
-    const day = `${date.getDate()}`.padStart(2, '0');
-
-    return `${year}-${month}-${day}`;
+  private formatDay(timestamp: string): string {
+    return timestamp.substring(0, 10);
   }
 
   editarTribunal(tribunal: Tribunal) {

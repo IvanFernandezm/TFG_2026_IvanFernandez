@@ -30,7 +30,7 @@ export class TribunalCreate {
     clase: '',
     president: '',
     vocal: '',
-    data: new Date(),
+    data: '',
     TFGTitol: '',
     estudiant: '',
     tutor: '',

@@ -2,7 +2,7 @@ export interface Tribunal {
   clase: string;
   president: string;
   vocal: string;
-  data: Date;
+  data: string;
   TFGTitol: string;
   estudiant: string;
   tutor: string;
