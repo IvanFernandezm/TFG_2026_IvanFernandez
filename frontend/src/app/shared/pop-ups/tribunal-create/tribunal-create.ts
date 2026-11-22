@@ -11,6 +11,7 @@ import { DialogRef } from '@angular/cdk/dialog';
 import { HttpErrorResponse } from '@angular/common/http';
 import { MatSelect, MatOption } from '@angular/material/select';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-tribunal-create',
@@ -19,6 +20,7 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './tribunal-create.scss',
 })
 export class TribunalCreate implements OnInit {
+  private readonly router = inject(Router);
   private dialogRef = inject(DialogRef);
   private snackBar = inject(MatSnackBar);
   
@@ -106,6 +108,7 @@ export class TribunalCreate implements OnInit {
           duration: 3000,
         });
         this.closeDialog();
+        this.router.navigateByUrl('/admin/admin-tribunals');
       },
       (error: HttpErrorResponse) => {
         this.snackBar.open('Error al crear el tribunal: ' + error.error, 'Tancar', {

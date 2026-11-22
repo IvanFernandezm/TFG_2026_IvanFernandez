@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { DocentService } from '../../../core/services/api/docent/docent-service';
 import { TribunalService } from '../../../core/services/api/tribunal/tribunal-service';
 import { Router } from '@angular/router';
@@ -17,11 +17,27 @@ interface TimeSlot {
   styleUrl: './planificador.scss',
 })
 
-export class Planificador {
+export class Planificador implements OnInit {
 
   private readonly router = inject(Router);
   private snackBar = inject(MatSnackBar);
 
+  startDate = signal<Date | null>(null);
+  endDate = signal<Date | null>(null);
+  maxClassrooms = signal<number>(1);
+
+  slots = signal<TimeSlot[]>([]);
+  days = signal<string[]>([]);
+
+  hours = signal<string[]>([
+    '08:00', '09:00', '10:00', '11:00', '12:00', '13:00',
+    '15:00', '16:00', '17:00', '18:00', '19:00'
+  ]);
+
+  hasDisps = signal(false);
+  hasDocents = signal(false);
+  dispsLoaded = signal(false);
+  docentsLoaded = signal(false);
 
   constructor(private docentService: DocentService, private tribunalService: TribunalService) { }
 
@@ -41,19 +57,41 @@ export class Planificador {
   sendDisponibilitats() {
     const selectedSlots: string[] = this.slots().filter(slot => slot.selected).map(slot => slot.timestamp);
     this.docentService.newDisponibilitat(selectedSlots);
+    this.snackBar.open('Disponibilitats desades correctament', 'Tancar', { duration: 3000 });
+    this.hasDisps.set(selectedSlots.length > 0);
+    this.dispsLoaded.set(true);
   }
 
-  startDate = signal<Date | null>(null);
-  endDate = signal<Date | null>(null);
-  maxClassrooms = signal<number>(1);
+  ngOnInit(): void {
+    this.loadAvailabilityState();
+    this.loadDocentState();
+  }
 
-  slots = signal<TimeSlot[]>([]);
-  days = signal<string[]>([]);
+  private loadAvailabilityState(): void {
+    this.tribunalService.getDisponibilitats().subscribe({
+      next: disponibilitats => {
+        this.hasDisps.set(disponibilitats.length > 0);
+        this.dispsLoaded.set(true);
+      },
+      error: () => {
+        this.hasDisps.set(false);
+        this.dispsLoaded.set(true);
+      }
+    });
+  }
 
-  hours = signal<string[]>([
-    '08:00', '09:00', '10:00', '11:00', '12:00', '13:00',
-    '15:00', '16:00', '17:00', '18:00', '19:00'
-  ]);
+  private loadDocentState(): void {
+    this.docentService.getDocents().subscribe({
+      next: docents => {
+        this.hasDocents.set(docents.length > 0);
+        this.docentsLoaded.set(true);
+      },
+      error: () => {
+        this.hasDocents.set(false);
+        this.docentsLoaded.set(true);
+      }
+    });
+  }
 
   generate() {
     if (!this.startDate() || !this.endDate()) return;
@@ -118,4 +156,5 @@ export class Planificador {
   formatHour(hour: number): string {
     return hour.toString().padStart(2, '0') + ':00';
   }
+
 }

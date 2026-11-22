@@ -1,14 +1,10 @@
 <div class="tribunal-form">
     <h2>Crear Tribunal</h2>
+    @if(tribsOptions().length > 0) {
     <form (ngSubmit)="onSubmit()">
         <label for="TFGTitol">Estudiant:</label>
-        <mat-select
-            id="Estudiant"
-            [ngModel]="selectedStudent()"
-            (ngModelChange)="onStudentSelected($event)"
-            name="Estudiant"
-            required
-        >
+        <mat-select id="Estudiant" [ngModel]="selectedStudent()" (ngModelChange)="onStudentSelected($event)"
+            name="Estudiant" required>
             @for (student of tribsOptions(); track student.mail) {
             <mat-option [value]="student">
                 {{ student.name || 'Selecciona un Estudiant' }}
@@ -41,8 +37,8 @@
             }
         </mat-select>
         <label for="vocal">Vocalia:</label>
-        <mat-select id="vocal" [ngModel]="newTribunal().vocal"
-            (ngModelChange)="updateField('vocal', $event)" name="vocal">
+        <mat-select id="vocal" [ngModel]="newTribunal().vocal" (ngModelChange)="updateField('vocal', $event)"
+            name="vocal">
             @for (docent of docOptions(); track docent.email) {
             <mat-option [value]="docent.name">
                 {{ docent.name }}
@@ -51,8 +47,7 @@
         </mat-select>
 
         <label for="data">Data i Hora:</label>
-        <mat-select id="data" [ngModel]="newTribunal().data"
-            (ngModelChange)="updateField('data', $event)" name="data">
+        <mat-select id="data" [ngModel]="newTribunal().data" (ngModelChange)="updateField('data', $event)" name="data">
             @for (dispOption of dispOptions();
             track dispOption.timestamp) {
             <mat-option [value]="dispOption.timestamp">
@@ -62,11 +57,16 @@
         </mat-select>
 
         <label for="clase">Aula:</label>
-        <input id="clase" [ngModel]="newTribunal().clase"
-            (ngModelChange)="updateField('clase', $event)" name="clase" />
+        <input id="clase" [ngModel]="newTribunal().clase" (ngModelChange)="updateField('clase', $event)" name="clase" />
         <div class="tribunal-buttons">
             <button class="tribunal-button" type="submit">Guardar</button>
             <button class="tribunal-button" type="button" (click)="closeDialog()">Cancela</button>
         </div>
     </form>
+    } @else {
+    <p>Tots els estudiants ja tenen un tribunal assignat.</p>
+    <div class="tribunal-buttons">
+        <button class="tribunal-button" type="button" (click)="closeDialog()">Tancar</button>
+    </div>
+    }
 </div>

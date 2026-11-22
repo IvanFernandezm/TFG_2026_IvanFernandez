@@ -1,12 +1,15 @@
 <h2>Generació de tribunals</h2>
-<div class="controls">
-  <input type="date" (change)="startDate.set($any($event.target).valueAsDate)" />
-  <input type="date" (change)="endDate.set($any($event.target).valueAsDate)" />
-  <button (click)="generate()" [disabled]="!startDate() || !endDate()">Generar taula</button>
-  <button [disabled]="!(days().length > 0)" (click)="sendDisponibilitats()">Desar disponibilitats</button>
-</div>
+@if (!docentsLoaded()) {
+  <p>Carregant informació...</p>
+} @else if (hasDocents()) {
+  <div class="controls">
+    <input type="date" (change)="startDate.set($any($event.target).valueAsDate)" />
+    <input type="date" (change)="endDate.set($any($event.target).valueAsDate)" />
+    <button (click)="generate()" [disabled]="!startDate() || !endDate()">Generar taula</button>
+    <button [disabled]="!(days().length > 0)" (click)="sendDisponibilitats()">Desar disponibilitats</button>
+  </div>
 
-@if (days().length > 0) {
+  @if (days().length > 0) {
 
   <table class="schedule">
 
@@ -14,32 +17,40 @@
       <tr>
         <th>Hora</th>
         @for (day of days(); track day) {
-          <th>{{ day }}</th>
+        <th>{{ day }}</th>
         }
       </tr>
     </thead>
 
     <tbody>
       @for (hour of hours(); track hour) {
-        <tr>
-          <td class="hour">{{ hour }}</td>
+      <tr>
+        <td class="hour">{{ hour }}</td>
 
-          @for (day of days(); track day) {
-            <td
-              (click)="toggleSlot(day, hour)"
-              [class.selected]="isSelected(day, hour)"
-            ></td>
-          }
+        @for (day of days(); track day) {
+        <td (click)="toggleSlot(day, hour)" [class.selected]="isSelected(day, hour)"></td>
+        }
 
-        </tr>
+      </tr>
       }
     </tbody>
 
   </table>
+  }
+
+  <div class="controls2">
+    @if (!dispsLoaded()) {
+    <p>Carregant disponibilitats...</p>
+    } @else if (hasDisps()) {
+    <p>Nombre màxim d'aules disponibles:</p>
+    <input type="number" (change)="maxClassrooms.set($any($event.target).valueAsNumber)" />
+    <button [disabled]="!(maxClassrooms() > 0)" (click)="generateTribunals()">Desa i genera Tribunals</button>
+    } @else {
+    <p>Genera disponibilitats abans de generar tribunals</p>
+    }
+  </div>
 }
 
-<div class="controls2">
-  <p>Nombre màxim d'aules disponibles:</p>
-  <input type="number" (change)="maxClassrooms.set($any($event.target).valueAsNumber)" />
-  <button [disabled]="!(maxClassrooms() > 0)" (click)="generateTribunals()">Desa i genera Tribunals</button>
-</div>
+@else {
+<p>No hi han docents registrats, importa les seves dades abans de generar tribunals</p>
+}

@@ -22,6 +22,8 @@ export class AdminTribunals implements OnInit {
 
   groupedTribunals = signal<GroupedTribunals[]>([]);
   selected = signal<Tribunal | null>(null);
+  theresTribunals = signal(false);
+  tribunalsLoaded = signal(false);
 
   private dialog = inject(Dialog);
 
@@ -33,12 +35,26 @@ export class AdminTribunals implements OnInit {
   }
 
   loadTribunals() {
-    this.tribunalService.getTribunals().subscribe(tribunals => {
-      const groupedTribunals = this.groupTribunalsByDay(tribunals);
-      for (const group of groupedTribunals) {
-        group.tribunals.sort((a, b) => a.data.localeCompare(b.data));
+    this.tribunalsLoaded.set(false);
+
+    this.tribunalService.getTribunals().subscribe({
+      next: tribunals => {
+        const groupedTribunals = this.groupTribunalsByDay(tribunals);
+
+        for (const group of groupedTribunals) {
+          group.tribunals.sort((a, b) => a.data.localeCompare(b.data));
+        }
+
+        this.groupedTribunals.set(groupedTribunals);
+        this.theresTribunals.set(groupedTribunals.length > 0);
+        this.tribunalsLoaded.set(true);
+      },
+      error: error => {
+        this.groupedTribunals.set([]);
+        this.theresTribunals.set(false);
+        this.tribunalsLoaded.set(true);
+        console.error('Error al obtenir els tribunals', error);
       }
-      this.groupedTribunals.set(groupedTribunals);
     });
   }
 

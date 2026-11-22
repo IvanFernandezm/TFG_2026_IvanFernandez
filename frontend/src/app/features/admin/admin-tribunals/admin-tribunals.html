@@ -1,4 +1,6 @@
 <div>
+    <h1>Tribunals</h1>
+    @if (theresTribunals()) {
     <div class="tribunal-calendar">
         @for (group of groupedTribunals(); track group.day) {
         <h3>{{ group.day | date: "fullDate"}}</h3>
@@ -34,4 +36,7 @@
         }
         }
     </div>
+    } @else {
+    <p>No hi han tribunals assignats encara.</p>
+    }
 </div>
