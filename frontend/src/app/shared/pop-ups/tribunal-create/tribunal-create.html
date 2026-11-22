@@ -1,33 +1,33 @@
 <div class="tribunal-form">
     <h2>Crear Tribunal</h2>
     <form (ngSubmit)="onSubmit()">
-        <label for="TFGTitol">TFG Títol:</label>
+        <label for="TFGTitol">Estudiant:</label>
         <mat-select
-            id="TFGTitol"
+            id="Estudiant"
             [(ngModel)]="selectedStudent"
             (ngModelChange)="onStudentSelected($event)"
-            name="TFGTitol"
+            name="Estudiant"
             required
         >
             @for (student of tribsOptions; track student.mail) {
             <mat-option [value]="student">
-                {{ student.tfg }}
+                {{ student.name || 'Selecciona un Estudiant' }}
             </mat-option>
             }
         </mat-select>
 
         <div class="selected-details">
             <div>
-                <span class="detail-label">Estudiant</span>
-                <span>{{ newTribunal.estudiant || 'Selecciona un TFG' }}</span>
+                <span class="detail-label">TFG</span>
+                <span>{{ newTribunal.TFGTitol || 'Selecciona un Estudiant' }}</span>
             </div>
             <div>
                 <span class="detail-label">Expertesa</span>
-                <span>{{ newTribunal.expertesa || 'Selecciona un TFG' }}</span>
+                <span>{{ newTribunal.expertesa || 'Selecciona un Estudiant' }}</span>
             </div>
             <div>
                 <span class="detail-label">Tutor</span>
-                <span>{{ newTribunal.tutor || 'Selecciona un TFG' }}</span>
+                <span>{{ newTribunal.tutor || 'Selecciona un Estudiant' }}</span>
             </div>
         </div>
 
