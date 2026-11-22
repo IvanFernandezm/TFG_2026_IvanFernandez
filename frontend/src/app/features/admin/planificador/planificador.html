@@ -1,14 +1,9 @@
+<h2>Generació de tribunals</h2>
 <div class="controls">
   <input type="date" (change)="startDate.set($any($event.target).valueAsDate)" />
   <input type="date" (change)="endDate.set($any($event.target).valueAsDate)" />
-  <button (click)="generate()" [disabled]="!startDate() || !endDate()">Generar</button>
-  <button [disabled]="!(days().length > 0)" (click)="sendDisponibilitats()">Desar</button>
-</div>
-<div class="controls2">
-  <h2>Generació de tribunals</h2>
-  <p>Nombre màxim d'aules disponibles:</p>
-  <input type="number" (change)="maxClassrooms.set($any($event.target).valueAsNumber)" />
-  <button [disabled]="!(maxClassrooms() > 0)" (click)="generateTribunals()">Desa i genera Tribunals</button>
+  <button (click)="generate()" [disabled]="!startDate() || !endDate()">Generar taula</button>
+  <button [disabled]="!(days().length > 0)" (click)="sendDisponibilitats()">Desar disponibilitats</button>
 </div>
 
 @if (days().length > 0) {
@@ -42,3 +37,9 @@
 
   </table>
 }
+
+<div class="controls2">
+  <p>Nombre màxim d'aules disponibles:</p>
+  <input type="number" (change)="maxClassrooms.set($any($event.target).valueAsNumber)" />
+  <button [disabled]="!(maxClassrooms() > 0)" (click)="generateTribunals()">Desa i genera Tribunals</button>
+</div>
