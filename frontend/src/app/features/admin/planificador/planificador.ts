@@ -4,6 +4,7 @@ import { DocentService } from '../../../core/services/api/docent/docent-service'
 import { TribunalService } from '../../../core/services/api/tribunal/tribunal-service';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { HttpErrorResponse } from '@angular/common/http';
 
 interface TimeSlot {
   timestamp: string; // ES GUARDARÀ COM A ISO STRING: "2024-09-01T08:00:00"
@@ -42,15 +43,15 @@ export class Planificador implements OnInit {
   constructor(private docentService: DocentService, private tribunalService: TribunalService) { }
 
   generateTribunals() {
-    this.tribunalService.organitzarTribunals(this.maxClassrooms()).subscribe({
-      next: () => {
+    this.tribunalService.organitzarTribunals(this.maxClassrooms()).subscribe(
+      () => {
         this.snackBar.open('Nous Tribunals organitzats', 'Tancar', { duration: 3000 });
         this.router.navigateByUrl('/admin/admin-tribunals');
       },
-      error: error => {
-        console.error('Error generant tribunals', error.message);
+      (error: HttpErrorResponse) => {
+        this.snackBar.open(`Error al organitzar tribunals: ${error.message}`, 'Tancar', { duration: 5000 });
       }
-    });
+    );
 
   }
 
@@ -68,29 +69,31 @@ export class Planificador implements OnInit {
   }
 
   private loadAvailabilityState(): void {
-    this.tribunalService.getDisponibilitats().subscribe({
-      next: disponibilitats => {
+    this.tribunalService.getDisponibilitats().subscribe(
+      (disponibilitats) => {
         this.hasDisps.set(disponibilitats.length > 0);
         this.dispsLoaded.set(true);
       },
-      error: () => {
+      (error: HttpErrorResponse) => {
         this.hasDisps.set(false);
         this.dispsLoaded.set(true);
+        this.snackBar.open(`Error al carregar les disponibilitats: ${error.message}`, 'Tancar', { duration: 5000 });
       }
-    });
+    );
   }
 
   private loadDocentState(): void {
-    this.docentService.getDocents().subscribe({
-      next: docents => {
+    this.docentService.getDocents().subscribe(
+      (docents) => {
         this.hasDocents.set(docents.length > 0);
         this.docentsLoaded.set(true);
       },
-      error: () => {
+      (error: HttpErrorResponse) => {
         this.hasDocents.set(false);
         this.docentsLoaded.set(true);
+        this.snackBar.open(`Error al carregar els professors: ${error.message}`, 'Tancar', { duration: 5000 });
       }
-    });
+    );
   }
 
   generate() {

@@ -1,6 +1,6 @@
 .update-form {
-    max-height: 400px;
-    max-width: 520px;
+    max-height: 80vh;
+    max-width: 720px;
     overflow-y: auto;
     display: flex;
     flex-direction: column;
@@ -10,7 +10,7 @@
     border-radius: 16px;
     box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
     padding: 1.5rem;
-    min-width: min(92vw, 520px);
+    min-width: min(92vw, 720px);
 }
 
 .update-form h2 {

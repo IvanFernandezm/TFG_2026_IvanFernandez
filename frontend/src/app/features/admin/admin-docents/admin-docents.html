@@ -1,5 +1,6 @@
 <div class="main-divisor">
     <div class="docent-leftside">
+        @if (currentDocent()) {
         <div class="docent-info">
             <div class="main-info">
                 <h2>Informació del professor</h2>
@@ -50,10 +51,11 @@
                         }
                     </div>
                 </mat-expansion-panel>
-                <button class="docent-button" (click)="updateDocent(currentDocent()!)" [disabled]="!currentDocent()">Editar</button>
+                <button class="docent-button" (click)="updateDocent(currentDocent()!)"
+                    [disabled]="!currentDocent()">Editar</button>
             </div>
         </div>
-        <div class ="docent-info">
+        <div class="docent-info">
             <h2>Tribunals assignats</h2>
             @if (currentDocentTribunals().length > 0) {
             <ul>
@@ -65,14 +67,22 @@
                     <p>Presidencia: {{ tribunal.president }}</p>
                     <p>Vocalia: {{ tribunal.vocal }}</p>
                     <p>Aula: {{ tribunal.clase }}</p>
-                    <p>Data: {{ tribunal.data| date: 'dd/MM/yyyy HH:mm' }}</p>                </li>
+                    <p>Data: {{ tribunal.data| date: 'dd/MM/yyyy HH:mm' }}</p>
+                </li>
                 }
             </ul>
             } @else {
-            <p>No hi ha tribunals assignats.</p>
+            <p>No hi han tribunals assignats.</p>
             }
         </div>
+        }@else {
+            <div class="docent-info">
+            <h2>Informació del professor</h2>
+            <p>Selecciona un professor.</p>
+            </div>
+        }
     </div>
+
     <div class="docents-list">
         <h2>Llista de professorat</h2>
         <div class="search-bar">
